@@ -2,7 +2,7 @@
 A small desktop program to calculate different Jewish Zmanim And Dates. With options for exporting and setting reminders.
 
 [This link](https://downgit.github.io/#/home?url=https://github.com/NykUser/MyZman/tree/master/MyZmanPortable) can be used to download the portable .exe, 
-Folder also contains a clip with example uses of the program
+and this [is a link](https://github.com/NykUser/MyZman/blob/master/MyZmanPortable/eng.mp4) to a clip with example uses of the program
 
 The Code is released under the LGPL 2.1 license.
 
