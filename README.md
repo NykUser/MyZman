@@ -7,7 +7,7 @@ Folder also contains a clip with example uses of the program
 The Code is released under the LGPL 2.1 license.
 
 # Credits:
-Core Zmanim calculations based on Eliyahu Hershfeld work [KosherJava](https://kosherjava.com/) ant this is its [GitHub Home](https://github.com/KosherJava/zmanim)
+Core Zmanim calculations based on Eliyahu Hershfeld work [KosherJava](https://kosherjava.com/) - this is its [GitHub Home](https://github.com/KosherJava/zmanim)
 
 the Project uses the NET port [from here](https://github.com/Yitzchok/Zmanim)
 
