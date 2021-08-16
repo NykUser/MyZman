@@ -1,0 +1,303 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{6B13CA4F-07F4-4EAC-8C36-F2A456377EC3}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <StartupObject>zman.My.MyApplication</StartupObject>
+    <RootNamespace>zman</RootNamespace>
+    <AssemblyName>MyZman</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <MyType>WindowsForms</MyType>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>
+    </DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>
+    </DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionExplicit>On</OptionExplicit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionCompare>Binary</OptionCompare>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionStrict>Off</OptionStrict>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionInfer>On</OptionInfer>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Resources\Images\time.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="GeoTimeZone, Version=4.1.0.0, Culture=neutral, PublicKeyToken=e20ab7d0d9479841, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Resources\GeoTimeZone.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Device" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="TimeZoneConverter">
+      <HintPath>Resources\TimeZoneConverter.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Device.Location" />
+    <Import Include="System.Drawing" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Globalization" />
+    <Import Include="System.IO" />
+    <Import Include="System.Media" />
+    <Import Include="System.Reflection" />
+    <Import Include="System.Runtime.InteropServices" />
+    <Import Include="System.Text" />
+    <Import Include="System.Text.RegularExpressions" />
+    <Import Include="System.Threading" />
+    <Import Include="System.Windows.Forms" />
+    <Import Include="System.Linq" />
+    <Import Include="System.Xml.Linq" />
+    <Import Include="System.Xml.Serialization" />
+    <Import Include="Zmanim" />
+    <Import Include="Zmanim.Calculator" />
+    <Import Include="Zmanim.JewishCalendar" />
+    <Import Include="Zmanim.TimeZone" />
+    <Import Include="Zmanim.Utilities" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ApplicationEvents.vb" />
+    <Compile Include="Code Files\AddedGets.vb" />
+    <Compile Include="Code Files\ApplicationEvents.vb" />
+    <Compile Include="Code Files\Centered_MessageBox.vb" />
+    <Compile Include="Code Files\FrmExport.Designer.vb">
+      <DependentUpon>FrmExport.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Code Files\FrmExport.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Code Files\FrmDifference.Designer.vb">
+      <DependentUpon>FrmDifference.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Code Files\FrmDifference.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Code Files\FunctionsModule.vb" />
+    <Compile Include="Code Files\LocationCollection.vb" />
+    <Compile Include="Code Files\ProjectsGlobalVariables.vb" />
+    <Compile Include="Code Files\RoundButton.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Code Files\SettingsCollection.vb" />
+    <Compile Include="Code Files\SettingsElements.vb" />
+    <Compile Include="Code Files\Locations_BinaryReader.vb" />
+    <Compile Include="Code Files\FrmInfo.designer.vb">
+      <DependentUpon>FrmInfo.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Code Files\FrmInfo.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Code Files\MemoryFonts.vb" />
+    <Compile Include="Code Files\ToolStripMenuTextBoxAndLabel.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="Code Files\PZmanimTimeZone.vb" />
+    <Compile Include="Code Files\FrmSchedule.Designer.vb">
+      <DependentUpon>FrmSchedule.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Code Files\FrmSchedule.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Code Files\SerializableData.vb" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Code Files\FrmExport.resx">
+      <DependentUpon>FrmExport.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Code Files\FrmDifference.resx">
+      <DependentUpon>FrmDifference.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Code Files\FrmInfo.resx">
+      <DependentUpon>FrmInfo.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Code Files\FrmSchedule.resx">
+      <DependentUpon>FrmSchedule.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="My Project\app.manifest" />
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TimeZoneConverter.dll" />
+    <None Include="Resources\ArialUnicodeCompact.ttf" />
+    <None Include="Resources\LocationsList.DAT" />
+    <None Include="Resources\VarelaRound-Regular.ttf" />
+    <None Include="Resources\Zmanim.dll" />
+    <None Include="Resources\icons\1041645_add_add file_files_icon.png" />
+    <None Include="Resources\icons\2215477_hard_storage_download_disk_floppy_icon.png" />
+    <None Include="Resources\icons\2931176_diskette_guardar_save_disk_drive_icon.png" />
+    <None Include="Resources\icons\trash 3.png" />
+    <None Include="Resources\icons\1329089-48.png" />
+    <None Include="Resources\icons\3671684_three dots_icon.png" />
+    <None Include="Resources\icons\remove disk.png" />
+    <None Include="Resources\icons\3671684_three dots_icon %281%29.png" />
+    <None Include="Resources\icons\1329089-512.png" />
+    <None Include="Resources\icons\buttonsymbolofninedots_80014.png" />
+    <None Include="Resources\GeoTimeZone.dll" />
+    <None Include="Resources\Images\BlueAlarmBell.png" />
+    <None Include="Resources\Images\broombrushclearsweep22.png" />
+    <None Include="Resources\Images\Calendar_16x.png" />
+    <None Include="Resources\Images\CompareFiles_16x.png" />
+    <None Include="Resources\Images\ContinuousFolder_16x.png" />
+    <None Include="Resources\Images\DeleteFolder_16x.png" />
+    <None Include="Resources\Images\DownloadFolder_16x.png" />
+    <None Include="Resources\Images\excel.png" />
+    <None Include="Resources\Images\export_more_icon.png" />
+    <None Include="Resources\Images\first 32.png" />
+    <None Include="Resources\Images\green-16.png" />
+    <None Include="Resources\Images\last 32.png" />
+    <None Include="Resources\Images\Location2 -16.png" />
+    <None Include="Resources\Images\next 32.png" />
+    <None Include="Resources\Images\Plus.png" />
+    <None Include="Resources\Images\PlusFolder.png" />
+    <None Include="Resources\Images\previous 32.png" />
+    <None Include="Resources\Images\red-16.png" />
+    <None Include="Resources\Images\refresh 4.jpg" />
+    <None Include="Resources\Images\Remove_thin_10x_16x.png" />
+    <None Include="Resources\Images\three_dots_gray -horizontal.png" />
+    <None Include="Resources\Images\three_dots_icon_gray.png" />
+    <None Include="Resources\Images\Undo_16x.png" />
+    <None Include="Resources\Images\BlueAlarmBell.ico" />
+    <None Include="Resources\Images\export_more_icon.ico" />
+    <None Include="Resources\Images\time.ico" />
+    <None Include="Resources\Images\refresh 2.png" />
+    <None Include="Resources\icons\refresh 2.png" />
+    <Content Include="Resources\time.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4 Client Profile %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="Zmanim\Zmanim.csproj">
+      <Project>{7629e910-1996-448e-b344-aa925f23eee6}</Project>
+      <Name>Zmanim</Name>
+      <Private>False</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
