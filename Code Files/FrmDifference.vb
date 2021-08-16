@@ -15,6 +15,12 @@
         If Frminfo.mHebrewMenus.Checked = True Then
             GroupBox1.RightToLeft = 1
             GroupBox2.RightToLeft = 1
+            CbTimeA.RightToLeft = 0
+            CbTimeB.RightToLeft = 0
+            tbTimeA.RightToLeft = 0
+            tbTimeB.RightToLeft = 0
+            tbTimeR.RightToLeft = 0
+
             GroupBox1.Text = "זמן א"
             GroupBox2.Text = "זמן ב"
             LabelDifference.Text = "הבדל"
