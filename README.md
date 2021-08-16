@@ -1,8 +1,8 @@
 # ZmanCode
 A small desktop program to calculate different Jewish Zmanim And Dates. With options for Exporting and setting reminders.
 
-[This link](https://downgit.github.io/#/home?url=https://github.com/NykUser/MyZman/tree/master/MyZmanPortable) can be used to download the portable Exe 
-Folder contains a clip with example uses of the program
+[This link](https://downgit.github.io/#/home?url=https://github.com/NykUser/MyZman/tree/master/MyZmanPortable) can be used to download the portable .exe, 
+Folder also contains a clip with example uses of the program
 
 The Code is released under the LGPL 2.1 license.
 
