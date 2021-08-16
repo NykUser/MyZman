@@ -7,8 +7,12 @@ Folder also contains a clip with example uses of the program
 The Code is released under the LGPL 2.1 license.
 
 # Credits:
-Core Zmanim calculations based on KosherJava https://github.com/KosherJava/zmanim, Using the NET port from https://github.com/Yitzchok/Zmanim.
+Core Zmanim calculations based on KosherJava https://github.com/KosherJava/zmanim.
+
+Using the NET port from https://github.com/Yitzchok/Zmanim.
+
 Project uses the GeoTimeZone library [from here](https://github.com/mattjohnsonpint/GeoTimeZone) to look up time zones according to Geolocations.
+
 IANA time zone IDs are passed to the TimeZoneConverter library [from here](https://github.com/mattjohnsonpint/TimeZoneConverter)
 
 # Info:
@@ -22,14 +26,18 @@ The vb zman project then compiles the DLL into itself, all the is needed to run 
 Project uses Embedded fonts "ArialUnicodeCompact" & "VarelaRound-Regular", ArialUnicodeCompact is Arial Unicode MS with only Eng & Heb characters.
 
 MessageBox are centered to mouse Location with Centered_MessageBox class
+
 Round Button's are used for some of the controls
-States bar 
+
 Status Strip Messages are Trimmed and ellipsis are added 
+
 User settings are Serialized and saved in the exe folder
+
 Variables are mostly Globalized 
 
 # Disclaimer:
 Please double check before relying on these zmanim for halacha lemaaseh.
+
 Get Current Location relies on windows GeoCoordinateWatcher, the results should be checked.
 
 # Screenshots.
