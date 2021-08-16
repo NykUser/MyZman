@@ -1,7 +1,7 @@
 # ZmanCode
 A small desktop program to calculate different Jewish zmanim. With an with an option for setting reminders.
 
-A direct link to portable exe can be found here https://github.com/NykUser/Zman.exe
+A direct link to download the portable EXE can be found here https://downgit.github.io/#/home?url=https://github.com/NykUser/MyZman/tree/master/bin/Debuge
 
 
 # Credits:
