@@ -25,7 +25,7 @@ The vb zman project then compiles the DLL into itself, all that is needed to run
 # Notable points:
 Project uses Embedded fonts "ArialUnicodeCompact" & "VarelaRound-Regular", ArialUnicodeCompact is Arial Unicode MS with only Eng & Heb characters.
 
-MessageBox are centered to mouse Location with Centered_MessageBox class
+Message Boxs are centered to mouse Location with Centered_MessageBox class
 
 Round Button's are used for some of the controls
 
