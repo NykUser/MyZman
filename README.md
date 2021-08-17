@@ -20,7 +20,7 @@ Calculations use the NOAA algorithm by default, with option to use USNO.
 
 The NET port (4/28/21 download) is part of the solution, as an C# project called Zmanim, it compiles itself into a Dll into MyZman\Resources\.
 
-The vb zman project then compiles the DLL into itself, all that is needed to run thr propgrem is a stand alone exe.
+The vb zman project then compiles the DLL into itself, all that is needed to run the propgrem is a stand alone exe & an xml file with locations info.
 
 # Notable points:
 Project uses Embedded fonts "ArialUnicodeCompact" & "VarelaRound-Regular", ArialUnicodeCompact is Arial Unicode MS with only Eng & Heb characters.
