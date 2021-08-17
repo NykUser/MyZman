@@ -1,4 +1,7 @@
-﻿Public Class FrmExport
+﻿Imports Microsoft.WindowsAPICodePack
+Imports Microsoft.WindowsAPICodePack.Dialogs
+Imports Microsoft.WindowsAPICodePack.Shell
+Public Class FrmExport
     Private Sub ExportQuestion_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Me.Location = New System.Drawing.Point(Frminfo.Location.X + ((Frminfo.Width - Me.Width) / 2), Frminfo.Bounds.Bottom - (Me.Height + 45))
         If Frminfo.mHebrewMenus.Checked = True Then
@@ -78,12 +81,19 @@
         End If
 
         Dim folder As String
-        Dim MY_FolderBrowser As New FolderBrowserDialog
-        MY_FolderBrowser.ShowNewFolderButton = True
-        MY_FolderBrowser.SelectedPath = My.Computer.FileSystem.SpecialDirectories.Desktop
+        'Dim MY_FolderBrowser As New FolderBrowserDialog
+        'MY_FolderBrowser.ShowNewFolderButton = True
+        'MY_FolderBrowser.SelectedPath = My.Computer.FileSystem.SpecialDirectories.Desktop
+        Dim MY_FolderBrowser As CommonOpenFileDialog = New CommonOpenFileDialog()
+        MY_FolderBrowser.Multiselect = False
+        MY_FolderBrowser.IsFolderPicker = True
+        MY_FolderBrowser.InitialDirectory = My.Computer.FileSystem.SpecialDirectories.Desktop
+
         Using New Centered_MessageBox(Me, "ParentCenter")
-            If MY_FolderBrowser.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
-                folder = MY_FolderBrowser.SelectedPath
+            'If MY_FolderBrowser.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
+            If MY_FolderBrowser.ShowDialog() = CommonFileDialogResult.OK Then
+                'folder = MY_FolderBrowser.SelectedPath Then
+                folder = MY_FolderBrowser.FileName
             Else
                 Exit Sub
             End If
@@ -110,7 +120,7 @@
 
 
         Debug.Print("numdays: " & NumDays & " daysper: " & DaysPerFile & " daycount: " & DayCount)
-        file = My.Computer.FileSystem.OpenTextFileWriter(folder & "\" & work_date.ToString("MM-dd-yy") & ".vcs", False, utf8WithoutBom) ' .GetEncoding(1255) 'System.Text.Encoding.UTF8
+        file = My.Computer.FileSystem.OpenTextFileWriter(folder & "\" & Work_Date.ToString("MM-dd-yy") & ".vcs", False, utf8WithoutBom) ' .GetEncoding(1255) 'System.Text.Encoding.UTF8
         file.WriteLine("BEGIN:VCALENDAR" & vbCrLf & "VERSION:1.0")
 
         For i = 1 To NumDays
@@ -121,18 +131,18 @@
                 DayCount = DayCount - DaysPerFile
                 file.WriteLine("END:VCALENDAR")
                 file.Close()
-                file = My.Computer.FileSystem.OpenTextFileWriter(folder & "\" & work_date.ToString("MM-dd-yy") & ".vcs", False, utf8WithoutBom) ' .GetEncoding(1255) 'System.Text.Encoding.UTF8
+                file = My.Computer.FileSystem.OpenTextFileWriter(folder & "\" & Work_Date.ToString("MM-dd-yy") & ".vcs", False, utf8WithoutBom) ' .GetEncoding(1255) 'System.Text.Encoding.UTF8
                 file.WriteLine("BEGIN:VCALENDAR" & vbCrLf & "VERSION:1.0")
             End If
 
-            ResultArray = Get_HebDate(work_date)
+            ResultArray = Get_HebDate(Work_Date)
             HebDatetoShow = ResultArray(0) & " " & ResultArray(1)
             If ResultArray(2) <> " " Then HebDatetoShow = HebDatetoShow & " " & ResultArray(2)
             If ResultArray(3) <> "קודם הדף" And ResultArray(3) <> "??" Then HebDatetoShow = HebDatetoShow & " " & ResultArray(3)
             TempCZC = New ComplexZmanimCalendar(Work_Date, TempLocation)
 
-            file.WriteLine("BEGIN:VEVENT" & vbCrLf & "DTSTART:" & work_date.ToString("yyyyMMdd") & vbCrLf _
-                           & "DTEND:" & work_date.AddDays(1).ToString("yyyyMMdd") & vbCrLf _
+            file.WriteLine("BEGIN:VEVENT" & vbCrLf & "DTSTART:" & Work_Date.ToString("yyyyMMdd") & vbCrLf _
+                           & "DTEND:" & Work_Date.AddDays(1).ToString("yyyyMMdd") & vbCrLf _
                            & "SUMMARY:" & ResultArray(0))
 
             'dont use WriteLine - zmanim al need to be on DESCRIPTION line
@@ -161,7 +171,7 @@
             file.Write(ChrW(&H200E) & "Lat: " & varGeoLocation.Latitude & " long: " & varGeoLocation.Longitude)
             file.WriteLine(vbCrLf & "END:VEVENT")
 
-            work_date = work_date.AddDays(1)
+            Work_Date = Work_Date.AddDays(1)
         Next
         file.WriteLine("END:VCALENDAR")
         file.Close()
@@ -194,12 +204,19 @@
         End If
 
         Dim folder As String
-        Dim MY_FolderBrowser As New FolderBrowserDialog
-        MY_FolderBrowser.ShowNewFolderButton = True
-        MY_FolderBrowser.SelectedPath = My.Computer.FileSystem.SpecialDirectories.Desktop
+        'Dim MY_FolderBrowser As New FolderBrowserDialog
+        'MY_FolderBrowser.ShowNewFolderButton = True
+        'MY_FolderBrowser.SelectedPath = My.Computer.FileSystem.SpecialDirectories.Desktop
+        Dim MY_FolderBrowser As CommonOpenFileDialog = New CommonOpenFileDialog()
+        MY_FolderBrowser.Multiselect = False
+        MY_FolderBrowser.IsFolderPicker = True
+        MY_FolderBrowser.InitialDirectory = My.Computer.FileSystem.SpecialDirectories.Desktop
+
         Using New Centered_MessageBox(Me, "ParentCenter")
-            If MY_FolderBrowser.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
-                folder = MY_FolderBrowser.SelectedPath
+            'If MY_FolderBrowser.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
+            If MY_FolderBrowser.ShowDialog() = CommonFileDialogResult.OK Then
+                'folder = MY_FolderBrowser.SelectedPath Then
+                folder = MY_FolderBrowser.FileName
             Else
                 Exit Sub
             End If
@@ -208,62 +225,62 @@
         'folder = My.Computer.FileSystem.SpecialDirectories.Desktop & "\New folder"
 
         Dim File As System.IO.StreamWriter
-        Dim FileFullPath As String = folder & "\MyZman VCS Export Lat " & varGeoLocation.Latitude & " long " & varGeoLocation.Longitude & ".csv" '& Now.ToString("M-d-yy H.m")
+            Dim FileFullPath As String = folder & "\MyZman VCS Export Lat " & varGeoLocation.Latitude & " long " & varGeoLocation.Longitude & ".csv" '& Now.ToString("M-d-yy H.m")
 
-        Dim timeFormat As String = "h:mm:ss" ' no am pm RTL
-        If varSC.Clock24Hour = True Then timeFormat = "H:mm:ss"
-        Dim MyZman As Date
-        Dim Work_Date As Date = Frminfo.dpEngdate.Value
-        Dim NumDays As Integer = tbDays.Text
-        Dim ResultArray
-        Dim i As Integer = 0
-        Dim Args() ' for AddedGets
-        Dim TempLocation As GeoLocation = varGeoLocation
-        Dim TempCZC As ComplexZmanimCalendar
+            Dim timeFormat As String = "h:mm:ss" ' no am pm RTL
+            If varSC.Clock24Hour = True Then timeFormat = "H:mm:ss"
+            Dim MyZman As Date
+            Dim Work_Date As Date = Frminfo.dpEngdate.Value
+            Dim NumDays As Integer = tbDays.Text
+            Dim ResultArray
+            Dim i As Integer = 0
+            Dim Args() ' for AddedGets
+            Dim TempLocation As GeoLocation = varGeoLocation
+            Dim TempCZC As ComplexZmanimCalendar
 
-        File = My.Computer.FileSystem.OpenTextFileWriter(FileFullPath, False, System.Text.Encoding.UTF8) 'System.Text.Encoding.UTF8
-        Dim RowString As String
-        Dim HeaderString As String = "Date,תאריך,פרשה,יום טוב,דף היומי,"
-
-        For Each Z In varSC.Zmanim
-            HeaderString = HeaderString & Z.DisplayName & ","
-        Next
-
-        file.WriteLine(HeaderString)
-
-        For i = 1 To NumDays
-            TempCZC = New ComplexZmanimCalendar(Work_Date, TempLocation)
-            ResultArray = Get_HebDate(Work_Date)
-            RowString = Work_Date.ToShortDateString & "," & ResultArray(0) & "," & ResultArray(1) & "," & ResultArray(2) & "," & ResultArray(3) & ","
+            File = My.Computer.FileSystem.OpenTextFileWriter(FileFullPath, False, System.Text.Encoding.UTF8) 'System.Text.Encoding.UTF8
+            Dim RowString As String
+            Dim HeaderString As String = "Date,תאריך,פרשה,יום טוב,דף היומי,"
 
             For Each Z In varSC.Zmanim
-                If InStr(Z.FunctionName, "ShaahZmanis") > 0 Then
-                    Try
-                        MyZman = #12:00:00 AM#.AddMilliseconds(CallByName(TempCZC, Z.FunctionName, CallType.Get))
-                        RowString = RowString & MyZman.ToString("H:mm:ss") & ","
-                    Catch ex As Exception
-                    End Try
-                Else
-                    Try
-                        If Z.ObjectName = "varCZC" Then
-                            MyZman = CDate(CallByName(TempCZC, Z.FunctionName, CallType.Get)).ToString(timeFormat)
-                        Else
-                            Args = {Work_Date, TempLocation} ' for AddedGets
-                            MyZman = CDate(CallByName(varAddedGets, Z.FunctionName, CallType.Get, Args))
-                        End If
-                        RowString = RowString & MyZman.ToString(timeFormat) & ","
-                    Catch ex As Exception
-                    End Try
-                End If
+                HeaderString = HeaderString & Z.DisplayName & ","
             Next
-            File.WriteLine(RowString)
 
-            Work_Date = Work_Date.AddDays(1)
-        Next
-        File.Close()
+            File.WriteLine(HeaderString)
 
-        Process.Start(FileFullPath)
-        Me.Close()
+            For i = 1 To NumDays
+                TempCZC = New ComplexZmanimCalendar(Work_Date, TempLocation)
+                ResultArray = Get_HebDate(Work_Date)
+                RowString = Work_Date.ToShortDateString & "," & ResultArray(0) & "," & ResultArray(1) & "," & ResultArray(2) & "," & ResultArray(3) & ","
+
+                For Each Z In varSC.Zmanim
+                    If InStr(Z.FunctionName, "ShaahZmanis") > 0 Then
+                        Try
+                            MyZman = #12:00:00 AM#.AddMilliseconds(CallByName(TempCZC, Z.FunctionName, CallType.Get))
+                            RowString = RowString & MyZman.ToString("H:mm:ss") & ","
+                        Catch ex As Exception
+                        End Try
+                    Else
+                        Try
+                            If Z.ObjectName = "varCZC" Then
+                                MyZman = CDate(CallByName(TempCZC, Z.FunctionName, CallType.Get)).ToString(timeFormat)
+                            Else
+                                Args = {Work_Date, TempLocation} ' for AddedGets
+                                MyZman = CDate(CallByName(varAddedGets, Z.FunctionName, CallType.Get, Args))
+                            End If
+                            RowString = RowString & MyZman.ToString(timeFormat) & ","
+                        Catch ex As Exception
+                        End Try
+                    End If
+                Next
+                File.WriteLine(RowString)
+
+                Work_Date = Work_Date.AddDays(1)
+            Next
+            File.Close()
+
+            Process.Start(FileFullPath)
+            Me.Close()
     End Sub
 
 End Class

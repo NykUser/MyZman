@@ -62,9 +62,14 @@ Namespace My
                 Return Reflection.Assembly.Load(My.Resources.GeoTimeZone)
             ElseIf desiredAssembly.Name = "TimeZoneConverter" Then
                 Return Reflection.Assembly.Load(My.Resources.TimeZoneConverter)
+            ElseIf desiredAssembly.Name = "Microsoft.WindowsAPICodePack.Shell" Then
+                Return Reflection.Assembly.Load(My.Resources.Microsoft_WindowsAPICodePack_Shell)
+            ElseIf desiredAssembly.Name = "Microsoft.WindowsAPICodePack" Then
+                Return Reflection.Assembly.Load(My.Resources.Microsoft_WindowsAPICodePack)
             Else
                 Return Nothing
             End If
+
         End Function
     End Class
 

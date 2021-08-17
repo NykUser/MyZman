@@ -47,8 +47,7 @@ Public Class FrmSchedule
             btToggleTaskScheduler.Font = MemoryFonts.GetFont(1, 8.75, FontStyle.Regular)
             btTest.Font = MemoryFonts.GetFont(1, 8.75, FontStyle.Regular)
 
-            GroupBox1.Text = "פרטי מקום"
-            GroupBox2.Text = "מתזמן משימות       " '"תזכורות        "
+
             pbTasksON.Location = New System.Drawing.Point(78, 2.5)
             GroupBox1.RightToLeft = 1
             GroupBox2.RightToLeft = 1
@@ -60,18 +59,19 @@ Public Class FrmSchedule
             cbTime.RightToLeft = 0
             tbSound.RightToLeft = 0
             tbMinutes.RightToLeft = 0
-
             LabelLatitude.RightToLeft = 1
             LabelLongitude.RightToLeft = 1
             LabelElevation.RightToLeft = 1
             LabelTimeZone.RightToLeft = 1
             LabelFrom.RightToLeft = 1
+
+            GroupBox1.Text = "פרטי מקום"
+            GroupBox2.Text = "מתזמן משימות       " '"תזכורות        "
             LabelLatitude.Text = "קו רוחב"
             LabelLongitude.Text = "קו אורך"
             LabelElevation.Text = "גובה"
             LabelTimeZone.Text = "אזור זמן"
             LabelFrom.Text = "מתוך:"
-
             cbIsActive.Text = "פעיל"
             cbNotToday.Text = "לא היום"
             LabelTimeOrZman.RightToLeft = 1

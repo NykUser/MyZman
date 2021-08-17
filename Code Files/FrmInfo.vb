@@ -41,7 +41,6 @@ Public Class Frminfo
             End Try
         Else
             'varTransparencyBox = New ToolStripMenuTextBoxAndLabel(":אי שקיפות", 40, 1)
-            mOpacityLabel.Text = "אי שקיפות:"
             Try
                 LabelCountry.Font = MemoryFonts.GetFont(1, 7.75, FontStyle.Regular)
                 LabelOffSet.Font = MemoryFonts.GetFont(1, 7.75, FontStyle.Regular)
@@ -950,8 +949,13 @@ Public Class Frminfo
             tblatitude.RightToLeft = 0
             tblongitude.RightToLeft = 0
             tbzone.RightToLeft = 0
+            LabelCountry.RightToLeft = 1
+            LabelOffSet.RightToLeft = 1
+            LabelLatitude.RightToLeft = 1
+            LabelLongitude.RightToLeft = 1
+            LabelElevation.RightToLeft = 1
+            LabelTimeZone.RightToLeft = 1
             'varTransparencyBox = New ToolStripMenuTextBoxAndLabel(":אי שקיפות", 40, 1)
-            mOpacityLabel.Text = "אי שקיפות:"
 
             Try
                 LabelCountry.Font = MemoryFonts.GetFont(1, 8.75, FontStyle.Regular)
@@ -963,6 +967,7 @@ Public Class Frminfo
             Catch ex As Exception
             End Try
 
+            mOpacityLabel.Text = "אי שקיפות:"
             mGetCurrnetLocation.Text = "קבל את המיקום הנוכחי"
             mSaveLocationChanges.Text = "שמור שינויי מיקום"
             mRemoveLocation.Text = "הסר מיקום"
@@ -994,13 +999,6 @@ Public Class Frminfo
             GroupBox1.Text = "תאריכים"
             mHebrewMenus.Text = "תפריטים בעברית"
             ToolStripDropDownButton1.Text = "כלים"
-
-            LabelCountry.RightToLeft = 1
-            LabelOffSet.RightToLeft = 1
-            LabelLatitude.RightToLeft = 1
-            LabelLongitude.RightToLeft = 1
-            LabelElevation.RightToLeft = 1
-            LabelTimeZone.RightToLeft = 1
             LabelCountry.Text = "מדינה"
             LabelOffSet.Text = "קיזוז זמן"
             LabelLatitude.Text = "קו רוחב"
