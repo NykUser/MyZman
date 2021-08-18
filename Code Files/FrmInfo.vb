@@ -127,7 +127,7 @@ Public Class Frminfo
         Dim TimeFormat As String = "h:mm:ss"
         If varSC.Clock24Hour = True Then TimeFormat = "H:mm:ss"
         'Me.Text = DateAndTime.Now.ToString(timeFormt)
-        Me.Text = TimeZoneInfo.ConvertTime(Now(), varZmanTimeZone).ToString(TimeFormat) & If(varSC.Clock24Hour = False, " " & TimeZoneInfo.ConvertTime(Now(), varZmanTimeZone).ToString("tt"), "")
+        Me.Text = TimeZoneInfo.ConvertTime(Now(), varZmanTimeZone).ToString(TimeFormat) & If(varSC.Clock24Hour = False, ChrW(&H200E) & " " & TimeZoneInfo.ConvertTime(Now(), varZmanTimeZone).ToString("tt"), "")
 
     End Sub
 
@@ -690,6 +690,7 @@ Public Class Frminfo
     Private Sub DefaultInUse_Click(sender As Object, e As EventArgs) Handles mDefaultInUse.Click
         'to reload Default place 
         mPlaceListInHebrew.Checked = varSC.DefaultPlaceListInHebrew
+        mPlaceListInHebrew_Click()
         ClearAndReLoadPlaceLists("", varSC.DefaultSelectedindex)
     End Sub
     Private Sub mColorZmanMenuItem_CheckedChanged(sender As Object, e As EventArgs) Handles mColorZmanMenuItem.Click
