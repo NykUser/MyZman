@@ -1,4 +1,4 @@
-﻿
+﻿Imports Microsoft.VisualBasic.ApplicationServices
 Public Class FrmSchedule
     Private TempCZC As ComplexZmanimCalendar
     Private TempTimeZone As TimeZoneInfo
@@ -157,9 +157,9 @@ Public Class FrmSchedule
 
         varZmanimFunc.ForEach(Sub(x) cbTime.Items.Add(x))
         'remove the last 4 that are AddedGets
-        For i = 1 To 4
-            cbTime.Items.RemoveAt(cbTime.Items.Count - 1)
-        Next
+        'For i = 1 To 4
+        '    cbTime.Items.RemoveAt(cbTime.Items.Count - 1)
+        'Next
 
 
         tbReminderNum.Text = 1
@@ -208,6 +208,7 @@ Public Class FrmSchedule
         Return ActiveReminders
     End Function
     Public Sub RunSchedulecheck(FirstInstance As Boolean)
+        'MsgBox("1 " & FirstInstance)
         If FirstInstance = True Then
             'load New varSC
             'varUserFile set in ProjectsGlobalVariables is Environment.CurrentDirectory & "\MYZman.exe.UserSettings.xml" - not good when it runs from task scheduler it will be C:\Windows\System32\Tasks
@@ -226,18 +227,18 @@ Public Class FrmSchedule
         Dim NotToday As Boolean
         For Each oSchedule As aSchedule In varSC.Schedule
             If oSchedule.IsActive = True And oSchedule.NotToday = False Then
-                NotToday = CheckSchedule(oSchedule)
+                NotToday = CheckSchedule(oSchedule, False, FirstInstance)
                 oSchedule.NotToday = NotToday
                 'if FrmSchedule is open
                 If Me.IsHandleCreated Then cbNotToday.Checked = NotToday
-                Debug.Print(NotToday & vbCr & oSchedule.NotToday)
-                End If
+            End If
         Next
         varSC.Save(varUserFile)
 
         'If this is the FirstInstance Me.Startup will close it down
     End Sub
-    Function CheckSchedule(oSchedule As aSchedule, Optional TestRuning As Boolean = False)
+    Function CheckSchedule(oSchedule As aSchedule, Optional TestRuning As Boolean = False, Optional FirstInstance As Boolean = False)
+        'MsgBox("2 " & FirstInstance)
         Dim Response
         Dim myMsg As String
         Dim myzman As Date
@@ -247,14 +248,22 @@ Public Class FrmSchedule
         Dim MinutesBefore = oSchedule.Minutes
         If MinutesBefore = "" Then MinutesBefore = 1
 
+        'MsgBox("3 " & FirstInstance)
         Try
             TempTimeZone = TimeZoneInfo.FindSystemTimeZoneById(varSC.SchedulerTimeZone)
-            Dim timeZone As ITimeZone = New PZmanimTimeZone(varZmanTimeZone) 'WindowsTimeZone("Eastern Standard Time") '
+            Dim timeZone As ITimeZone = New PZmanimTimeZone(TempTimeZone) 'WindowsTimeZone("Eastern Standard Time") '
             Dim location As New GeoLocation("", varSC.SchedulerLatitude, varSC.SchedulerLongitude, varSC.SchedulerElevation, timeZone)
             TempCZC = New ComplexZmanimCalendar(Now, location)
+            Dim Args() = {Now, location} ' for AddedGets
 
             If oSchedule.IsFunc = True Then
-                myzman = CallByName(TempCZC, oSchedule.Time, CallType.Get)
+                If InStr(oSchedule.Time, "ZmanGet") Then
+                    myzman = CDate(CallByName(varAddedGets, oSchedule.Time, CallType.Get, Args))
+                    'Debug.Print(mytime)
+                Else
+                    myzman = CDate(CallByName(varCZC, oSchedule.Time, CallType.Get))
+                    'Debug.Print(mytime)
+                End If
             Else
                 DateTime.TryParse(oSchedule.Time, myzman)
             End If
@@ -268,7 +277,7 @@ Public Class FrmSchedule
 
         If myzman = Nothing Then Return False
         mytimespan = myzman - Now
-
+        'MsgBox("4 " & FirstInstance)
 
         If varSC.HebrewMenus = True Then
             myMsg = "עכשיו " & #1/2/2000#.AddMilliseconds(mytimespan.TotalMilliseconds).ToString("H:mm:ss") & " לפני " & myzman.ToString(timeFormat) & vbCr & oSchedule.Message & vbCr & vbCr & "?להזכיר שוב"
@@ -277,11 +286,14 @@ Public Class FrmSchedule
             myMsg = "It Is Now " & #1/2/2000#.AddMilliseconds(mytimespan.TotalMilliseconds).ToString("H:mm:ss") & " Before " & myzman.ToString(timeFormat) & vbCr & oSchedule.Message & vbCr & vbCr & "Remind Again?"
         End If
 
+        'Activate frminfo to Foreground - to show msg on top
+        If FirstInstance = False Then Frminfo.Activate()
+
         Dim MyPlayer As SoundPlayer
         If oSchedule.Sound <> "" And System.IO.File.Exists(oSchedule.Sound) Then
             Try
-                myPlayer = New SoundPlayer(oSchedule.Sound)
-                myPlayer.PlayLooping()
+                MyPlayer = New SoundPlayer(oSchedule.Sound)
+                MyPlayer.PlayLooping()
             Catch ex As Exception
             End Try
         End If
@@ -513,7 +525,14 @@ Public Class FrmSchedule
                 Dim timeZone As ITimeZone = New PZmanimTimeZone(varZmanTimeZone)
                 Dim location As New GeoLocation("", tblatitude.Text, tblongitude.Text, 0, timeZone)
                 TempCZC = New ComplexZmanimCalendar(Now, location)
-                mytime = CallByName(TempCZC, StringIn, CallType.Get)
+                Dim Args() = {Now, location} ' for AddedGets
+                If InStr(StringIn, "ZmanGet") Then
+                    mytime = CDate(CallByName(varAddedGets, StringIn, CallType.Get, Args))
+                    'Debug.Print(mytime)
+                Else
+                    mytime = CDate(CallByName(TempCZC, StringIn, CallType.Get))
+                    'Debug.Print(mytime)
+                End If
             Catch
                 Return 4
             End Try

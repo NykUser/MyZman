@@ -1,5 +1,6 @@
 ﻿'left-to-right mark: ChrW(&H200E) 
 'right-to-left mark: ChrW(&H200F)
+
 'needs to be Module it should be global
 Module FunctionsModule
     Public Sub LoadSettingsandVariables()
