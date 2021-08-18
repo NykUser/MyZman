@@ -339,7 +339,12 @@ Public Class Frminfo
         FrmSchedule.Show()
     End Sub
     Private Sub mOpenCompere_Click(sender As Object, e As EventArgs) Handles mOpenCompare.Click
+        If Me.TopMost = True Then FrmDifference.TopMost = True
         FrmDifference.Show()
+    End Sub
+    Private Sub mExport_Click(sender As Object, e As EventArgs) Handles mExport.Click
+        If Me.TopMost = True Then FrmExport.TopMost = True
+        FrmExport.Show()
     End Sub
     Public Sub StayOnTopToolStripMenuItem_Click() Handles mStayOnTopToolStripMenuItem.Click
         If mStayOnTopToolStripMenuItem.Checked = True Then
@@ -440,11 +445,11 @@ Public Class Frminfo
             varSavedStatusLabel = "Was Not Able To Get Current GeoLocation. Try Again"
             If varSC.HebrewMenus = True Then varSavedStatusLabel = "לא הצליח להשיג מיקום גיאוגרפי נוכחי. נסה שוב"
             StatusLabel.Text = TrimStringEllipsis(varSavedStatusLabel, StatusLabel.Font, StatusStrip1.Size.Width - 70)
-                'wait 5s
-                TimerStatusLabel.Interval = 5000
-            End If
+            'wait 5s
+            TimerStatusLabel.Interval = 5000
+        End If
 
-            TimerStatusLabel.Enabled = True
+        TimerStatusLabel.Enabled = True
         MyGeowatcher.Dispose()
 
         'Debug.Print("Position Permission: " & MyGeowatcher.Permission.ToString)
@@ -1094,10 +1099,6 @@ Public Class Frminfo
             LabelTimeZone.Text = "Time Zone"
         End If
     End Sub
-    Private Sub mExport_Click(sender As Object, e As EventArgs) Handles mExport.Click
-        FrmExport.Show()
-    End Sub
-
 End Class
 
 
