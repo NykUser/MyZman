@@ -287,7 +287,13 @@ Public Class FrmSchedule
         End If
 
         'Activate frminfo to Foreground - to show msg on top
-        If FirstInstance = False Then Frminfo.Activate()
+        If FirstInstance = False Then
+            Frminfo.Activate()
+        Else
+            'the is no me(FrmSchedule) yet but this works most of the tome to get the msg to the front
+            Me.Activate()
+        End If
+
 
         Dim MyPlayer As SoundPlayer
         If oSchedule.Sound <> "" And System.IO.File.Exists(oSchedule.Sound) Then
