@@ -308,7 +308,7 @@ Public Class FrmSchedule
         'End If
         If varSC.HebrewMenus = True Then
             FrmScheduleMessage.LabelTime.Text = "השעה עכשיו: " & ChrW(&H200E) & Now.ToString(timeFormat)
-            FrmScheduleMessage.LabelZman.Text = "זה: " & ChrW(&H200E) & #1/2/2000#.AddMilliseconds(mytimespan.TotalMilliseconds).ToString("H:mm:ss") & ChrW(&H200F) & " מלפני " & ChrW(&H200E) & myzman.ToString(timeFormat)
+            FrmScheduleMessage.LabelZman.Text = "זה: " & ChrW(&H200E) & #1/2/2000#.AddMilliseconds(mytimespan.TotalMilliseconds).ToString("H:mm:ss") & ChrW(&H200F) & " לפני " & ChrW(&H200E) & myzman.ToString(timeFormat)
             FrmScheduleMessage.LabelMessage.Text = oSchedule.Message
             FrmScheduleMessage.LabelRemindAgain.Text = "להזכיר שוב?"
         Else
