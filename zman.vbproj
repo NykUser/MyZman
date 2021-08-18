@@ -135,7 +135,6 @@
     <Import Include="Zmanim.Utilities" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ApplicationEvents.vb" />
     <Compile Include="Code Files\AddedGets.vb" />
     <Compile Include="Code Files\ApplicationEvents.vb" />
     <Compile Include="Code Files\Centered_MessageBox.vb" />
