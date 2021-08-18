@@ -48,7 +48,7 @@ Class Centered_MessageBox
         GetWindowRect(hWnd, dlgRect)
 
         '----'edits here
-        'this was the original
+        'first was the original
         If mPositionType = "ParentCenter" Then MoveWindow(hWnd, frmRect.Left + (frmRect.Width - dlgRect.Right + dlgRect.Left) \ 2, frmRect.Top + (frmRect.Height - dlgRect.Bottom + dlgRect.Top) \ 2, dlgRect.Right - dlgRect.Left, dlgRect.Bottom - dlgRect.Top, True)
         If mPositionType = "MouseBelow" Then MoveWindow(hWnd, Control.MousePosition.X, Control.MousePosition.Y, dlgRect.Right - dlgRect.Left, dlgRect.Bottom - dlgRect.Top, True)
         If mPositionType = "MouseCenter" Then MoveWindow(hWnd, Control.MousePosition.X - (dlgRect.Right - dlgRect.Left) \ 2, Control.MousePosition.Y - (dlgRect.Bottom - dlgRect.Top) \ 2, dlgRect.Right - dlgRect.Left, dlgRect.Bottom - dlgRect.Top, True)

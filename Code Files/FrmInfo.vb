@@ -1,4 +1,4 @@
-﻿'MemoryFonts.GetFont(0,
+﻿'MemoryFonts.GetFont(0, = ArialUnicodeCompact
 'MemoryFonts.GetFont(1, = Varela Round
 
 Public Class Frminfo
@@ -10,9 +10,6 @@ Public Class Frminfo
             Me.CenterToScreen()
         End If
 
-
-        MemoryFonts.AddMemoryFont(My.Resources.ArialUnicodeCompact)
-        MemoryFonts.AddMemoryFont(My.Resources.VarelaRound_Regular)
         rtbHebrewDate.Font = MemoryFonts.GetFont(0, 11, FontStyle.Regular)
         dpEngdate.Font = MemoryFonts.GetFont(0, 11, FontStyle.Regular)
         cbLocationList.Font = MemoryFonts.GetFont(0, 10, FontStyle.Regular)
@@ -338,12 +335,13 @@ Public Class Frminfo
     End Sub
 
     Private Sub mOpenSchedule_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mOpenSchedule.Click
+        If Me.TopMost = True Then FrmSchedule.TopMost = True
         FrmSchedule.Show()
     End Sub
     Private Sub mOpenCompere_Click(sender As Object, e As EventArgs) Handles mOpenCompare.Click
         FrmDifference.Show()
     End Sub
-    Private Sub StayOnTopToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mStayOnTopToolStripMenuItem.CheckedChanged 'Click
+    Public Sub StayOnTopToolStripMenuItem_Click() Handles mStayOnTopToolStripMenuItem.Click
         If mStayOnTopToolStripMenuItem.Checked = True Then
             Me.TopMost = 1
         Else
@@ -392,22 +390,28 @@ Public Class Frminfo
         End If
     End Sub
     Private Sub mGetCurrnetLocation_Click(sender As Object, e As EventArgs) Handles mGetCurrnetLocation.Click
-        TimerStatusLabel.Enabled = False
-        varSavedStatusLabel = "Working On Getting Current GeoLocation"
-        StatusLabel.Text = TrimStringEllipsis(varSavedStatusLabel, StatusLabel.Font, StatusStrip1.Size.Width - 70)
-
         Dim MyGeowatcher As GeoCoordinateWatcher = New GeoCoordinateWatcher
 
         'Dim MyStopwatch As New Stopwatch
         'MyStopwatch.Start()
 
         MyGeowatcher.TryStart(True, TimeSpan.FromSeconds(5))
+
+        TimerStatusLabel.Enabled = False
+        'varSavedStatusLabel = "Working On Getting Current GeoLocation"
+        'StatusLabel.Text = TrimStringEllipsis(varSavedStatusLabel, StatusLabel.Font, StatusStrip1.Size.Width - 70)
+        StatusLabel.Text = ""
+        ToolStripProgressBar1.Maximum = 590000
+        ToolStripProgressBar1.Value = 0
+        ToolStripProgressBar1.Visible = True
+
         Dim WaitUntil As Date = Now.AddSeconds(5)
         Do Until Now > WaitUntil
+            If ToolStripProgressBar1.Value < 589999 Then ToolStripProgressBar1.Value = ToolStripProgressBar1.Value + 1
             If MyGeowatcher.Status = GeoPositionStatus.Ready Then Exit Do
             System.Windows.Forms.Application.DoEvents()
         Loop
-
+        ToolStripProgressBar1.Visible = False
         'Debug.Print("Time elapsed: {0}", MyStopwatch.Elapsed)
 
         If MyGeowatcher.Status = GeoPositionStatus.Ready Then
@@ -426,18 +430,21 @@ Public Class Frminfo
             CbTimeZone.Text = varZmanTimeZone.DisplayName
             tbzone.Text = TimeZoneInfo.FindSystemTimeZoneById(WinTimezone).BaseUtcOffset.TotalHours
             tbcountry.Text = ""
-            StatusLabel.Text = "Check Location Accuracy, Info Retrieved From Windows"
+            varSavedStatusLabel = "Check Location Accuracy, Info Retrieved From Windows"
+            If varSC.HebrewMenus = True Then varSavedStatusLabel = "בדוק את דיוק המיקום, המידע התקבל מווינדוס"
+            StatusLabel.Text = TrimStringEllipsis(varSavedStatusLabel, StatusLabel.Font, StatusStrip1.Size.Width - 70)
             'wait 5s
             TimerStatusLabel.Interval = 5000
             'Debug.Print(String.Format("Lat: {0}, Long: {1}, H Accuracy: {2}, V Accuracy: {3}, Crse: {4}, Spd: {5}, Alt: {6}", GeoCoordinate.Latitude, GeoCoordinate.Longitude, GeoCoordinate.HorizontalAccuracy, GeoCoordinate.VerticalAccuracy, GeoCoordinate.Course, GeoCoordinate.Speed, GeoCoordinate.Altitude))
         Else
             varSavedStatusLabel = "Was Not Able To Get Current GeoLocation. Try Again"
+            If varSC.HebrewMenus = True Then varSavedStatusLabel = "לא הצליח להשיג מיקום גיאוגרפי נוכחי. נסה שוב"
             StatusLabel.Text = TrimStringEllipsis(varSavedStatusLabel, StatusLabel.Font, StatusStrip1.Size.Width - 70)
-            'wait 5s
-            TimerStatusLabel.Interval = 5000
-        End If
+                'wait 5s
+                TimerStatusLabel.Interval = 5000
+            End If
 
-        TimerStatusLabel.Enabled = True
+            TimerStatusLabel.Enabled = True
         MyGeowatcher.Dispose()
 
         'Debug.Print("Position Permission: " & MyGeowatcher.Permission.ToString)
@@ -509,7 +516,8 @@ Public Class Frminfo
         ClearAndReLoadPlaceLists(SelectedPlace.EngName)
 
         TimerStatusLabel.Enabled = False
-        varSavedStatusLabel = "Changes Saved To Location List:"
+        varSavedStatusLabel = "Changes Saved To Location List."
+        If varSC.HebrewMenus = True Then varSavedStatusLabel = "שינויים נשמרו ברשימת המיקומים."
         StatusLabel.Text = TrimStringEllipsis(varSavedStatusLabel, StatusLabel.Font, StatusStrip1.Size.Width - 70)
         'wait 5s
         TimerStatusLabel.Interval = 5000
@@ -553,6 +561,7 @@ Public Class Frminfo
 
         TimerStatusLabel.Enabled = False
         varSavedStatusLabel = PlaceBeingRemoved & " Was Removed From Location List."
+        If varSC.HebrewMenus = True Then varSavedStatusLabel = ChrW(&H200E) & PlaceBeingRemoved & ChrW(&H200F) & " הוסר מרשימת המיקומים."
         StatusLabel.Text = TrimStringEllipsis(varSavedStatusLabel, StatusLabel.Font, StatusStrip1.Size.Width - 70)
         'wait 5s
         TimerStatusLabel.Interval = 5000
@@ -600,6 +609,7 @@ Public Class Frminfo
 
         TimerStatusLabel.Enabled = False
         varSavedStatusLabel = SelectedPlace.EngName & " | " & SelectedPlace.HebName & " Saved To Location List."
+        If varSC.HebrewMenus = True Then varSavedStatusLabel = ChrW(&H200E) & SelectedPlace.EngName & " | " & SelectedPlace.HebName & ChrW(&H200F) & " נשמר ברשימת המיקומים."
         StatusLabel.Text = TrimStringEllipsis(varSavedStatusLabel, StatusLabel.Font, StatusStrip1.Size.Width - 70)
         'wait 5s
         TimerStatusLabel.Interval = 5000
@@ -622,6 +632,14 @@ Public Class Frminfo
         varSC.Location.Items.Clear()
         ClearAndReLoadPlaceLists()
         varSC.Save(varUserFile)
+
+        TimerStatusLabel.Enabled = False
+        varSavedStatusLabel = "Locations List Was Reset. Total: " & varSC.Location.Items.Count
+        If varSC.HebrewMenus = True Then varSavedStatusLabel = "רשימת המיקומים התאפסה. סך הכל: " & varSC.Location.Items.Count
+        StatusLabel.Text = TrimStringEllipsis(varSavedStatusLabel, StatusLabel.Font, StatusStrip1.Size.Width - 70)
+        'wait 5s
+        TimerStatusLabel.Interval = 5000
+        TimerStatusLabel.Enabled = True
 
     End Sub
     Private Sub DefaultsMenu_DropDownOpening(sender As Object, e As EventArgs) Handles mDefaultsMenu.DropDownOpening
@@ -724,6 +742,8 @@ Public Class Frminfo
         'Debug.Print("CellBeginEdit")
 
         TimerStatusLabel.Enabled = False
+        'change to black
+        DataGridView1.Rows(e.RowIndex).Cells(2).Style.ForeColor = Color.Black
 
         'is ComboBox column
         If e.ColumnIndex = 2 Then
@@ -743,9 +763,9 @@ Public Class Frminfo
         'set RightToLeft and DropDownClosed handler
 
         If DataGridView1.CurrentCell.ColumnIndex = 2 Then
-            'the looks like a isue when seting e.Control.RightToLeft will bug it not to fire a secned time on DropDownClosed  'RemoveHandler did not help
-            'seeting it back in DropDown and CellEndEdit via varDataGridCombo looks like it thakes care of it - sending the DataGridViewEditingControlShowingEventArgs and changing that way did not work
-            'anyting done with  e.Control makes troble even this varDataGridComboNewValue = e.Control.Text
+            'looks like the is an isue when seting e.Control.RightToLeft will bug it not to fire a second time on DropDownClosed  'RemoveHandler did not help
+            'seeting it back in DropDown and CellEndEdit via varDataGridCombo looks like it takes care of it - sending the DataGridViewEditingControlShowingEventArgs and changing that way did not work
+            'anything done with  e.Control makes trouble even this varDataGridComboNewValue = e.Control.Text
             varDataGridCombo = CType(e.Control, ComboBox)
             varDataGridCombo.RightToLeft = 0
             RemoveHandler varDataGridCombo.DropDownClosed, AddressOf Me.DataGridView1_Combox_DropDownClosed
@@ -753,7 +773,7 @@ Public Class Frminfo
         End If
 
         'DataGridView1.CellValueChanged doesn't fire until you click somewhere else inside the DataGridView
-        'CurrentCellDirtyStateChanged and CurrentCellChanged also dont fire as needed
+        'CurrentCellDirtyStateChanged and CurrentCellChanged also don't fire as needed
         'see Note https://docs.microsoft.com/en-us/dotnet/api/system.windows.forms.datagridview.editingcontrolshowing?view=net-5.0
     End Sub
     Public Sub DataGridView1_Combox_DropDownClosed(sender As Object, e As EventArgs)
@@ -1077,6 +1097,7 @@ Public Class Frminfo
     Private Sub mExport_Click(sender As Object, e As EventArgs) Handles mExport.Click
         FrmExport.Show()
     End Sub
+
 End Class
 
 

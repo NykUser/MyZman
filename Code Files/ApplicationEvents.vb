@@ -10,8 +10,11 @@ Namespace My
     ' StartupNextInstance: Raised when launching a single-instance application and the application is already active. 
     ' NetworkAvailabilityChanged: Raised when the network connection is connected or disconnected.
     Partial Friend Class MyApplication
+        'Public mutex As System.Threading.Mutex
         Private Sub AppStart(ByVal sender As Object, ByVal e As Microsoft.VisualBasic.ApplicationServices.StartupEventArgs) Handles Me.Startup
             AddHandler AppDomain.CurrentDomain.AssemblyResolve, AddressOf ResolveAssemblies
+            MemoryFonts.AddMemoryFont(My.Resources.ArialUnicodeCompact)
+            MemoryFonts.AddMemoryFont(My.Resources.VarelaRound_Regular)
 
             'switch for Scheduler  
             Dim args As String() = e.CommandLine.ToArray ' Environment.GetCommandLineArgs()
@@ -34,19 +37,22 @@ Namespace My
                 'don't close let the first Instance continue
             End If
 
+
+
+            'this uses Mutex And will work on none Single instance application
+            'Dim prevInstance As Boolean
+            'mutex = New System.Threading.Mutex(True, "Application Name", prevInstance)
+            'If (prevInstance = False) Then
+            '    If args.Count() > 0 Then
+            '        If args(0) = "/s" Or args(0) = "/S" Then FrmSchedule.RunSchedulecheck(False)
+            '    End If
+            '    'MessageBox.Show("There is another instance running")
+            '    Environment.Exit(0)
+            'End If
+
         End Sub
 
-        'Public mutex As System.Threading.Mutex
-        'this uses Mutex and will work on none Single instance application
-        'Dim prevInstance As Boolean
-        'mutex = New System.Threading.Mutex(True, "Application Name", prevInstance)
-        'If (prevInstance = False) Then
-        '    If args.Count() > 0 Then
-        '        If args(0) = "/s" Or args(0) = "/S" Then FrmSchedule.RunSchedulecheck(False)
-        '    End If
-        '    'MessageBox.Show("There is another instance running")
-        '    Environment.Exit(0)
-        'End If
+
 
 
 

@@ -13,7 +13,7 @@ Module MemoryFonts
     Private Function AddFontMemResourceEx(ByVal pbFont As IntPtr, ByVal cbFont As UInteger, ByVal pdv As IntPtr, ByRef pcFonts As UInteger) As IntPtr
 
     End Function
-    Private Property pfc As PrivateFontCollection
+    Public Property pfc As PrivateFontCollection
     Sub New()
         If pfc Is Nothing Then
             pfc = New PrivateFontCollection()

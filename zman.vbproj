@@ -150,6 +150,12 @@
     <Compile Include="Code Files\FrmDifference.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Code Files\FrmScheduleMessage.Designer.vb">
+      <DependentUpon>FrmScheduleMessage.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Code Files\FrmScheduleMessage.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Code Files\FunctionsModule.vb" />
     <Compile Include="Code Files\LocationCollection.vb" />
     <Compile Include="Code Files\ProjectsGlobalVariables.vb" />
@@ -207,6 +213,9 @@
     <EmbeddedResource Include="Code Files\FrmSchedule.resx">
       <DependentUpon>FrmSchedule.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Code Files\FrmScheduleMessage.resx">
+      <DependentUpon>FrmScheduleMessage.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
@@ -230,7 +239,6 @@
   <ItemGroup>
     <None Include="Resources\TimeZoneConverter.dll" />
     <None Include="Resources\ArialUnicodeCompact.ttf" />
-    <None Include="Resources\LocationsList.DAT" />
     <None Include="Resources\VarelaRound-Regular.ttf" />
     <None Include="Resources\Zmanim.dll" />
     <None Include="Resources\icons\1041645_add_add file_files_icon.png" />
@@ -274,7 +282,6 @@
     <None Include="Resources\icons\refresh 2.png" />
     <None Include="Resources\Microsoft.WindowsAPICodePack.dll" />
     <None Include="Resources\Microsoft.WindowsAPICodePack.Shell.dll" />
-    <Content Include="Resources\time.ico" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
@@ -305,10 +312,12 @@
       <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\Images\alarm_bell_notification_reminder.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <PropertyGroup>
-    <PostBuildEvent>echo f | xcopy /y "$(TargetPath)" "$(ProjectDir)MyZmanPortable\"</PostBuildEvent>
+    <PostBuildEvent>start xcopy /p "$(TargetPath)" "$(ProjectDir)MyZmanPortable\"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

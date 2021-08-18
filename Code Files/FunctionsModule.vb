@@ -29,6 +29,8 @@ Module FunctionsModule
         Frminfo.mBackUpWhenChanging.Checked = varSC.BackUpWhenChanging
         Frminfo.mChangeKeybordLayout.Checked = varSC.ChangeKeybordLayout
         Frminfo.mShowTimesOnStatusBar.Checked = varSC.ShowTimesOnStatusBar
+        Frminfo.mStayOnTopToolStripMenuItem.Checked = varSC.StayOnTop
+        Frminfo.StayOnTopToolStripMenuItem_Click()
         'varTransparencyBox.Text = varSC.TransparencyValue * 100 & "%" ' convert from decimal
         Frminfo.mOpacityBox.Text = varSC.TransparencyValue * 100 & "%" ' convert from decimal
         Frminfo.Opacity = varSC.TransparencyValue
@@ -236,7 +238,8 @@ Module FunctionsModule
             'Frminfo.ListView1.Items.Clear()
             Frminfo.DataGridView1.Rows.Clear()
             Frminfo.TimerStatusLabel.Enabled = False
-            varSavedStatusLabel = "Missing longitude or latitude info"
+            varSavedStatusLabel = "Missing longitude or latitude info!"
+            If varSC.HebrewMenus = True Then varSavedStatusLabel = "חסר מידע קו אורך או קו רוחב!"
             Frminfo.StatusLabel.Text = TrimStringEllipsis(varSavedStatusLabel, Frminfo.StatusLabel.Font, Frminfo.StatusStrip1.Size.Width - 70)
             'wait 3s
             Frminfo.TimerStatusLabel.Interval = 3000
@@ -264,13 +267,15 @@ Module FunctionsModule
             'Frminfo.ListView1.Items.Clear()
             Frminfo.DataGridView1.Rows.Clear()
             Frminfo.TimerStatusLabel.Enabled = False
-            varSavedStatusLabel = "Time Zone not recognised"
+            varSavedStatusLabel = "Time Zone not recognised!"
+            If varSC.HebrewMenus = True Then varSavedStatusLabel = "אזור הזמן לא מזוהה!"
             Frminfo.StatusLabel.Text = TrimStringEllipsis(varSavedStatusLabel, Frminfo.StatusLabel.Font, Frminfo.StatusStrip1.Size.Width - 70)
             'wait 3s
             Frminfo.TimerStatusLabel.Interval = 3000
             Frminfo.TimerStatusLabel.Enabled = True
             Exit Sub
         End If
+        Frminfo.TimerStatusLabel.Interval = 250
 
         'convert from win time zone to zmanim project time zone
         Dim timeZone As ITimeZone = New PZmanimTimeZone(varZmanTimeZone) 'New WindowsTimeZone(varZmanTimeZone)

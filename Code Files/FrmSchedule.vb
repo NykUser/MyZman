@@ -227,7 +227,7 @@ Public Class FrmSchedule
         Dim NotToday As Boolean
         For Each oSchedule As aSchedule In varSC.Schedule
             If oSchedule.IsActive = True And oSchedule.NotToday = False Then
-                NotToday = CheckSchedule(oSchedule, False, FirstInstance)
+                NotToday = CheckSchedule(oSchedule, False) ', FirstInstance
                 oSchedule.NotToday = NotToday
                 'if FrmSchedule is open
                 If Me.IsHandleCreated Then cbNotToday.Checked = NotToday
@@ -237,8 +237,9 @@ Public Class FrmSchedule
 
         'If this is the FirstInstance Me.Startup will close it down
     End Sub
-    Function CheckSchedule(oSchedule As aSchedule, Optional TestRuning As Boolean = False, Optional FirstInstance As Boolean = False)
+    Function CheckSchedule(oSchedule As aSchedule, Optional TestRuning As Boolean = False) ', Optional FirstInstance As Boolean = False
         'MsgBox("2 " & FirstInstance)
+        'Debug.Print("2 " & FirstInstance)
         Dim Response
         Dim myMsg As String
         Dim myzman As Date
@@ -248,7 +249,6 @@ Public Class FrmSchedule
         Dim MinutesBefore = oSchedule.Minutes
         If MinutesBefore = "" Then MinutesBefore = 1
 
-        'MsgBox("3 " & FirstInstance)
         Try
             TempTimeZone = TimeZoneInfo.FindSystemTimeZoneById(varSC.SchedulerTimeZone)
             Dim timeZone As ITimeZone = New PZmanimTimeZone(TempTimeZone) 'WindowsTimeZone("Eastern Standard Time") '
@@ -269,6 +269,8 @@ Public Class FrmSchedule
             End If
         Catch ex As Exception
         End Try
+        'MsgBox("3 " & myzman)
+        'Debug.Print("3 " & myzman & vbCr & myzman.AddMinutes("-" & MinutesBefore))
 
         If TestRuning = False Then
             'leave if not in time - and reset for next day
@@ -278,22 +280,7 @@ Public Class FrmSchedule
         If myzman = Nothing Then Return False
         mytimespan = myzman - Now
         'MsgBox("4 " & FirstInstance)
-
-        If varSC.HebrewMenus = True Then
-            myMsg = "עכשיו " & #1/2/2000#.AddMilliseconds(mytimespan.TotalMilliseconds).ToString("H:mm:ss") & " לפני " & myzman.ToString(timeFormat) & vbCr & oSchedule.Message & vbCr & vbCr & "?להזכיר שוב"
-        Else
-            'myMsg = "It Is Now " & MinutesBefore & " Minutes Before" & varSC.Schedule(tbReminderNum.Text - 1).Time & vbCr & varSC.Schedule(tbReminderNum.Text - 1).Message & vbCr & vbCr & "Remind Again?"
-            myMsg = "It Is Now " & #1/2/2000#.AddMilliseconds(mytimespan.TotalMilliseconds).ToString("H:mm:ss") & " Before " & myzman.ToString(timeFormat) & vbCr & oSchedule.Message & vbCr & vbCr & "Remind Again?"
-        End If
-
-        'Activate frminfo to Foreground - to show msg on top
-        If FirstInstance = False Then
-            Frminfo.Activate()
-        Else
-            'the is no me(FrmSchedule) yet but this works most of the time to get the msg to the front
-            Me.Activate()
-        End If
-
+        'Debug.Print("4 " & myzman)
 
         Dim MyPlayer As SoundPlayer
         If oSchedule.Sound <> "" And System.IO.File.Exists(oSchedule.Sound) Then
@@ -302,24 +289,63 @@ Public Class FrmSchedule
                 MyPlayer.PlayLooping()
             Catch ex As Exception
             End Try
+        Else
+            SystemSounds.Hand.Play()
         End If
 
-        If myMsg <> "" Then
-            If oSchedule.Sound <> "" Then
-                Response = MsgBox(myMsg, If(varSC.HebrewMenus = True, MsgBoxStyle.MsgBoxRight + MsgBoxStyle.YesNo + MsgBoxStyle.ApplicationModal, MsgBoxStyle.YesNo + MsgBoxStyle.ApplicationModal), Now.ToLongTimeString)
-            Else
-                Response = MsgBox(myMsg, If(varSC.HebrewMenus = True, MsgBoxStyle.Information + MsgBoxStyle.MsgBoxRight + MsgBoxStyle.YesNo + MsgBoxStyle.ApplicationModal, MsgBoxStyle.Information + MsgBoxStyle.YesNo + MsgBoxStyle.ApplicationModal), Now.ToLongTimeString)
-            End If
+        'If varSC.HebrewMenus = True Then
+        '    myMsg = "עכשיו " & #1/2/2000#.AddMilliseconds(mytimespan.TotalMilliseconds).ToString("H:mm:ss") & " לפני " & myzman.ToString(timeFormat) & vbCr & oSchedule.Message & vbCr & vbCr & "?להזכיר שוב"
+        'Else
+        '    'myMsg = "It Is Now " & MinutesBefore & " Minutes Before" & varSC.Schedule(tbReminderNum.Text - 1).Time & vbCr & varSC.Schedule(tbReminderNum.Text - 1).Message & vbCr & vbCr & "Remind Again?"
+        '    myMsg = "It Is Now " & #1/2/2000#.AddMilliseconds(mytimespan.TotalMilliseconds).ToString("H:mm:ss") & " Before " & myzman.ToString(timeFormat) & vbCr & oSchedule.Message & vbCr & vbCr & "Remind Again?"
+        'End If
+        'If myMsg <> "" Then
+        '    If oSchedule.Sound <> "" Then
+        '        Response = MsgBox(myMsg, If(varSC.HebrewMenus = True, MsgBoxStyle.MsgBoxRight + MsgBoxStyle.YesNo + MsgBoxStyle.ApplicationModal, MsgBoxStyle.YesNo + MsgBoxStyle.ApplicationModal), Now.ToLongTimeString)
+        '    Else
+        '        Response = MsgBox(myMsg, If(varSC.HebrewMenus = True, MsgBoxStyle.Information + MsgBoxStyle.MsgBoxRight + MsgBoxStyle.YesNo + MsgBoxStyle.ApplicationModal, MsgBoxStyle.Information + MsgBoxStyle.YesNo + MsgBoxStyle.ApplicationModal), Now.ToLongTimeString)
+        '    End If
+        'End If
+        If varSC.HebrewMenus = True Then
+            FrmScheduleMessage.LabelTime.Text = "השעה עכשיו: " & ChrW(&H200E) & Now.ToString(timeFormat)
+            FrmScheduleMessage.LabelZman.Text = "זה: " & ChrW(&H200E) & #1/2/2000#.AddMilliseconds(mytimespan.TotalMilliseconds).ToString("H:mm:ss") & ChrW(&H200F) & " מלפני " & ChrW(&H200E) & myzman.ToString(timeFormat)
+            FrmScheduleMessage.LabelMessage.Text = oSchedule.Message
+            FrmScheduleMessage.LabelRemindAgain.Text = "להזכיר שוב?"
+        Else
+            FrmScheduleMessage.LabelTime.Text = "Time Is Now " & Now.ToString(timeFormat)
+            FrmScheduleMessage.LabelZman.Text = "That Is: " & #1/2/2000#.AddMilliseconds(mytimespan.TotalMilliseconds).ToString("H:mm:ss") & " Before " & myzman.ToString(timeFormat)
+            FrmScheduleMessage.LabelMessage.Text = oSchedule.Message
+            FrmScheduleMessage.LabelRemindAgain.Text = "Remind Again?"
         End If
+        FrmScheduleMessage.btYes.Select()
+        FrmScheduleMessage.Focus()
+        FrmScheduleMessage.BringToFront()
+        FrmScheduleMessage.TopMost = True
+        Response = FrmScheduleMessage.ShowDialog()
 
         If MyPlayer IsNot Nothing Then MyPlayer.Stop()
 
         If Response = vbNo Then
             Return True
-        Else
+        Else 'yes or cancel by closing
             Return False
         End If
     End Function
+    'bring to front
+    'Activate frminfo to Foreground
+    'If FirstInstance = False Then
+    '    Frminfo.Activate()
+    'Else
+    '    'the is no me(FrmSchedule) yet but this works most of the time to get the msg to the front
+    '    Me.Activate()
+    'End If
+    'Dim handle As IntPtr
+    'handle = Process.GetCurrentProcess().MainWindowHandle
+    'SwitchToThisWindow(handle, True)
+    'To Set window In front
+    '<DllImport("User32.dll", SetLastError:=True)>
+    'Private Shared Sub SwitchToThisWindow(ByVal hWnd As IntPtr, ByVal fAltTab As Boolean)
+    'End Sub
     Sub makexml()
         Dim args As String() = Environment.GetCommandLineArgs()
         Dim doc As XDocument
@@ -775,6 +801,8 @@ Public Class FrmSchedule
     Private Sub btOpenScheduler_Click(sender As Object, e As EventArgs) Handles btOpenScheduler.Click
         Process.Start("taskschd.msc")
     End Sub
+
+
 End Class
 
 ''draw dots
