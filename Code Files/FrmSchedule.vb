@@ -290,7 +290,7 @@ Public Class FrmSchedule
         If FirstInstance = False Then
             Frminfo.Activate()
         Else
-            'the is no me(FrmSchedule) yet but this works most of the tome to get the msg to the front
+            'the is no me(FrmSchedule) yet but this works most of the time to get the msg to the front
             Me.Activate()
         End If
 
