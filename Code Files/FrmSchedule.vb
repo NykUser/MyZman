@@ -722,6 +722,7 @@ Public Class FrmSchedule
         cbTime.Text = ""
         tbMessage.Text = ""
         tbMinutes.Text = ""
+        tbSound.Text = ""
     End Sub
 
     Private Sub Button1_Click(sender As Object, e As EventArgs)
