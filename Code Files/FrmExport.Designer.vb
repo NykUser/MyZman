@@ -114,7 +114,7 @@ Partial Class FrmExport
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "FrmExport"
-        Me.Text = "ExportQuestion"
+        Me.Text = "Export"
         Me.ResumeLayout(False)
         Me.PerformLayout()
 

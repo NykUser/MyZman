@@ -20,7 +20,7 @@
             tbTimeA.RightToLeft = 0
             tbTimeB.RightToLeft = 0
             tbTimeR.RightToLeft = 0
-
+            Me.Text = "השווה זמנים"
             GroupBox1.Text = "זמן א"
             GroupBox2.Text = "זמן ב"
             LabelDifference.Text = "הבדל"

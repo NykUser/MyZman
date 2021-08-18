@@ -47,7 +47,7 @@ Public Class FrmSchedule
             btToggleTaskScheduler.Font = MemoryFonts.GetFont(1, 8.75, FontStyle.Regular)
             btTest.Font = MemoryFonts.GetFont(1, 8.75, FontStyle.Regular)
 
-
+            Me.Text = "מתזמן"
             pbTasksON.Location = New System.Drawing.Point(78, 2.5)
             GroupBox1.RightToLeft = 1
             GroupBox2.RightToLeft = 1

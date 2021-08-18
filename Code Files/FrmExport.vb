@@ -5,6 +5,7 @@ Public Class FrmExport
     Private Sub ExportQuestion_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Me.Location = New System.Drawing.Point(Frminfo.Location.X + ((Frminfo.Width - Me.Width) / 2), Frminfo.Bounds.Bottom - (Me.Height + 45))
         If Frminfo.mHebrewMenus.Checked = True Then
+            Me.Text = "ייצוא"
             Label1.Text = "ימים לייצוא"
             Label2.Text = "ימים לכל קובץ (vcs)"
             Label1.RightToLeft = 1

@@ -124,10 +124,10 @@ Public Class Frminfo
         End If
 
         If varZmanTimeZone Is Nothing Then Exit Sub
-        Dim TimeFormat As String = "h:mm:ss tt"
+        Dim TimeFormat As String = "h:mm:ss"
         If varSC.Clock24Hour = True Then TimeFormat = "H:mm:ss"
         'Me.Text = DateAndTime.Now.ToString(timeFormt)
-        Me.Text = TimeZoneInfo.ConvertTime(Now(), varZmanTimeZone).ToString(TimeFormat)
+        Me.Text = TimeZoneInfo.ConvertTime(Now(), varZmanTimeZone).ToString(TimeFormat) & If(varSC.Clock24Hour = False, " " & TimeZoneInfo.ConvertTime(Now(), varZmanTimeZone).ToString("tt"), "")
 
     End Sub
 
