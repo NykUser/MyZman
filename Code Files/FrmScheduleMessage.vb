@@ -37,7 +37,7 @@ Public Class FrmScheduleMessage
             LabelZman.Location = New System.Drawing.Point(72, LabelZman.Location.Y)
             LabelMessage.Location = New System.Drawing.Point(72, LabelMessage.Location.Y)
             LabelRemindAgain.Location = New System.Drawing.Point(72, LabelRemindAgain.Location.Y)
-            btNo.Location = New System.Drawing.Point(193, btNo.Location.Y)
+            btNo.Location = New System.Drawing.Point(293, btNo.Location.Y)
             btYes.Location = New System.Drawing.Point(212, btYes.Location.Y)
             btNo.Text = "No"
             btYes.Text = "Yes"
