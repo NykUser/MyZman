@@ -176,14 +176,6 @@ Public Class Frminfo
 
         Dim myTimeSpan As TimeSpan = myzman.TimeOfDay - TimeZoneInfo.ConvertTime(Now(), varZmanTimeZone).TimeOfDay
 
-        If myTimeSpan.TotalMilliseconds > 0 Then
-            varSavedStatusLabel = ChrW(&H200E) & myzman.ToString(TimeFormat) & " \ " & myTimeSpan.ToString("h\:mm\:ss")
-        Else
-            varSavedStatusLabel = ChrW(&H200E) & myzman.ToString(TimeFormat) & " \ -" & myTimeSpan.ToString("h\:mm\:ss")
-        End If
-        'set autosize on StatusLabel to true and on statusstrip to true
-        StatusLabel.Text = TrimStringEllipsis(varSavedStatusLabel, StatusLabel.Font, StatusStrip1.Size.Width - 70)
-
         Dim Counter As Integer = 0
         If varSC.ColorZman = True Then
             For Each Row In DataGridView1.Rows
@@ -201,6 +193,16 @@ Public Class Frminfo
                 End Try
             Next
         End If
+
+        If varSC.ShowTimesOnStatusBar = False Then Exit Sub
+
+        If myTimeSpan.TotalMilliseconds > 0 Then
+            varSavedStatusLabel = ChrW(&H200E) & myzman.ToString(TimeFormat) & " \ " & myTimeSpan.ToString("h\:mm\:ss")
+        Else
+            varSavedStatusLabel = ChrW(&H200E) & myzman.ToString(TimeFormat) & " \ -" & myTimeSpan.ToString("h\:mm\:ss")
+        End If
+        'set autosize on StatusLabel to true and on statusstrip to true
+        StatusLabel.Text = TrimStringEllipsis(varSavedStatusLabel, StatusLabel.Font, StatusStrip1.Size.Width - 70)
 
     End Sub
     Private Sub cbLocationList_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbLocationList.SelectedIndexChanged
