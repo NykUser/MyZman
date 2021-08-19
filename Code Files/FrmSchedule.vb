@@ -241,11 +241,8 @@ Public Class FrmSchedule
         'MsgBox("2 " & FirstInstance)
         'Debug.Print("2 " & FirstInstance)
         Dim Response
-        Dim myMsg As String
-        Dim myzman As Date
         Dim mytimespan As TimeSpan
-        Dim timeFormat As String = "h:mm:ss tt"
-        If varSC.Clock24Hour = True Then timeFormat = "H:mm:ss"
+        Dim myzman As Date
         Dim MinutesBefore = oSchedule.Minutes
         If MinutesBefore = "" Then MinutesBefore = 1
 
@@ -293,27 +290,23 @@ Public Class FrmSchedule
             SystemSounds.Hand.Play()
         End If
 
-        'If varSC.HebrewMenus = True Then
-        '    myMsg = "עכשיו " & #1/2/2000#.AddMilliseconds(mytimespan.TotalMilliseconds).ToString("H:mm:ss") & " לפני " & myzman.ToString(timeFormat) & vbCr & oSchedule.Message & vbCr & vbCr & "?להזכיר שוב"
-        'Else
-        '    'myMsg = "It Is Now " & MinutesBefore & " Minutes Before" & varSC.Schedule(tbReminderNum.Text - 1).Time & vbCr & varSC.Schedule(tbReminderNum.Text - 1).Message & vbCr & vbCr & "Remind Again?"
-        '    myMsg = "It Is Now " & #1/2/2000#.AddMilliseconds(mytimespan.TotalMilliseconds).ToString("H:mm:ss") & " Before " & myzman.ToString(timeFormat) & vbCr & oSchedule.Message & vbCr & vbCr & "Remind Again?"
-        'End If
-        'If myMsg <> "" Then
-        '    If oSchedule.Sound <> "" Then
-        '        Response = MsgBox(myMsg, If(varSC.HebrewMenus = True, MsgBoxStyle.MsgBoxRight + MsgBoxStyle.YesNo + MsgBoxStyle.ApplicationModal, MsgBoxStyle.YesNo + MsgBoxStyle.ApplicationModal), Now.ToLongTimeString)
-        '    Else
-        '        Response = MsgBox(myMsg, If(varSC.HebrewMenus = True, MsgBoxStyle.Information + MsgBoxStyle.MsgBoxRight + MsgBoxStyle.YesNo + MsgBoxStyle.ApplicationModal, MsgBoxStyle.Information + MsgBoxStyle.YesNo + MsgBoxStyle.ApplicationModal), Now.ToLongTimeString)
-        '    End If
-        'End If
+        Dim timeFormat As String = "h:mm tt"
+        If varSC.Clock24Hour = True Then timeFormat = "H:mm"
+        Dim TimeBefore As String
+        If mytimespan.TotalHours > 1 Then
+            TimeBefore = #1/2/2000#.AddMilliseconds(mytimespan.TotalMilliseconds).ToString("H:mm") & If(varSC.HebrewMenus = True, ChrW(&H200F) & " שעות לפני " & ChrW(&H200E), " Hours Before ")
+        Else
+            TimeBefore = #1/2/2000#.AddMilliseconds(mytimespan.TotalMilliseconds).ToString("mm") & If(varSC.HebrewMenus = True, ChrW(&H200F) & " דקות לפני " & ChrW(&H200E), " Minutes Before ")
+        End If
+
         If varSC.HebrewMenus = True Then
-            FrmScheduleMessage.LabelTime.Text = "השעה עכשיו: " & ChrW(&H200E) & Now.ToString(timeFormat)
-            FrmScheduleMessage.LabelZman.Text = "זה: " & ChrW(&H200E) & #1/2/2000#.AddMilliseconds(mytimespan.TotalMilliseconds).ToString("H:mm:ss") & ChrW(&H200F) & " לפני " & ChrW(&H200E) & myzman.ToString(timeFormat)
+            FrmScheduleMessage.LabelTime.Text = "השעה עכשיו " & ChrW(&H200E) & StrConv(Now.ToString(timeFormat), VbStrConv.Lowercase)
+            FrmScheduleMessage.LabelZman.Text = "זה " & ChrW(&H200E) & TimeBefore & StrConv(myzman.ToString(timeFormat), VbStrConv.Lowercase)
             FrmScheduleMessage.LabelMessage.Text = oSchedule.Message
             FrmScheduleMessage.LabelRemindAgain.Text = "להזכיר שוב?"
         Else
-            FrmScheduleMessage.LabelTime.Text = "Time Is Now " & Now.ToString(timeFormat)
-            FrmScheduleMessage.LabelZman.Text = "That Is: " & #1/2/2000#.AddMilliseconds(mytimespan.TotalMilliseconds).ToString("H:mm:ss") & " Before " & myzman.ToString(timeFormat)
+            FrmScheduleMessage.LabelTime.Text = "Time Is Now " & StrConv(Now.ToString(timeFormat), VbStrConv.Lowercase)
+            FrmScheduleMessage.LabelZman.Text = "That Is " & TimeBefore & StrConv(myzman.ToString(timeFormat), VbStrConv.Lowercase)
             FrmScheduleMessage.LabelMessage.Text = oSchedule.Message
             FrmScheduleMessage.LabelRemindAgain.Text = "Remind Again?"
         End If

@@ -177,9 +177,9 @@ Public Class Frminfo
         Dim myTimeSpan As TimeSpan = myzman.TimeOfDay - TimeZoneInfo.ConvertTime(Now(), varZmanTimeZone).TimeOfDay
 
         If myTimeSpan.TotalMilliseconds > 0 Then
-            varSavedStatusLabel = ChrW(&H200E) & myzman.ToString(TimeFormat) & " \ " & myTimeSpan.ToString("hh\:mm\:ss")
+            varSavedStatusLabel = ChrW(&H200E) & myzman.ToString(TimeFormat) & " \ " & myTimeSpan.ToString("h\:mm\:ss")
         Else
-            varSavedStatusLabel = ChrW(&H200E) & myzman.ToString(TimeFormat) & " \ -" & myTimeSpan.ToString("hh\:mm\:ss")
+            varSavedStatusLabel = ChrW(&H200E) & myzman.ToString(TimeFormat) & " \ -" & myTimeSpan.ToString("h\:mm\:ss")
         End If
         'set autosize on StatusLabel to true and on statusstrip to true
         StatusLabel.Text = TrimStringEllipsis(varSavedStatusLabel, StatusLabel.Font, StatusStrip1.Size.Width - 70)

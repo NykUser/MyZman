@@ -44,14 +44,14 @@ Partial Class FrmScheduleMessage
         Me.Panel1.Controls.Add(Me.btNo)
         Me.Panel1.Location = New System.Drawing.Point(-2, 119)
         Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(350, 52)
+        Me.Panel1.Size = New System.Drawing.Size(380, 52)
         Me.Panel1.TabIndex = 0
         '
         'btYes
         '
         Me.btYes.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btYes.DialogResult = System.Windows.Forms.DialogResult.Yes
-        Me.btYes.Location = New System.Drawing.Point(182, 16)
+        Me.btYes.Location = New System.Drawing.Point(212, 16)
         Me.btYes.Name = "btYes"
         Me.btYes.Size = New System.Drawing.Size(75, 23)
         Me.btYes.TabIndex = 6
@@ -62,7 +62,7 @@ Partial Class FrmScheduleMessage
         '
         Me.btNo.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btNo.DialogResult = System.Windows.Forms.DialogResult.No
-        Me.btNo.Location = New System.Drawing.Point(263, 16)
+        Me.btNo.Location = New System.Drawing.Point(293, 16)
         Me.btNo.Name = "btNo"
         Me.btNo.Size = New System.Drawing.Size(75, 23)
         Me.btNo.TabIndex = 5
@@ -74,7 +74,7 @@ Partial Class FrmScheduleMessage
         Me.LabelZman.AutoEllipsis = True
         Me.LabelZman.Location = New System.Drawing.Point(72, 37)
         Me.LabelZman.Name = "LabelZman"
-        Me.LabelZman.Size = New System.Drawing.Size(264, 20)
+        Me.LabelZman.Size = New System.Drawing.Size(294, 20)
         Me.LabelZman.TabIndex = 1
         Me.LabelZman.Text = "Zman"
         '
@@ -92,7 +92,7 @@ Partial Class FrmScheduleMessage
         Me.LabelMessage.AutoEllipsis = True
         Me.LabelMessage.Location = New System.Drawing.Point(72, 62)
         Me.LabelMessage.Name = "LabelMessage"
-        Me.LabelMessage.Size = New System.Drawing.Size(264, 20)
+        Me.LabelMessage.Size = New System.Drawing.Size(294, 20)
         Me.LabelMessage.TabIndex = 3
         Me.LabelMessage.Text = "Message"
         '
@@ -102,7 +102,7 @@ Partial Class FrmScheduleMessage
         Me.LabelRemindAgain.AutoEllipsis = True
         Me.LabelRemindAgain.Location = New System.Drawing.Point(72, 87)
         Me.LabelRemindAgain.Name = "LabelRemindAgain"
-        Me.LabelRemindAgain.Size = New System.Drawing.Size(264, 20)
+        Me.LabelRemindAgain.Size = New System.Drawing.Size(294, 20)
         Me.LabelRemindAgain.TabIndex = 4
         Me.LabelRemindAgain.Text = "Remind Again"
         '
@@ -111,7 +111,7 @@ Partial Class FrmScheduleMessage
         Me.LabelTime.AutoEllipsis = True
         Me.LabelTime.Location = New System.Drawing.Point(72, 12)
         Me.LabelTime.Name = "LabelTime"
-        Me.LabelTime.Size = New System.Drawing.Size(264, 20)
+        Me.LabelTime.Size = New System.Drawing.Size(294, 20)
         Me.LabelTime.TabIndex = 5
         Me.LabelTime.Text = "Time"
         '
@@ -121,7 +121,7 @@ Partial Class FrmScheduleMessage
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.SystemColors.Window
         Me.CancelButton = Me.btYes
-        Me.ClientSize = New System.Drawing.Size(348, 170)
+        Me.ClientSize = New System.Drawing.Size(378, 170)
         Me.Controls.Add(Me.LabelTime)
         Me.Controls.Add(Me.LabelRemindAgain)
         Me.Controls.Add(Me.LabelMessage)
