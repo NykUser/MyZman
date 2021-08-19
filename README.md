@@ -7,20 +7,20 @@ and this [is a link](https://github.com/NykUser/MyZman/blob/master/MyZmanPortabl
 The Code is released under the LGPL 2.1 license.
 
 # Credits:
-Core Zmanim calculations based on Eliyahu Hershfeld work [KosherJava](https://kosherjava.com/) - this is its [GitHub Home](https://github.com/KosherJava/zmanim)
+Core Zmanim calculations based on Eliyahu Hershfeld work [KosherJava](https://kosherjava.com/) - This is its [GitHub Home](https://github.com/KosherJava/zmanim)
 
-Project uses the NET port [from here](https://github.com/Yitzchok/Zmanim)
+Project uses the NET port [from here](https://github.com/Yitzchok/Zmanim) Release 1.5.0
 
-Project uses the GeoTimeZone library [from here](https://github.com/mattjohnsonpint/GeoTimeZone) to look up time zones according to Geolocations.
+Project uses the GeoTimeZone library [from here](https://github.com/mattjohnsonpint/GeoTimeZone) Release 4.1.0 to look up time zones according to Geolocations.
 
-IANA time zone IDs are passed to the TimeZoneConverter library [from here](https://github.com/mattjohnsonpint/TimeZoneConverter)
+IANA time zone IDs are passed to the TimeZoneConverter library [from here](https://github.com/mattjohnsonpint/TimeZoneConverter) Release 3.5.0
 
 # Info:
 Calculations use the NOAA algorithm by default, with option to use USNO.
 
-The NET port (4/28/21 download) is part of the solution, as an C# project called Zmanim, it compiles itself into a Dll into MyZman\Resources\.
+The NET port is part of the solution, as an C# project called Zmanim, it compiles itself into a Dll into MyZman\Resources\.
 
-The vb zman project then compiles the DLL into itself, all that is needed to run the propgrem is a stand alone exe & an xml file with locations info.
+The VB zman project compiles the DLL into itself, all that is needed to run the propgrem is a stand alone exe & an xml file with locations info.
 
 # Notable points:
 Project uses Embedded fonts "ArialUnicodeCompact" & "VarelaRound-Regular", ArialUnicodeCompact is Arial Unicode MS with only Eng & Heb characters.
