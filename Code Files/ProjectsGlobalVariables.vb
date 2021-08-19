@@ -1,6 +1,6 @@
-﻿'needs to be Module it should be global
+﻿'Needs to be a Module for it to be global
 'class dose not work even with imports GlobalVariables on top of each code file, or in the project's Properties window 
-'not as said in https://stackoverflow.com/questions/4529862/declare-global-variables-in-visual-studio-2010-and-vb-net
+'Not as said here https://stackoverflow.com/questions/4529862/declare-global-variables-in-visual-studio-2010-and-vb-net
 
 Module ProjectsGlobalVariables
 
