@@ -26,6 +26,7 @@
     Public DataGridCol1W As Integer = -1
     Public DataGridCol2W As Integer = -1
     Public HebrewMenus As Boolean = False
+    Public MenuLanguageWasChanged As Boolean = False
     Public SchedulerLocation As String
     Public SchedulerLatitude As String
     Public SchedulerLongitude As String

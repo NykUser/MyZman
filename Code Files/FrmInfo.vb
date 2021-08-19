@@ -456,7 +456,7 @@ Public Class Frminfo
         'Debug.Print("Watcher Status: " & MyGeowatcher.Status.ToString)
 
     End Sub
-    Private Sub mPlaceListInHebrew_Click() Handles mPlaceListInHebrew.Click
+    Public Sub mPlaceListInHebrew_Click() Handles mPlaceListInHebrew.Click
         varSC.PlaceListInHebrew = mPlaceListInHebrew.Checked
         If varFinishedLoading = False Then Exit Sub
 
@@ -1032,6 +1032,9 @@ Public Class Frminfo
             LabelElevation.Text = "גובה"
             LabelTimeZone.Text = "אזור זמן"
         Else
+            'used not to force Hebrew Menus when InStr(CultureInfo.CurrentCulture.Name, "he-IL") is ture on next run of program
+            varSC.MenuLanguageWasChanged = True
+
             Me.RightToLeft = 0
             LocationContextMenu.RightToLeft = 0
             ZmanimContextMenu.RightToLeft = 0

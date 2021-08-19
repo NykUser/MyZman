@@ -37,12 +37,16 @@ Module FunctionsModule
         Frminfo.mPlaceListInHebrew.Checked = varSC.PlaceListInHebrew
         Frminfo.mLineBetweenZmanim.Checked = varSC.LineBetweenZmanim
         Frminfo.mIsraeliYomTov.Checked = varSC.IsraeliYomTov
-        Frminfo.mHebrewMenus.Checked = varSC.HebrewMenus
-        Frminfo.mHebrewMenus_Click()
 
+
+        Frminfo.mHebrewMenus.Checked = varSC.HebrewMenus
+        'don't force Hebrew Menus if it was changed by user on last run
+        If varSC.MenuLanguageWasChanged = False Then If InStr(CultureInfo.CurrentCulture.Name, "he-IL") Then Frminfo.mHebrewMenus.Checked = True
+        Frminfo.mHebrewMenus_Click()
 
         If varSC.DefaultType = "Default" Then
             Frminfo.mPlaceListInHebrew.Checked = varSC.DefaultPlaceListInHebrew
+            Frminfo.mPlaceListInHebrew_Click()
             varSC.LastSelectedIndex = varSC.DefaultSelectedindex
         End If
 
