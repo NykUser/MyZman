@@ -9,11 +9,11 @@ The Code is released under the LGPL 2.1 license.
 # Credits
 Core Zmanim calculations based on Eliyahu Hershfeld work [KosherJava](https://kosherjava.com/) - This is its [GitHub Home](https://github.com/KosherJava/zmanim)
 
-Project uses the NET port [from here](https://github.com/Yitzchok/Zmanim) Release 1.5.0
+Project uses the NET port [from here](https://github.com/Yitzchok/Zmanim) (Release 1.5.0)
 
-Project uses the GeoTimeZone library [from here](https://github.com/mattjohnsonpint/GeoTimeZone) Release 4.1.0 to look up time zones according to Geolocations.
+Project uses the GeoTimeZone library [from here](https://github.com/mattjohnsonpint/GeoTimeZone) (Release 4.1.0) to look up time zones according to Geolocations.
 
-IANA time zone IDs are passed to the TimeZoneConverter library [from here](https://github.com/mattjohnsonpint/TimeZoneConverter) Release 3.5.0
+IANA time zone IDs are passed to the TimeZoneConverter library [from here](https://github.com/mattjohnsonpint/TimeZoneConverter) (Release 3.5.0)
 
 # Info
 Calculations use the NOAA algorithm by default, with option to use USNO.
