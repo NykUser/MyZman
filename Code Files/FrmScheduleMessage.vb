@@ -1,6 +1,6 @@
-﻿Public Class FrmScheduleMessage
+﻿
+Public Class FrmScheduleMessage
     Private Sub FrmScheduleMessage_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-
         btNo.Font = MemoryFonts.GetFont(1, 9, FontStyle.Regular)
         btYes.Font = MemoryFonts.GetFont(1, 9, FontStyle.Regular)
 
@@ -49,9 +49,5 @@
 
     Private Sub btNo_Click(sender As Object, e As EventArgs) Handles btNo.Click
         Me.Close()
-    End Sub
-
-    Private Sub FrmScheduleMessage_Closed(sender As Object, e As EventArgs) Handles Me.Closed
-        'Me.Dispose()
     End Sub
 End Class
