@@ -10,7 +10,7 @@ The Code is released under the LGPL 2.1 license.
 Core Zmanim calculations based on Eliyahu Hershfeld work [KosherJava](https://kosherjava.com/) - This is its [GitHub Home](https://github.com/KosherJava/zmanim)
 
 Project uses the NET port [from here](https://github.com/Yitzchok/Zmanim) (Release 1.5.0)
-GetParsha has [an issue]https://github.com/Yitzchok/Zmanim/issues/28) Created Custom Function GetParshaNew for this
+GetParsha has [an issue](https://github.com/Yitzchok/Zmanim/issues/28) Custom Function GetParshaNew used for this
 
 Project uses the GeoTimeZone library [from here](https://github.com/mattjohnsonpint/GeoTimeZone) (Release 4.1.0) to look up time zones according to Geolocations.
 
