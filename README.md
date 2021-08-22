@@ -58,6 +58,8 @@ Most of the locations are missing elevation info.
 #### Below is a note on Kosher Java’s website this applies to MyZman as well:
 Due to atmospheric conditions (pressure, humidity and other conditions), calculating zmanim accurately is very complex. The calculation of zmanim is dependent on [Atmospheric refraction](https://en.wikipedia.org/wiki/Atmospheric_refraction) (refraction of sunlight through the atmosphere), and zmanim can be off by up to 2 minutes based on atmospheric conditions. Inaccuracy is increased by elevation. It is not the intent of this API to provide any guarantee of accuracy. See [Using a Digital Terrain Model to Calculate Visual Sunrise and Sunset Times](http://www.chaitables.com/webpub/DblHallpaperpub.pdf) for additional information on the subject.
 
+**While I did my best to get accurate results, please double check before relying on these zmanim for halacha lemaaseh.**
+
 # Screenshots
 ![1](https://user-images.githubusercontent.com/83419922/129582704-c70581a7-2ead-467a-a055-553da29555fe.jpg)
 ![2](https://user-images.githubusercontent.com/83419922/129582744-d270cc55-60b1-4867-a61c-532982cedd1a.jpg)
