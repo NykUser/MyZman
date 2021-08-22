@@ -96,6 +96,7 @@ Partial Class Frminfo
         Me.ColumnNum = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.ColumnZman = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.ColumnTime = New System.Windows.Forms.DataGridViewComboBoxColumn()
+        Me.LabelDisclaimer = New System.Windows.Forms.Label()
         Me.LocationContextMenu.SuspendLayout()
         Me.StatusStrip1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
@@ -216,7 +217,7 @@ Partial Class Frminfo
         Me.tblatitude.Name = "tblatitude"
         Me.tblatitude.Size = New System.Drawing.Size(57, 24)
         Me.tblatitude.TabIndex = 2
-        Me.ToolTip1.SetToolTip(Me.tblatitude, "רוחב - Latitude")
+        Me.ToolTip1.SetToolTip(Me.tblatitude, "Enter Latitude" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "הזן קו רוחב")
         '
         'tblongitude
         '
@@ -225,7 +226,7 @@ Partial Class Frminfo
         Me.tblongitude.Name = "tblongitude"
         Me.tblongitude.Size = New System.Drawing.Size(57, 24)
         Me.tblongitude.TabIndex = 3
-        Me.ToolTip1.SetToolTip(Me.tblongitude, "אורך - Longitude")
+        Me.ToolTip1.SetToolTip(Me.tblongitude, "Enter Longitude" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "הזן קו אורך")
         '
         'tbzone
         '
@@ -235,7 +236,6 @@ Partial Class Frminfo
         Me.tbzone.Name = "tbzone"
         Me.tbzone.Size = New System.Drawing.Size(57, 24)
         Me.tbzone.TabIndex = 7
-        Me.ToolTip1.SetToolTip(Me.tbzone, "אוזר - Gmt")
         '
         'TimerStatusLabel
         '
@@ -244,10 +244,11 @@ Partial Class Frminfo
         '
         'ToolTip1
         '
-        Me.ToolTip1.AutoPopDelay = 5000
-        Me.ToolTip1.InitialDelay = 500
+        Me.ToolTip1.AutomaticDelay = 100
+        Me.ToolTip1.AutoPopDelay = 50000
+        Me.ToolTip1.InitialDelay = 100
         Me.ToolTip1.IsBalloon = True
-        Me.ToolTip1.ReshowDelay = 0
+        Me.ToolTip1.ReshowDelay = 20
         Me.ToolTip1.ShowAlways = True
         '
         'tbcountry
@@ -258,7 +259,6 @@ Partial Class Frminfo
         Me.tbcountry.Name = "tbcountry"
         Me.tbcountry.Size = New System.Drawing.Size(57, 24)
         Me.tbcountry.TabIndex = 5
-        Me.ToolTip1.SetToolTip(Me.tbcountry, "אוזר - Gmt")
         '
         'rtbHebrewDate
         '
@@ -271,13 +271,13 @@ Partial Class Frminfo
         Me.rtbHebrewDate.Size = New System.Drawing.Size(246, 45)
         Me.rtbHebrewDate.TabIndex = 2
         Me.rtbHebrewDate.Text = ""
-        Me.ToolTip1.SetToolTip(Me.rtbHebrewDate, "אפשר לשונות התאריך")
+        Me.ToolTip1.SetToolTip(Me.rtbHebrewDate, "Enter the hebrew date" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "הקלד את התאריך העברי")
         '
         'StatusStrip1
         '
         Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripDropDownButton1, Me.StatusLabel, Me.ToolStripProgressBar1})
         Me.StatusStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow
-        Me.StatusStrip1.Location = New System.Drawing.Point(0, 830)
+        Me.StatusStrip1.Location = New System.Drawing.Point(0, 848)
         Me.StatusStrip1.Name = "StatusStrip1"
         Me.StatusStrip1.Size = New System.Drawing.Size(289, 21)
         Me.StatusStrip1.TabIndex = 27
@@ -298,7 +298,7 @@ Partial Class Frminfo
         '
         Me.SettingsToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mHebrewMenus, Me.mIsraeliYomTov, Me.m24HourFormatTime, Me.mShowTimesOnStatusBar, Me.mAskWhenChanging, Me.mBackUpWhenChanging, Me.mStayOnTopToolStripMenuItem, Me.mChangeKeybordLayout, Me.ToolStripSeparator3, Me.mOpacityLabel, Me.mOpacityBox, Me.mResetSettings})
         Me.SettingsToolStripMenuItem.Name = "SettingsToolStripMenuItem"
-        Me.SettingsToolStripMenuItem.Size = New System.Drawing.Size(130, 22)
+        Me.SettingsToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
         Me.SettingsToolStripMenuItem.Text = "Settings"
         '
         'mHebrewMenus
@@ -385,21 +385,21 @@ Partial Class Frminfo
         '
         Me.mExport.Image = Global.zman.My.Resources.Resources.export_more_icon
         Me.mExport.Name = "mExport"
-        Me.mExport.Size = New System.Drawing.Size(130, 22)
+        Me.mExport.Size = New System.Drawing.Size(180, 22)
         Me.mExport.Text = "Export"
         '
         'mOpenCompare
         '
         Me.mOpenCompare.Image = Global.zman.My.Resources.Resources.CompareFiles_16x
         Me.mOpenCompare.Name = "mOpenCompare"
-        Me.mOpenCompare.Size = New System.Drawing.Size(130, 22)
+        Me.mOpenCompare.Size = New System.Drawing.Size(180, 22)
         Me.mOpenCompare.Text = "Compare"
         '
         'mOpenSchedule
         '
         Me.mOpenSchedule.Image = Global.zman.My.Resources.Resources.BlueAlarmBell
         Me.mOpenSchedule.Name = "mOpenSchedule"
-        Me.mOpenSchedule.Size = New System.Drawing.Size(130, 22)
+        Me.mOpenSchedule.Size = New System.Drawing.Size(180, 22)
         Me.mOpenSchedule.Text = "Scheduler"
         '
         'StatusLabel
@@ -475,6 +475,7 @@ Partial Class Frminfo
         Me.tbElevation.Name = "tbElevation"
         Me.tbElevation.Size = New System.Drawing.Size(57, 24)
         Me.tbElevation.TabIndex = 4
+        Me.ToolTip1.SetToolTip(Me.tbElevation, "Enter location height" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "הזן את גובה המיקום")
         '
         'LabelElevation
         '
@@ -524,6 +525,7 @@ Partial Class Frminfo
         Me.rbtLocationContexOpen.Name = "rbtLocationContexOpen"
         Me.rbtLocationContexOpen.Size = New System.Drawing.Size(17, 28)
         Me.rbtLocationContexOpen.TabIndex = 8
+        Me.ToolTip1.SetToolTip(Me.rbtLocationContexOpen, "Press to open menu" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "לחץ כדי לפתוח את התפריט")
         Me.rbtLocationContexOpen.UseVisualStyleBackColor = True
         '
         'LabelTimeZone
@@ -652,6 +654,7 @@ Partial Class Frminfo
         Me.rbtTodayRefresh.Name = "rbtTodayRefresh"
         Me.rbtTodayRefresh.Size = New System.Drawing.Size(26, 23)
         Me.rbtTodayRefresh.TabIndex = 3
+        Me.ToolTip1.SetToolTip(Me.rbtTodayRefresh, "Press to reset date to today" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & " לחץ כדי לאפס את התאריך להיום")
         Me.rbtTodayRefresh.UseVisualStyleBackColor = True
         '
         'TimerTransparency
@@ -674,7 +677,7 @@ Partial Class Frminfo
         Me.DataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.DataGridView1.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.ColumnNum, Me.ColumnZman, Me.ColumnTime})
         Me.DataGridView1.ContextMenuStrip = Me.ZmanimContextMenuHelper
-        Me.DataGridView1.Location = New System.Drawing.Point(11, 290)
+        Me.DataGridView1.Location = New System.Drawing.Point(11, 310)
         Me.DataGridView1.Name = "DataGridView1"
         Me.DataGridView1.RightToLeft = System.Windows.Forms.RightToLeft.Yes
         Me.DataGridView1.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None
@@ -710,6 +713,18 @@ Partial Class Frminfo
         Me.ColumnTime.Name = "ColumnTime"
         Me.ColumnTime.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
         '
+        'LabelDisclaimer
+        '
+        Me.LabelDisclaimer.Anchor = System.Windows.Forms.AnchorStyles.Top
+        Me.LabelDisclaimer.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
+        Me.LabelDisclaimer.ForeColor = System.Drawing.Color.Red
+        Me.LabelDisclaimer.Location = New System.Drawing.Point(11, 283)
+        Me.LabelDisclaimer.Name = "LabelDisclaimer"
+        Me.LabelDisclaimer.Size = New System.Drawing.Size(266, 22)
+        Me.LabelDisclaimer.TabIndex = 28
+        Me.LabelDisclaimer.Text = "Don't"
+        Me.LabelDisclaimer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
         'Frminfo
         '
         Me.AllowDrop = True
@@ -718,7 +733,8 @@ Partial Class Frminfo
         Me.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange
         Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(248, Byte), Integer), CType(CType(242, Byte), Integer), CType(CType(248, Byte), Integer))
         Me.CancelButton = Me.Butexit
-        Me.ClientSize = New System.Drawing.Size(289, 851)
+        Me.ClientSize = New System.Drawing.Size(289, 869)
+        Me.Controls.Add(Me.LabelDisclaimer)
         Me.Controls.Add(Me.DataGridView1)
         Me.Controls.Add(Me.GroupBox2)
         Me.Controls.Add(Me.StatusStrip1)
@@ -815,4 +831,5 @@ Partial Class Frminfo
     Friend WithEvents ColumnTime As DataGridViewComboBoxColumn
     Friend WithEvents mOpacityBox As ToolStripTextBox
     Friend WithEvents mOpacityLabel As ToolStripMenuItem
+    Friend WithEvents LabelDisclaimer As Label
 End Class

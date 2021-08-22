@@ -24,31 +24,6 @@ Public Class Frminfo
         GroupBox1.Font = MemoryFonts.GetFont(1, 12, FontStyle.Regular)
         GroupBox2.Font = MemoryFonts.GetFont(1, 12, FontStyle.Regular)
 
-        If varSC.HebrewMenus = True Then
-            'varTransparencyBox = New ToolStripMenuTextBoxAndLabel("Opacity: ", 40, 0)
-            Try
-                'LabelCountry.Font = MemoryFonts.GetFont(0, 8.75, FontStyle.Regular)
-                LabelCountry.Font = MemoryFonts.GetFont(1, 8.75, FontStyle.Regular)
-                LabelOffSet.Font = MemoryFonts.GetFont(1, 8.75, FontStyle.Regular)
-                LabelLatitude.Font = MemoryFonts.GetFont(1, 8.75, FontStyle.Regular)
-                LabelLongitude.Font = MemoryFonts.GetFont(1, 8.75, FontStyle.Regular)
-                LabelElevation.Font = MemoryFonts.GetFont(1, 8.75, FontStyle.Regular)
-                LabelTimeZone.Font = MemoryFonts.GetFont(1, 8.75, FontStyle.Regular)
-            Catch ex As Exception
-            End Try
-        Else
-            'varTransparencyBox = New ToolStripMenuTextBoxAndLabel(":אי שקיפות", 40, 1)
-            Try
-                LabelCountry.Font = MemoryFonts.GetFont(1, 7.75, FontStyle.Regular)
-                LabelOffSet.Font = MemoryFonts.GetFont(1, 7.75, FontStyle.Regular)
-                LabelLatitude.Font = MemoryFonts.GetFont(1, 7.75, FontStyle.Regular)
-                LabelLongitude.Font = MemoryFonts.GetFont(1, 7.75, FontStyle.Regular)
-                LabelElevation.Font = MemoryFonts.GetFont(1, 7.75, FontStyle.Regular)
-                LabelTimeZone.Font = MemoryFonts.GetFont(1, 7.75, FontStyle.Regular)
-            Catch ex As Exception
-            End Try
-        End If
-
         'SettingsToolStripMenuItem.DropDownItems.Insert(SettingsToolStripMenuItem.DropDownItems.Count - 2, varTransparencyBox)
         'event Handler is in ToolStripMenuTextBoxAndLabel Class
         'AddHandler varTransparencyLabel.TextChanged, AddressOf Me.varTransparencyLabel_TextChanged
@@ -701,8 +676,12 @@ Public Class Frminfo
     End Sub
     Private Sub ZmanimContextMenuHelper_Opening(sender As Object, e As System.ComponentModel.CancelEventArgs) Handles ZmanimContextMenuHelper.Opening
         'need this to anble left to right ContextMen for listview
-        'LocationContextMenu.Show(MenuPictureBox, 0, MenuPictureBox.Height)
-        ZmanimContextMenu.Show(Control.MousePosition)
+        If varSC.HebrewMenus = True Then
+            ZmanimContextMenu.Show(Control.MousePosition.X - ZmanimContextMenu.Width, Control.MousePosition.Y)
+        Else
+            ZmanimContextMenu.Show(Control.MousePosition)
+        End If
+
     End Sub
     Private Sub rbtTodayRefresh_Click(sender As Object, e As EventArgs) Handles rbtTodayRefresh.Click
         dpEngdate.Value = Now
@@ -903,7 +882,7 @@ Public Class Frminfo
         LoadSettingsandVariables()
 
         Me.CenterToScreen()
-        Me.Size = New System.Drawing.Size(305, 890)
+        Me.Size = New System.Drawing.Size(305, 908)
         DataGridView1.Columns(1).Width = 160
         DataGridView1.Columns(2).Width = 100
 
@@ -964,6 +943,7 @@ Public Class Frminfo
 
     Public Sub mHebrewMenus_Click() Handles mHebrewMenus.Click
         varSC.HebrewMenus = mHebrewMenus.Checked
+        Place_orDate_changed()
 
         If mHebrewMenus.Checked = True Then
             Me.RightToLeft = 1
@@ -992,9 +972,11 @@ Public Class Frminfo
                 LabelLongitude.Font = MemoryFonts.GetFont(1, 8.75, FontStyle.Regular)
                 LabelElevation.Font = MemoryFonts.GetFont(1, 8.75, FontStyle.Regular)
                 LabelTimeZone.Font = MemoryFonts.GetFont(1, 8.75, FontStyle.Regular)
+                LabelDisclaimer.Font = MemoryFonts.GetFont(1, 9.25, FontStyle.Regular)
             Catch ex As Exception
             End Try
 
+            LabelDisclaimer.Text = "אל תסמכו על הזמנים עד הרגע האחרון"
             mOpacityLabel.Text = "אי שקיפות:"
             mGetCurrnetLocation.Text = "קבל את המיקום הנוכחי"
             mSaveLocationChanges.Text = "שמור שינויי מיקום"
@@ -1056,9 +1038,11 @@ Public Class Frminfo
                 LabelLongitude.Font = MemoryFonts.GetFont(1, 7.75, FontStyle.Regular)
                 LabelElevation.Font = MemoryFonts.GetFont(1, 7.75, FontStyle.Regular)
                 LabelTimeZone.Font = MemoryFonts.GetFont(1, 7.75, FontStyle.Regular)
+                LabelDisclaimer.Font = MemoryFonts.GetFont(1, 8.5, FontStyle.Regular)
             Catch ex As Exception
             End Try
 
+            LabelDisclaimer.Text = "Don't rely on zmanim to the last moment"
             mGetCurrnetLocation.Text = "Get Current Location"
             mSaveLocationChanges.Text = "Save Location Changes"
             mRemoveLocation.Text = "Remove Location"

@@ -361,6 +361,13 @@ Module FunctionsModule
             DVItems(DVItems.Count - 1).DefaultCellStyle.Font = New Font(Frminfo.DataGridView1.Font, FontStyle.Regular)
             'selcet value for ComboBoxCell
             CType(DVItems(DVItems.Count - 1).Cells(2), DataGridViewComboBoxCell).Value = CType(DVItems(DVItems.Count - 1).Cells(2), DataGridViewComboBoxCell).Items(0)
+            'set ToolTip's
+            If varSC.HebrewMenus = True Then
+                CType(DVItems(DVItems.Count - 1).Cells(1), DataGridViewTextBoxCell).ToolTipText = "לחץ פעמיים לעריכה" & vbCr & "קליק ימני לאפשרויות נוספות"
+            Else
+                CType(DVItems(DVItems.Count - 1).Cells(1), DataGridViewTextBoxCell).ToolTipText = "Double click to edit" & vbCr & "Right click for more options"
+            End If
+            CType(DVItems(DVItems.Count - 1).Cells(2), DataGridViewComboBoxCell).ToolTipText = Z.FunctionName
         Next
 
 
