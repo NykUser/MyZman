@@ -1,6 +1,8 @@
 ﻿'MemoryFonts.GetFont(0, = ArialUnicodeCompact
 'MemoryFonts.GetFont(1, = Varela Round
 
+Imports System.ComponentModel
+
 Public Class Frminfo
     Private Sub Frminfo_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         'the is a switch [/s] for Scheduler in ApplicationEvents.vb
@@ -322,6 +324,13 @@ Public Class Frminfo
     Private Sub mExport_Click(sender As Object, e As EventArgs) Handles mExport.Click
         If Me.TopMost = True Then FrmExport.TopMost = True
         FrmExport.Show()
+    End Sub
+    Private Sub mInfoHelp_Click(sender As Object, e As EventArgs) Handles mInfoHelp.Click
+        Try
+            Process.Start("https://github.com/NykUser/MyZman")
+        Catch ex As Win32Exception
+            Process.Start("IExplore.exe", "https://github.com/NykUser/MyZman")
+        End Try
     End Sub
     Public Sub StayOnTopToolStripMenuItem_Click() Handles mStayOnTopToolStripMenuItem.Click
         If mStayOnTopToolStripMenuItem.Checked = True Then
@@ -1042,7 +1051,7 @@ Public Class Frminfo
             Catch ex As Exception
             End Try
 
-            LabelDisclaimer.Text = "Don't rely on zmanim to the last moment"
+            LabelDisclaimer.Text = "Do not rely on zmanim to the last moment"
             mGetCurrnetLocation.Text = "Get Current Location"
             mSaveLocationChanges.Text = "Save Location Changes"
             mRemoveLocation.Text = "Remove Location"
@@ -1089,6 +1098,7 @@ Public Class Frminfo
             LabelTimeZone.Text = "Time Zone"
         End If
     End Sub
+
 End Class
 
 

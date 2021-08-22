@@ -315,6 +315,9 @@
   <ItemGroup>
     <None Include="Resources\Images\alarm_bell_notification_reminder.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\Info_16x.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <PropertyGroup>
     <PostBuildEvent>
