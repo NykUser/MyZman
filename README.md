@@ -72,7 +72,7 @@ Due to atmospheric conditions (pressure, humidity and other conditions), calcula
 * User settings are Serialized and saved in the exe folder
 * Variables are mostly Globalized 
 
-### More info on USNO vs NOAA from Kosher Java
+# More info on USNO vs NOAA from Kosher Java
 The USNO algorithm was used by many poskim over the years. It does not differentiate between leap and non-leap years. It is now a drop out of date and is not considered as accurate.
 Changes to earth’s rotation since the time they were published and other factors contribute to this. Since they do not differentiate between leap and non-leap years, this alone can mean that the data is a day off (something that corrects itself every 4 years).
 The USNO algorithm was also designed to be accurate from about the year 1980 to 2050 with lower accuracy at the edges. It was never considered more accurate than one minute.
