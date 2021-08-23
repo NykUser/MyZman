@@ -84,9 +84,11 @@ Public Class ControlPanel
         If Not Char.IsNumber(e.KeyChar) AndAlso Not Char.IsControl(e.KeyChar) AndAlso Not e.KeyChar = "%" Then e.KeyChar = ""
     End Sub
     Private Sub txt_TextChanged(sender As Object, e As EventArgs) Handles txt.TextChanged
-        varSC.TransparencyValue = Val(Replace(txt.Text, "%", "") / 100) ' convert percentage to decimal and remove percentage sign
+        If IsNumeric(Replace(txt.Text, "%", "")) Then
+            varSC.TransparencyValue = Val(Replace(txt.Text, "%", "") / 100) ' convert percentage to decimal and remove percentage sign
+            'txt.Text = Replace(txt.Text, "%", "") & "%"
+        End If
     End Sub
-
     Protected Overrides Sub Finalize()
         MyBase.Finalize()
     End Sub
