@@ -46,8 +46,6 @@ Partial Class Frminfo
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.rtbHebrewDate = New System.Windows.Forms.RichTextBox()
         Me.tbElevation = New System.Windows.Forms.TextBox()
-        Me.rbtLocationContexOpen = New zman.WindowsFormsApplication1.RoundButton()
-        Me.rbtTodayRefresh = New zman.WindowsFormsApplication1.RoundButton()
         Me.tbcountry = New System.Windows.Forms.TextBox()
         Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
         Me.ToolStripDropDownButton1 = New System.Windows.Forms.ToolStripDropDownButton()
@@ -60,9 +58,8 @@ Partial Class Frminfo
         Me.mBackUpWhenChanging = New System.Windows.Forms.ToolStripMenuItem()
         Me.mStayOnTopToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.mChangeKeybordLayout = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mShowTooltips = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator3 = New System.Windows.Forms.ToolStripSeparator()
-        Me.mOpacityLabel = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mOpacityBox = New System.Windows.Forms.ToolStripTextBox()
         Me.mResetSettings = New System.Windows.Forms.ToolStripMenuItem()
         Me.mExport = New System.Windows.Forms.ToolStripMenuItem()
         Me.mOpenCompare = New System.Windows.Forms.ToolStripMenuItem()
@@ -98,6 +95,8 @@ Partial Class Frminfo
         Me.ColumnZman = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.ColumnTime = New System.Windows.Forms.DataGridViewComboBoxColumn()
         Me.LabelDisclaimer = New System.Windows.Forms.Label()
+        Me.rbtLocationContexOpen = New zman.WindowsFormsApplication1.RoundButton()
+        Me.rbtTodayRefresh = New zman.WindowsFormsApplication1.RoundButton()
         Me.LocationContextMenu.SuspendLayout()
         Me.StatusStrip1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
@@ -263,7 +262,6 @@ Partial Class Frminfo
         Me.rtbHebrewDate.Size = New System.Drawing.Size(246, 45)
         Me.rtbHebrewDate.TabIndex = 2
         Me.rtbHebrewDate.Text = ""
-        Me.ToolTip1.SetToolTip(Me.rtbHebrewDate, "Enter the hebrew date" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "הקלד את התאריך העברי")
         '
         'tbElevation
         '
@@ -273,34 +271,6 @@ Partial Class Frminfo
         Me.tbElevation.Name = "tbElevation"
         Me.tbElevation.Size = New System.Drawing.Size(57, 24)
         Me.tbElevation.TabIndex = 4
-        Me.ToolTip1.SetToolTip(Me.tbElevation, "Enter location height" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "הזן את גובה המיקום")
-        '
-        'rbtLocationContexOpen
-        '
-        Me.rbtLocationContexOpen.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.rbtLocationContexOpen.FlatAppearance.BorderSize = 0
-        Me.rbtLocationContexOpen.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.rbtLocationContexOpen.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
-        Me.rbtLocationContexOpen.Image = Global.zman.My.Resources.Resources.three_dots_icon_gray
-        Me.rbtLocationContexOpen.Location = New System.Drawing.Point(244, 22)
-        Me.rbtLocationContexOpen.Name = "rbtLocationContexOpen"
-        Me.rbtLocationContexOpen.Size = New System.Drawing.Size(17, 28)
-        Me.rbtLocationContexOpen.TabIndex = 8
-        Me.ToolTip1.SetToolTip(Me.rbtLocationContexOpen, "Press to open menu" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "לחץ כדי לפתוח את התפריט")
-        Me.rbtLocationContexOpen.UseVisualStyleBackColor = True
-        '
-        'rbtTodayRefresh
-        '
-        Me.rbtTodayRefresh.FlatAppearance.BorderSize = 0
-        Me.rbtTodayRefresh.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.rbtTodayRefresh.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
-        Me.rbtTodayRefresh.Image = Global.zman.My.Resources.Resources.Undo_16x
-        Me.rbtTodayRefresh.Location = New System.Drawing.Point(233, 23)
-        Me.rbtTodayRefresh.Name = "rbtTodayRefresh"
-        Me.rbtTodayRefresh.Size = New System.Drawing.Size(26, 23)
-        Me.rbtTodayRefresh.TabIndex = 3
-        Me.ToolTip1.SetToolTip(Me.rbtTodayRefresh, "Press to reset date to today" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & " לחץ כדי לאפס את התאריך להיום")
-        Me.rbtTodayRefresh.UseVisualStyleBackColor = True
         '
         'tbcountry
         '
@@ -315,9 +285,9 @@ Partial Class Frminfo
         '
         Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripDropDownButton1, Me.StatusLabel, Me.ToolStripProgressBar1})
         Me.StatusStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow
-        Me.StatusStrip1.Location = New System.Drawing.Point(0, 847)
+        Me.StatusStrip1.Location = New System.Drawing.Point(0, 848)
         Me.StatusStrip1.Name = "StatusStrip1"
-        Me.StatusStrip1.Size = New System.Drawing.Size(289, 22)
+        Me.StatusStrip1.Size = New System.Drawing.Size(289, 21)
         Me.StatusStrip1.TabIndex = 27
         Me.StatusStrip1.Text = "StatusStrip1"
         '
@@ -334,9 +304,9 @@ Partial Class Frminfo
         '
         'SettingsToolStripMenuItem
         '
-        Me.SettingsToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mHebrewMenus, Me.mIsraeliYomTov, Me.m24HourFormatTime, Me.mShowTimesOnStatusBar, Me.mAskWhenChanging, Me.mBackUpWhenChanging, Me.mStayOnTopToolStripMenuItem, Me.mChangeKeybordLayout, Me.ToolStripSeparator3, Me.mOpacityLabel, Me.mOpacityBox, Me.mResetSettings})
+        Me.SettingsToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mHebrewMenus, Me.mIsraeliYomTov, Me.m24HourFormatTime, Me.mShowTimesOnStatusBar, Me.mAskWhenChanging, Me.mBackUpWhenChanging, Me.mStayOnTopToolStripMenuItem, Me.mChangeKeybordLayout, Me.mShowTooltips, Me.ToolStripSeparator3, Me.mResetSettings})
         Me.SettingsToolStripMenuItem.Name = "SettingsToolStripMenuItem"
-        Me.SettingsToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.SettingsToolStripMenuItem.Size = New System.Drawing.Size(149, 22)
         Me.SettingsToolStripMenuItem.Text = "Settings"
         '
         'mHebrewMenus
@@ -395,22 +365,17 @@ Partial Class Frminfo
         Me.mChangeKeybordLayout.Size = New System.Drawing.Size(254, 22)
         Me.mChangeKeybordLayout.Text = "Change Keyboard to Hebrew"
         '
+        'mShowTooltips
+        '
+        Me.mShowTooltips.CheckOnClick = True
+        Me.mShowTooltips.Name = "mShowTooltips"
+        Me.mShowTooltips.Size = New System.Drawing.Size(254, 22)
+        Me.mShowTooltips.Text = "Display Tool Tips"
+        '
         'ToolStripSeparator3
         '
         Me.ToolStripSeparator3.Name = "ToolStripSeparator3"
         Me.ToolStripSeparator3.Size = New System.Drawing.Size(251, 6)
-        '
-        'mOpacityLabel
-        '
-        Me.mOpacityLabel.Name = "mOpacityLabel"
-        Me.mOpacityLabel.Size = New System.Drawing.Size(254, 22)
-        Me.mOpacityLabel.Text = "Opacity:"
-        '
-        'mOpacityBox
-        '
-        Me.mOpacityBox.Font = New System.Drawing.Font("Segoe UI", 9.0!)
-        Me.mOpacityBox.Name = "mOpacityBox"
-        Me.mOpacityBox.Size = New System.Drawing.Size(50, 23)
         '
         'mResetSettings
         '
@@ -423,28 +388,28 @@ Partial Class Frminfo
         '
         Me.mExport.Image = Global.zman.My.Resources.Resources.export_more_icon
         Me.mExport.Name = "mExport"
-        Me.mExport.Size = New System.Drawing.Size(180, 22)
+        Me.mExport.Size = New System.Drawing.Size(149, 22)
         Me.mExport.Text = "Export"
         '
         'mOpenCompare
         '
         Me.mOpenCompare.Image = Global.zman.My.Resources.Resources.CompareFiles_16x
         Me.mOpenCompare.Name = "mOpenCompare"
-        Me.mOpenCompare.Size = New System.Drawing.Size(180, 22)
+        Me.mOpenCompare.Size = New System.Drawing.Size(149, 22)
         Me.mOpenCompare.Text = "Compare"
         '
         'mOpenSchedule
         '
         Me.mOpenSchedule.Image = Global.zman.My.Resources.Resources.BlueAlarmBell
         Me.mOpenSchedule.Name = "mOpenSchedule"
-        Me.mOpenSchedule.Size = New System.Drawing.Size(180, 22)
+        Me.mOpenSchedule.Size = New System.Drawing.Size(149, 22)
         Me.mOpenSchedule.Text = "Scheduler"
         '
         'mInfoHelp
         '
         Me.mInfoHelp.Image = Global.zman.My.Resources.Resources.Info_16x
         Me.mInfoHelp.Name = "mInfoHelp"
-        Me.mInfoHelp.Size = New System.Drawing.Size(180, 22)
+        Me.mInfoHelp.Size = New System.Drawing.Size(149, 22)
         Me.mInfoHelp.Text = "Info and Help"
         '
         'StatusLabel
@@ -733,6 +698,31 @@ Partial Class Frminfo
         Me.LabelDisclaimer.Text = "Don't"
         Me.LabelDisclaimer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
+        'rbtLocationContexOpen
+        '
+        Me.rbtLocationContexOpen.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.rbtLocationContexOpen.FlatAppearance.BorderSize = 0
+        Me.rbtLocationContexOpen.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.rbtLocationContexOpen.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
+        Me.rbtLocationContexOpen.Image = Global.zman.My.Resources.Resources.three_dots_icon_gray
+        Me.rbtLocationContexOpen.Location = New System.Drawing.Point(244, 22)
+        Me.rbtLocationContexOpen.Name = "rbtLocationContexOpen"
+        Me.rbtLocationContexOpen.Size = New System.Drawing.Size(17, 28)
+        Me.rbtLocationContexOpen.TabIndex = 8
+        Me.rbtLocationContexOpen.UseVisualStyleBackColor = True
+        '
+        'rbtTodayRefresh
+        '
+        Me.rbtTodayRefresh.FlatAppearance.BorderSize = 0
+        Me.rbtTodayRefresh.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.rbtTodayRefresh.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
+        Me.rbtTodayRefresh.Image = Global.zman.My.Resources.Resources.Undo_16x
+        Me.rbtTodayRefresh.Location = New System.Drawing.Point(233, 23)
+        Me.rbtTodayRefresh.Name = "rbtTodayRefresh"
+        Me.rbtTodayRefresh.Size = New System.Drawing.Size(26, 23)
+        Me.rbtTodayRefresh.TabIndex = 3
+        Me.rbtTodayRefresh.UseVisualStyleBackColor = True
+        '
         'Frminfo
         '
         Me.AllowDrop = True
@@ -837,8 +827,7 @@ Partial Class Frminfo
     Friend WithEvents ColumnNum As DataGridViewTextBoxColumn
     Friend WithEvents ColumnZman As DataGridViewTextBoxColumn
     Friend WithEvents ColumnTime As DataGridViewComboBoxColumn
-    Friend WithEvents mOpacityBox As ToolStripTextBox
-    Friend WithEvents mOpacityLabel As ToolStripMenuItem
     Friend WithEvents LabelDisclaimer As Label
     Friend WithEvents mInfoHelp As ToolStripMenuItem
+    Friend WithEvents mShowTooltips As ToolStripMenuItem
 End Class

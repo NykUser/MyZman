@@ -19,7 +19,6 @@ Module ProjectsGlobalVariables
     Public varSelectedIndexBeforChange As Integer = -1
     Public varString As String
     Public varSavedStatusLabel As String
-    'Public varTransparencyBox As New ToolStripMenuTextBoxAndLabel("Opacity: ", 40, 0)
     Public varMouseEnter As Boolean = False
     Public varDataGridCombo As ComboBox
     Public varDataGridNumColumn As Integer

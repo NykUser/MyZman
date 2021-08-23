@@ -17,6 +17,7 @@
     Public AskWhenChanging As Boolean = True
     Public BackUpWhenChanging As Boolean = True
     Public ShowTimesOnStatusBar As Boolean = True
+    Public ShowTooltips As Boolean = True
     Public LineBetweenZmanim As Boolean = False
     Public TransparencyValue As Double = 1
     Public LocationY As Integer = -1

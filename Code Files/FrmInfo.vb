@@ -59,18 +59,10 @@ Public Class Frminfo
         varSC.LocationY = Location.Y
         varSC.LocationX = Location.X
     End Sub
-    Private Sub mOpacityBox_KeyPress(sender As Object, e As KeyPressEventArgs) Handles mOpacityBox.KeyPress
-        'If e.KeyChar = Chr(13) Then ToolStripDropDownButton1.DropDown.Close()
-        'SettingsToolStripMenuItem.DropDownClosed will do the change
-        If Not Char.IsNumber(e.KeyChar) AndAlso Not Char.IsControl(e.KeyChar) AndAlso Not e.KeyChar = "%" Then e.KeyChar = ""
-    End Sub
-    Private Sub mOpacityBox_TextChanged(sender As Object, e As EventArgs) Handles mOpacityBox.TextChanged
-        varSC.TransparencyValue = Val(Replace(mOpacityBox.Text, "%", "") / 100) ' convert percentage to decimal and remove percentage sign
-    End Sub
-    Private Sub SettingsToolStripMenuItem_DropDownClosed(sender As Object, e As EventArgs) Handles SettingsToolStripMenuItem.DropDownClosed
-        'this is for storing Transparency seting, Transparency will be set by MouseMove
-        'varSC.TransparencyValue = Val(Replace(varTransparencyBox.Text, "%", "") / 100) ' convert percentage to decimal and remove percentage sign
-    End Sub
+    'Private Sub SettingsToolStripMenuItem_DropDownClosed(sender As Object, e As EventArgs) Handles SettingsToolStripMenuItem.DropDownClosed
+    '    'this is for storing Transparency seting, Transparency will be set by MouseMove
+    '    'varSC.TransparencyValue = Val(Replace(varTransparencyBox.Text, "%", "") / 100) ' convert percentage to decimal and remove percentage sign
+    'End Sub
     Private Sub Frminfo_MouseEnter(sender As Object, e As EventArgs) Handles Me.MouseEnter, MyBase.MouseEnter, Me.Activated, Me.GotFocus, GroupBox1.MouseEnter, GroupBox2.MouseEnter, DataGridView1.MouseEnter, StatusStrip1.Enter, dpEngdate.GotFocus, rtbHebrewDate.GotFocus, cbLocationList.GotFocus, tblatitude.GotFocus, tblongitude.GotFocus, tbcountry.GotFocus, tbElevation.GotFocus, tbzone.GotFocus
         varMouseEnter = True
     End Sub
@@ -351,6 +343,10 @@ Public Class Frminfo
     End Sub
     Private Sub mDontChangeKeybordLayout_Click(sender As Object, e As EventArgs) Handles mChangeKeybordLayout.Click
         varSC.ChangeKeybordLayout = mChangeKeybordLayout.Checked
+    End Sub
+    Private Sub mShowTooltips_Click(sender As Object, e As EventArgs) Handles mShowTooltips.Click
+        varSC.ShowTooltips = mShowTooltips.Checked
+        mHebrewMenus_Click()
     End Sub
     Private Sub mAskWhenChanging_Click(sender As Object, e As EventArgs) Handles mAskWhenChanging.Click
         varSC.AskWhenChanging = mAskWhenChanging.Checked
@@ -972,7 +968,6 @@ Public Class Frminfo
             LabelLongitude.RightToLeft = 1
             LabelElevation.RightToLeft = 1
             LabelTimeZone.RightToLeft = 1
-            'varTransparencyBox = New ToolStripMenuTextBoxAndLabel(":אי שקיפות", 40, 1)
 
             Try
                 LabelCountry.Font = MemoryFonts.GetFont(1, 8.75, FontStyle.Regular)
@@ -986,7 +981,6 @@ Public Class Frminfo
             End Try
 
             LabelDisclaimer.Text = "אל תסמכו על הזמנים עד הרגע האחרון"
-            mOpacityLabel.Text = "אי שקיפות:"
             mGetCurrnetLocation.Text = "קבל את המיקום הנוכחי"
             mSaveLocationChanges.Text = "שמור שינויי מיקום"
             mRemoveLocation.Text = "הסר מיקום"
@@ -1025,6 +1019,27 @@ Public Class Frminfo
             LabelLongitude.Text = "קו אורך"
             LabelElevation.Text = "גובה"
             LabelTimeZone.Text = "אזור זמן"
+            mShowTooltips.Text = "הצג טולטיפס"
+            If varSC.ShowTooltips = True Then
+                ToolTip1.SetToolTip(rbtTodayRefresh, "לחץ כדי לאפס את התאריך להיום")
+                ToolTip1.SetToolTip(rtbHebrewDate, "הקלד את התאריך העברי")
+                ToolTip1.SetToolTip(cbLocationList, "בחר או הקלד מיקום")
+                ToolTip1.SetToolTip(rbtLocationContexOpen, "לחץ כדי לפתוח את התפריט")
+                ToolTip1.SetToolTip(tblatitude, "הזן קו רוחב")
+                ToolTip1.SetToolTip(tblongitude, "הזן קו אורך")
+                ToolTip1.SetToolTip(tbElevation, "הזן את גובה המיקום")
+                ToolTip1.SetToolTip(CbTimeZone, "בחר אוזר זמן")
+            End If
+
+            'do it here after SettingsToolStripMenuItem.Width is set
+            Dim TransparencyBox As New ToolStripMenuTextBoxAndLabel("אי שקיפות:", 35, True, SettingsToolStripMenuItem.Width)
+            TransparencyBox.Text = varSC.TransparencyValue * 100 & "%" ' convert from decimal
+            'ToolStripMenuTextBoxAndLabel already there
+            If SettingsToolStripMenuItem.DropDownItems.Item(SettingsToolStripMenuItem.DropDownItems.Count - 3).Name = "ToolStripSeparator3" Then
+                SettingsToolStripMenuItem.DropDownItems.RemoveAt(SettingsToolStripMenuItem.DropDownItems.Count - 2)
+            End If
+            SettingsToolStripMenuItem.DropDownItems.Insert(SettingsToolStripMenuItem.DropDownItems.Count - 1, TransparencyBox)
+
         Else
             'used not to force Hebrew Menus when InStr(CultureInfo.CurrentCulture.Name, "he-IL") is ture on next run of program
             varSC.MenuLanguageWasChanged = True
@@ -1039,7 +1054,6 @@ Public Class Frminfo
             'LabelLongitude.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
             'LabelElevation.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
             'LabelTimeZone.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
-            mOpacityLabel.Text = "Opacity:"
 
             Try
                 LabelCountry.Font = MemoryFonts.GetFont(1, 7.75, FontStyle.Regular)
@@ -1085,7 +1099,6 @@ Public Class Frminfo
             mHebrewMenus.Text = "Hebrew Menus"
             ToolStripDropDownButton1.Text = "Tools"
             mInfoHelp.Text = "Info and Help"
-
             LabelCountry.RightToLeft = 0
             LabelOffSet.RightToLeft = 0
             LabelLatitude.RightToLeft = 0
@@ -1098,6 +1111,37 @@ Public Class Frminfo
             LabelLongitude.Text = "Longitude"
             LabelElevation.Text = "Elevation"
             LabelTimeZone.Text = "Time Zone"
+
+            mShowTooltips.Text = "Display Tool Tips"
+            If varSC.ShowTooltips = True Then
+                ToolTip1.SetToolTip(rbtTodayRefresh, "Press to Reset Date to Today")
+                ToolTip1.SetToolTip(rtbHebrewDate, "Enter the Hebrew Date")
+                ToolTip1.SetToolTip(cbLocationList, "Select or Type Location")
+                ToolTip1.SetToolTip(rbtLocationContexOpen, "Press to Open Menu")
+                ToolTip1.SetToolTip(tblatitude, "Enter Latitude")
+                ToolTip1.SetToolTip(tblongitude, "Enter Longitude")
+                ToolTip1.SetToolTip(tbElevation, "Enter Location Height")
+                ToolTip1.SetToolTip(CbTimeZone, "Select Time Zone")
+            End If
+
+            Dim TransparencyBox As New ToolStripMenuTextBoxAndLabel("Opacity:", 35, False, SettingsToolStripMenuItem.Width)
+            TransparencyBox.Text = varSC.TransparencyValue * 100 & "%" ' convert from decimal
+            'ToolStripMenuTextBoxAndLabel already there
+            If SettingsToolStripMenuItem.DropDownItems.Item(SettingsToolStripMenuItem.DropDownItems.Count - 3).Name = "ToolStripSeparator3" Then
+                SettingsToolStripMenuItem.DropDownItems.RemoveAt(SettingsToolStripMenuItem.DropDownItems.Count - 2)
+            End If
+            SettingsToolStripMenuItem.DropDownItems.Insert(SettingsToolStripMenuItem.DropDownItems.Count - 1, TransparencyBox)
+        End If
+
+        If varSC.ShowTooltips = False Then
+            ToolTip1.SetToolTip(rbtTodayRefresh, Nothing)
+            ToolTip1.SetToolTip(rtbHebrewDate, Nothing)
+            ToolTip1.SetToolTip(cbLocationList, Nothing)
+            ToolTip1.SetToolTip(rbtLocationContexOpen, Nothing)
+            ToolTip1.SetToolTip(tblatitude, Nothing)
+            ToolTip1.SetToolTip(tblongitude, Nothing)
+            ToolTip1.SetToolTip(tbElevation, Nothing)
+            ToolTip1.SetToolTip(CbTimeZone, Nothing)
         End If
     End Sub
 

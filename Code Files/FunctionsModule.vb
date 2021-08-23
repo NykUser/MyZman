@@ -30,9 +30,8 @@ Module FunctionsModule
         Frminfo.mChangeKeybordLayout.Checked = varSC.ChangeKeybordLayout
         Frminfo.mShowTimesOnStatusBar.Checked = varSC.ShowTimesOnStatusBar
         Frminfo.mStayOnTopToolStripMenuItem.Checked = varSC.StayOnTop
+        Frminfo.mShowTooltips.Checked = varSC.ShowTooltips
         Frminfo.StayOnTopToolStripMenuItem_Click()
-        'varTransparencyBox.Text = varSC.TransparencyValue * 100 & "%" ' convert from decimal
-        Frminfo.mOpacityBox.Text = varSC.TransparencyValue * 100 & "%" ' convert from decimal
         Frminfo.Opacity = varSC.TransparencyValue
         Frminfo.mPlaceListInHebrew.Checked = varSC.PlaceListInHebrew
         Frminfo.mLineBetweenZmanim.Checked = varSC.LineBetweenZmanim
@@ -362,10 +361,12 @@ Module FunctionsModule
             'selcet value for ComboBoxCell
             CType(DVItems(DVItems.Count - 1).Cells(2), DataGridViewComboBoxCell).Value = CType(DVItems(DVItems.Count - 1).Cells(2), DataGridViewComboBoxCell).Items(0)
             'set ToolTip's
-            If varSC.HebrewMenus = True Then
-                CType(DVItems(DVItems.Count - 1).Cells(1), DataGridViewTextBoxCell).ToolTipText = "לחץ פעמיים לעריכה" & vbCr & "קליק ימני לאפשרויות נוספות"
-            Else
-                CType(DVItems(DVItems.Count - 1).Cells(1), DataGridViewTextBoxCell).ToolTipText = "Double click to edit" & vbCr & "Right click for more options"
+            If varSC.ShowTooltips = True Then
+                If varSC.HebrewMenus = True Then
+                    CType(DVItems(DVItems.Count - 1).Cells(1), DataGridViewTextBoxCell).ToolTipText =  "לחץ פעמיים לעריכה" & vbCr & "גרור ושחרר לסידור מחדש" & vbCr & "קליק ימני לאפשרויות נוספות"
+                Else
+                    CType(DVItems(DVItems.Count - 1).Cells(1), DataGridViewTextBoxCell).ToolTipText = "Double Click to Edit" & vbCr & "Drag and Drop to Rearrange" & vbCr & "Right Click for More Options"
+                End If
             End If
             CType(DVItems(DVItems.Count - 1).Cells(2), DataGridViewComboBoxCell).ToolTipText = Z.FunctionName
         Next
