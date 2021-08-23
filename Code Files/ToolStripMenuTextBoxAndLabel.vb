@@ -1,15 +1,7 @@
-﻿'not in use - issue getting RTL for Heb properly rendered
-'based on \Projects\Samples\EasyToolStrip_CbBox_VB and https://vbdotnetforums.com/threads/toolstrip-textbox-labels.43349/
+﻿'based on \Projects\Samples\EasyToolStrip_CbBox_VB and https://vbdotnetforums.com/threads/toolstrip-textbox-labels.43349/
 'with edits for size, Property's and events 
 
-
 'adding to form via designer will make trouble do via code 
-'here it is done in ProjectsGlobalVariables
-'Public varTransparencyLabel As New ToolStripMenuTextBoxAndLabel("Transparency: ", 40)
-'and Frminfo_Load
-'SettingsToolStripMenuItem.DropDownItems.Add(varTransparencyLabel)
-'events are belwo
-
 
 Public Class ToolStripMenuTextBoxAndLabel
     Inherits ToolStripControlHost
