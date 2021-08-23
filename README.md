@@ -22,11 +22,11 @@ Most of the locations are missing elevation info.
 * The user can also manually enter an Latitude & Longitude with time zone info, and the zmanim will automatically update to the changed location.
 * Changes can be saved, locations added or removed, the default startup locations set, via the three-dot menu (kebab menu).
 * All Changes are saved to the user settings file (MyZman.exe.UserSettings.xml, in the same folder as the .exe), and not to the default locations list.
-* In addition, the is an option to retrieve the user’s current location, this relies on windows geocoordinatewatcher, accuracy depends on several factors, and hence the results should be checked.
+* In addition, the is an option to retrieve the user’s current location, this relies on windows GeoCoordinateWatcher, accuracy depends on several factors, and hence the results should be checked.
 ### Zmanim
 * The program has a preset list of zmanim that can be changed to the users preference.
 * Pressing delete will remove the selected zman.
-* Double clicking on the zman’s name will allow for editing its name
+* Double clicking on the zman’s name will allow editing its name
 * Double clicking on the zman’s time will open a dropdown list with all available zmanim. Explanation of the varies zmanim can be [found here](https://kosherjava.com/zmanim-project/).
 * The order of the zmanim can be rearranged simply by dragging and dropping.
 * The are additional options available via an right click context menu, when clicking somewhere in the zmanim box.
