@@ -26,7 +26,7 @@ Most of the locations are missing elevation info.
 ### Zmanim
 * The program has a preset list of zmanim that can be changed to the users preference.
 * Pressing delete will remove the selected zman.
-* Double clicking on the zman’s name will allow for editing its name
+* Double clicking on the zman’s name will allow editing its name
 * Double clicking on the zman’s time will open a dropdown list with all available zmanim. Explanation of the varies zmanim can be [found here](https://kosherjava.com/zmanim-project/).
 * The order of the zmanim can be rearranged simply by dragging and dropping.
 * The are additional options available via an right click context menu, when clicking somewhere in the zmanim box.
