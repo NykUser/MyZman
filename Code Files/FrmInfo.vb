@@ -139,11 +139,9 @@ Public Class Frminfo
         If DataGridView1.Rows(num).Cells.Count < 3 Then Exit Sub 'If ListView1.Items(num).SubItems.Count < 2 Then Exit Sub
 
         Dim myzman, DataGridZman As Date
-        'Remove RTL ChrW(&H200E) if the is 
-        If DataGridView1(2, num).Value = "" Then Exit Sub
-        myzman = DataGridView1(2, num).Value.Replace(ChrW(&H200E), "") 'ListView1.Items(num).SubItems(1).Text.Replace(ChrW(&H200E), "")
+        Dim myTimeSpan As TimeSpan
 
-        Dim myTimeSpan As TimeSpan = myzman.TimeOfDay - TimeZoneInfo.ConvertTime(Now(), varZmanTimeZone).TimeOfDay
+        If DataGridView1(2, num).Value = "" Then Exit Sub
 
         Dim Counter As Integer = 0
         If varSC.ColorZman = True Then
@@ -164,6 +162,9 @@ Public Class Frminfo
         End If
 
         If varSC.ShowTimesOnStatusBar = False Then Exit Sub
+        'Remove RTL ChrW(&H200E) if the is 
+        myzman = DataGridView1(2, num).Value.Replace(ChrW(&H200E), "") 'ListView1.Items(num).SubItems(1).Text.Replace(ChrW(&H200E), "")
+        myTimeSpan = myzman.TimeOfDay - TimeZoneInfo.ConvertTime(Now(), varZmanTimeZone).TimeOfDay
 
         If myTimeSpan.TotalMilliseconds > 0 Then
             varSavedStatusLabel = ChrW(&H200E) & myzman.ToString(TimeFormat) & " \ " & myTimeSpan.ToString("h\:mm\:ss")
