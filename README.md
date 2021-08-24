@@ -14,7 +14,7 @@ The Code is released under the LGPL 2.1 license.
 * Gregorian dates are selected via the date picker.
 * Hebrew dates are typed into the Hebrew Date textbox.
 ### Locations
-* Included with the program the is a list of locations (in a file named LocationsList.xml, this file needs to be in the same folder as MyZman.exe).
+* Included with the program there is a list of locations (in a file named LocationsList.xml, this file needs to be in the same folder as MyZman.exe).
 Please be aware that this list was gathered from online sources, and its accuracy has not been checked.
 Most of the locations are missing elevation info.
 * When a location is selected the zmanim automatically updates according to the location’s values.
@@ -49,7 +49,7 @@ Most of the locations are missing elevation info.
 * Project uses the above’s NET port developed by Yitzchok Gottlieb [Found here](https://github.com/Yitzchok/Zmanim) (Release 1.5.0)
 * The Net Port’s Function GetParsha has [an issue](https://github.com/Yitzchok/Zmanim/issues/28) Custom Function GetParshaNew used instead.
 * By default, all zmanim calculations use the NOAA algorithm (developed by Jean Meeus).
-* By default, all zmanim calculations and are based on sea level.
+* By default, all zmanim calculations are based on sea level.
 * The is an options to use the older USNO algorithm (more on the differences see below) or to use the locations elevation via the right click context menu in the zmanim box (as mentioned above the saved locations elevation is incomplete).
 * Project uses the GeoTimeZone library [from here](https://github.com/mattjohnsonpint/GeoTimeZone) (Release 4.1.0) to look up time zones according to Geolocations.
 * IANA time zone IDs are passed to the TimeZoneConverter library [from here](https://github.com/mattjohnsonpint/TimeZoneConverter) (Release 3.5.0)
