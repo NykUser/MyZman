@@ -24,6 +24,7 @@ Module ProjectsGlobalVariables
     Public varDataGridNumColumn As Integer
     Public varDataGridNumRow As Integer = 0
     Public varGeoLocation As GeoLocation
+    Public varLocationSecondTry As Boolean = False
 
     Public varHC As New HebrewCalendar()
     Public varHculture As CultureInfo = CultureInfo.CreateSpecificCulture("he-IL")

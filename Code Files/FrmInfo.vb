@@ -383,7 +383,7 @@ Public Class Frminfo
         'Dim MyStopwatch As New Stopwatch
         'MyStopwatch.Start()
 
-        MyGeowatcher.TryStart(True, TimeSpan.FromSeconds(5))
+        MyGeowatcher.TryStart(true, TimeSpan.FromSeconds(5))
 
         TimerStatusLabel.Enabled = False
         'varSavedStatusLabel = "Working On Getting Current GeoLocation"
@@ -403,6 +403,7 @@ Public Class Frminfo
         'Debug.Print("Time elapsed: {0}", MyStopwatch.Elapsed)
 
         If MyGeowatcher.Status = GeoPositionStatus.Ready Then
+            varLocationSecondTry = False
             Dim GeoCoordinate As GeoCoordinate = MyGeowatcher.Position.Location
             If varSC.PlaceListInHebrew = True Then
                 cbLocationList.Text = "מיקום נוכחי | Current Location"
@@ -425,14 +426,21 @@ Public Class Frminfo
             TimerStatusLabel.Interval = 5000
             'Debug.Print(String.Format("Lat: {0}, Long: {1}, H Accuracy: {2}, V Accuracy: {3}, Crse: {4}, Spd: {5}, Alt: {6}", GeoCoordinate.Latitude, GeoCoordinate.Longitude, GeoCoordinate.HorizontalAccuracy, GeoCoordinate.VerticalAccuracy, GeoCoordinate.Course, GeoCoordinate.Speed, GeoCoordinate.Altitude))
         Else
-            varSavedStatusLabel = "Was Not Able To Get Current GeoLocation. Try Again"
-            If varSC.HebrewMenus = True Then varSavedStatusLabel = "לא הצליח להשיג מיקום גיאוגרפי נוכחי. נסה שוב"
+            'Check Windows Location Settings
+            If varLocationSecondTry = False Then
+                varLocationSecondTry = True
+                varSavedStatusLabel = "Was Not Able To Get Current GeoLocation. Try Again"
+                If varSC.HebrewMenus = True Then varSavedStatusLabel = "לא הצליח להשיג מיקום גיאוגרפי נוכחי. נסה שוב"
+            Else
+                varSavedStatusLabel = "Check Windows Location Settings."
+                If varSC.HebrewMenus = True Then varSavedStatusLabel = "בדוק את הגדרות המיקום של ווינדוס."
+            End If
             StatusLabel.Text = TrimStringEllipsis(varSavedStatusLabel, StatusLabel.Font, StatusStrip1.Size.Width - 70)
-            'wait 5s
-            TimerStatusLabel.Interval = 5000
+            'wait 7s
+            TimerStatusLabel.Interval = 7000
         End If
 
-        TimerStatusLabel.Enabled = True
+            TimerStatusLabel.Enabled = True
         MyGeowatcher.Dispose()
 
         'Debug.Print("Position Permission: " & MyGeowatcher.Permission.ToString)
