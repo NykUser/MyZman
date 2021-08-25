@@ -201,7 +201,7 @@ Partial Class Frminfo
         Me.cbLocationList.AutoCompleteCustomSource.AddRange(New String() {"Squre", "york"})
         Me.cbLocationList.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend
         Me.cbLocationList.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems
-        Me.cbLocationList.DropDownWidth = 250
+        Me.cbLocationList.DropDownWidth = 231
         Me.cbLocationList.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
         Me.cbLocationList.FormattingEnabled = True
         Me.cbLocationList.Location = New System.Drawing.Point(9, 24)
@@ -705,7 +705,7 @@ Partial Class Frminfo
         Me.rbtLocationContexOpen.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.rbtLocationContexOpen.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
         Me.rbtLocationContexOpen.Image = Global.zman.My.Resources.Resources.three_dots_icon_gray
-        Me.rbtLocationContexOpen.Location = New System.Drawing.Point(244, 22)
+        Me.rbtLocationContexOpen.Location = New System.Drawing.Point(241, 22)
         Me.rbtLocationContexOpen.Name = "rbtLocationContexOpen"
         Me.rbtLocationContexOpen.Size = New System.Drawing.Size(17, 28)
         Me.rbtLocationContexOpen.TabIndex = 8
@@ -717,7 +717,7 @@ Partial Class Frminfo
         Me.rbtTodayRefresh.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.rbtTodayRefresh.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
         Me.rbtTodayRefresh.Image = Global.zman.My.Resources.Resources.Undo_16x
-        Me.rbtTodayRefresh.Location = New System.Drawing.Point(233, 23)
+        Me.rbtTodayRefresh.Location = New System.Drawing.Point(230, 23)
         Me.rbtTodayRefresh.Name = "rbtTodayRefresh"
         Me.rbtTodayRefresh.Size = New System.Drawing.Size(26, 23)
         Me.rbtTodayRefresh.TabIndex = 3
