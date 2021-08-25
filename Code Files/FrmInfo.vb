@@ -76,8 +76,8 @@ Public Class Frminfo
         'Me.MouseLeave did not respond to fast movements, using Bounds.Contains
         'expend the top and Bottom Bounds a bit for toolstrip and border
         Dim NewBounds = Me.Bounds
-        NewBounds.Y = NewBounds.Y - 10
-        NewBounds.Height = NewBounds.Height + 10
+        NewBounds.Y -= 10
+        NewBounds.Height += 10
 
         'making it Transparent when out of Bounds 
         If NewBounds.Contains(Cursor.Position) = False Then Me.Opacity = varSC.TransparencyValue 'Or varMouseEnter = False 'or MouseLeave

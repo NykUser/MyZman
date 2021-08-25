@@ -81,10 +81,10 @@ Public Class FrmExport
 
         For i = 1 To NumDays
 
-            DayCount = DayCount + 1
+            DayCount += 1
             If DayCount > DaysPerFile Then
                 'Debug.Print("numdays: " & NumDays & " daysper: " & DaysPerFile & " daycount: " & DayCount)
-                DayCount = DayCount - DaysPerFile
+                DayCount -= DaysPerFile
                 file.WriteLine("END:VCALENDAR")
                 file.Close()
                 file = My.Computer.FileSystem.OpenTextFileWriter(folder & "\" & Work_Date.ToString("MM-dd-yy") & ".vcs", False, utf8WithoutBom) ' .GetEncoding(1255) 'System.Text.Encoding.UTF8
