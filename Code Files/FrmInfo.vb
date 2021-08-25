@@ -5,7 +5,7 @@ Imports System.ComponentModel
 
 Public Class Frminfo
     Private Sub Frminfo_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        'the is a switch [/s] for Scheduler in ApplicationEvents.vb
+        'see switch [/s] for Scheduler in ApplicationEvents.vb
 
         LoadSettingsandVariables()
         If Screen.PrimaryScreen.Bounds.Contains(Me.Bounds) = False Then
@@ -41,13 +41,14 @@ Public Class Frminfo
     End Sub
     '==============================
     'move the form without the title bar
-    Dim Pos As Point
-    Private Sub frminfo_MouseMove(sender As Object, e As System.Windows.Forms.MouseEventArgs) Handles MyBase.MouseMove
-        'If e.Button = Windows.Forms.MouseButtons.Left Then
-        '    Me.Location += Control.MousePosition - Pos
-        'End If
-        'Pos = Control.MousePosition
-    End Sub
+    'Dim Pos As Point
+    'Private Sub frminfo_MouseMove(sender As Object, e As System.Windows.Forms.MouseEventArgs) Handles MyBase.MouseMove
+    '    'If e.Button = Windows.Forms.MouseButtons.Left Then
+    '    '    Me.Location += Control.MousePosition - Pos
+    '    'End If
+    '    'Pos = Control.MousePosition
+    'End Sub
+    '==============================
     Private Sub Frminfo_Resize(sender As Object, e As EventArgs) Handles Me.Resize
         'resize StatusLabel
         StatusLabel.Text = TrimStringEllipsis(varSavedStatusLabel, StatusLabel.Font, StatusStrip1.Size.Width - 70)

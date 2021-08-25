@@ -75,7 +75,7 @@ Public Class FrmExport
         Dim TempCZC As ComplexZmanimCalendar
 
 
-        Debug.Print("numdays: " & NumDays & " daysper: " & DaysPerFile & " daycount: " & DayCount)
+        'Debug.Print("numdays: " & NumDays & " daysper: " & DaysPerFile & " daycount: " & DayCount)
         file = My.Computer.FileSystem.OpenTextFileWriter(folder & "\" & Work_Date.ToString("MM-dd-yy") & ".vcs", False, utf8WithoutBom) ' .GetEncoding(1255) 'System.Text.Encoding.UTF8
         file.WriteLine("BEGIN:VCALENDAR" & vbCrLf & "VERSION:1.0")
 
@@ -83,7 +83,7 @@ Public Class FrmExport
 
             DayCount = DayCount + 1
             If DayCount > DaysPerFile Then
-                Debug.Print("numdays: " & NumDays & " daysper: " & DaysPerFile & " daycount: " & DayCount)
+                'Debug.Print("numdays: " & NumDays & " daysper: " & DaysPerFile & " daycount: " & DayCount)
                 DayCount = DayCount - DaysPerFile
                 file.WriteLine("END:VCALENDAR")
                 file.Close()
