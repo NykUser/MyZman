@@ -27,7 +27,7 @@ Namespace My
         Private Sub MyApplication_StartupNextInstance(sender As Object, e As StartupNextInstanceEventArgs) Handles Me.StartupNextInstance
             'AddHandler AppDomain.CurrentDomain.AssemblyResolve, AddressOf ResolveAssemblies
 
-            'dont bring ToForeground when Schedule is run - frminfo will come To Foreground if in time via FrmSchedule.RunSchedulecheck
+            'dont bring ToForeground when Schedule is run
 
             e.BringToForeground = False
             'switch for Scheduler  - this is for when Myzman is already running
@@ -36,7 +36,6 @@ Namespace My
                 If args(0) = "/s" Or args(0) = "/S" Then FrmSchedule.RunSchedulecheck(False)
                 'don't close let the first Instance continue
             End If
-
 
 
             'this uses Mutex And will work on none Single instance application
@@ -51,12 +50,6 @@ Namespace My
             'End If
 
         End Sub
-
-
-
-
-
-
         'for DLL's
         'Add the desired assembly to the project's resources.
         'Build Action = None
@@ -67,7 +60,7 @@ Namespace My
             '  MsgBox(desiredAssembly.Name)
 
             If desiredAssembly.Name = "Zmanim" Then
-                Return Reflection.Assembly.Load(My.Resources.Zmanim) 'replace with assembly's resource name
+                Return Reflection.Assembly.Load(My.Resources.Zmanim)
             ElseIf desiredAssembly.Name = "GeoTimeZone" Then
                 Return Reflection.Assembly.Load(My.Resources.GeoTimeZone)
             ElseIf desiredAssembly.Name = "TimeZoneConverter" Then
