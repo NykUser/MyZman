@@ -12,7 +12,7 @@
         tbTimeB.Font = MemoryFonts.GetFont(0, 10, FontStyle.Regular)
         CBMday.Font = MemoryFonts.GetFont(0, 8.75, FontStyle.Regular)
 
-        If Frminfo.mHebrewMenus.Checked = True Then
+        If varSC.HebrewMenus = True Then
             GroupBox1.RightToLeft = 1
             GroupBox2.RightToLeft = 1
             CbTimeA.RightToLeft = 0
@@ -66,7 +66,7 @@
         End If
     End Sub
 
-    'hidden
+    'hidden button's
     '--------------------------------------------------------------
     Private Sub btSunOffset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btSunOffset.Click
         'check dates that SunOffset is not applicable 
