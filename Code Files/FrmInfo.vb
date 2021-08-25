@@ -1,8 +1,5 @@
 ﻿'MemoryFonts.GetFont(0, = ArialUnicodeCompact
 'MemoryFonts.GetFont(1, = Varela Round
-
-Imports System.ComponentModel
-
 Public Class Frminfo
     Private Sub Frminfo_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         'see switch [/s] for Scheduler in ApplicationEvents.vb
@@ -83,7 +80,7 @@ Public Class Frminfo
         If NewBounds.Contains(Cursor.Position) = False Then Me.Opacity = varSC.TransparencyValue 'Or varMouseEnter = False 'or MouseLeave
 
         'turning it back on only when mouse over and MouseEnter
-        'add to check if MouseEnter was triggered to not show if mouse is over something else
+        'add to check if MouseEnter was triggered - don't show if mouse is over something else
         If NewBounds.Contains(Cursor.Position) And varMouseEnter = True Then Me.Opacity = 1
 
         'for time on top of form
@@ -129,15 +126,15 @@ Public Class Frminfo
         If varSC.Clock24Hour = True Then TimeFormat = "H:mm:ss"
 
         'exit if the is no zmanim
-        If DataGridView1.RowCount < 2 Then Exit Sub  'If ListView1.Items.Count < 1 Then Exit Sub
+        If DataGridView1.RowCount < 2 Then Exit Sub
         Dim num As Integer
 
-        If DataGridView1.SelectedRows.Count < 1 Then ' ListView1.SelectedItems.Count = 0 Then
+        If DataGridView1.SelectedRows.Count < 1 Then
             num = 0
         Else
-            num = DataGridView1.SelectedRows(0).Index 'ListView1.FocusedItem.Index
+            num = DataGridView1.SelectedRows(0).Index
         End If
-        If DataGridView1.Rows(num).Cells.Count < 3 Then Exit Sub 'If ListView1.Items(num).SubItems.Count < 2 Then Exit Sub
+        If DataGridView1.Rows(num).Cells.Count < 3 Then Exit Sub
 
         Dim myzman, DataGridZman As Date
         Dim myTimeSpan As TimeSpan
@@ -164,7 +161,7 @@ Public Class Frminfo
 
         If varSC.ShowTimesOnStatusBar = False Then Exit Sub
         'Remove RTL ChrW(&H200E) if the is 
-        myzman = DataGridView1(2, num).Value.Replace(ChrW(&H200E), "") 'ListView1.Items(num).SubItems(1).Text.Replace(ChrW(&H200E), "")
+        myzman = DataGridView1(2, num).Value.Replace(ChrW(&H200E), "")
         myTimeSpan = myzman.TimeOfDay - TimeZoneInfo.ConvertTime(Now(), varZmanTimeZone).TimeOfDay
 
         If myTimeSpan.TotalMilliseconds > 0 Then
@@ -176,9 +173,14 @@ Public Class Frminfo
         StatusLabel.Text = TrimStringEllipsis(varSavedStatusLabel, StatusLabel.Font, StatusStrip1.Size.Width - 70)
 
     End Sub
+    'If ListView1.Items.Count < 1 Then Exit Sub
+    ' ListView1.SelectedItems.Count = 0 Then
+    'ListView1.FocusedItem.Index
+    'If ListView1.Items(num).SubItems.Count < 2 Then Exit Sub
+    'ListView1.Items(num).SubItems(1).Text.Replace(ChrW(&H200E), "")
+
     Private Sub cbLocationList_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbLocationList.SelectedIndexChanged
         change_place(cbLocationList.SelectedIndex)
-
         'removed, this will set it to 0 when form loads
         'varSC.LastSelectedIndex = cbLocationList.SelectedIndex
     End Sub
@@ -322,7 +324,7 @@ Public Class Frminfo
     Private Sub mInfoHelp_Click(sender As Object, e As EventArgs) Handles mInfoHelp.Click
         Try
             Process.Start("https://github.com/NykUser/MyZman")
-        Catch ex As Win32Exception
+        Catch ex As Exception
             Process.Start("IExplore.exe", "https://github.com/NykUser/MyZman")
         End Try
     End Sub
@@ -334,7 +336,6 @@ Public Class Frminfo
         End If
         varSC.StayOnTop = mStayOnTopToolStripMenuItem.Checked
     End Sub
-
     Private Sub mUseUSNO_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mUseUSNO.Click
         varSC.UseOlderUsnoAlgorithm = mUseUSNO.Checked
         Place_orDate_changed()
@@ -378,25 +379,92 @@ Public Class Frminfo
             LocationContextMenu.Show(rbtLocationContexOpen, 0, rbtLocationContexOpen.Height)
         End If
     End Sub
+    Private Sub mAddZman_Click(sender As Object, e As EventArgs) Handles mAddZman.Click
+        Dim NewZman As aZman = New aZman
+        NewZman.DisplayName = "הזן פרטי הזמן"
+        NewZman.FunctionName = "GetAlos120"
+        NewZman.ObjectName = "varCZC"
+        If DataGridView1.Rows.Count > 0 Then
+            varSC.Zmanim.Items.Insert(DataGridView1.SelectedRows(0).Index + 1, NewZman)
+            varDataGridNumRow = DataGridView1.SelectedRows(0).Index + 1
+        Else
+            varSC.Zmanim.Items.Insert(0, NewZman)
+            varDataGridNumRow = 0
+        End If
+        Place_orDate_changed()
+        DataGridView1.BeginEdit(True)
+    End Sub
+    Private Sub mResetZmanimList_Click(sender As Object, e As EventArgs) Handles mResetZmanimList.Click
+        If varSC.AskWhenChanging = True Then
+            Dim Response
+            Using New Centered_MessageBox(Me, "MouseCenter")
+                If varSC.HebrewMenus = True Then
+                    Response = MsgBox(".פעולה זו תסיר שינויים ותוספות שנעשו ברשימת הזמנים" & vbCr & "?בטוח שאתה רוצה להמשיך", MsgBoxStyle.YesNo + MsgBoxStyle.Question + MsgBoxStyle.MsgBoxRight)
+                Else
+                    Response = MsgBox("This Will Remove Changes & Additions Made To The Zmanim List." & vbCr & "Sure You Want To Continue?", MsgBoxStyle.YesNo + MsgBoxStyle.Question)
+                End If
+            End Using
+            If Response = vbNo Then Exit Sub
+        End If
+        If varSC.BackUpWhenChanging = True Then varSC.Save(varUserFile & ".Bak " & Now.ToString("M-d-yy H.m"))
+
+        UseDefultzmnaim()
+        varSC.Save(varUserFile)
+        Place_orDate_changed()
+    End Sub
+    Private Sub mResetSettings_Click(sender As Object, e As EventArgs) Handles mResetSettings.Click
+        If varSC.AskWhenChanging = True Then
+            Dim Response
+            Using New Centered_MessageBox(Me, "MouseCenter")
+                If varSC.HebrewMenus = True Then
+                    Response = MsgBox(".פעולה זו תסיר את כל הגדרות המשתמש" & vbCr & "?בטוח שאתה רוצה להמשיך", MsgBoxStyle.YesNo + MsgBoxStyle.Question + MsgBoxStyle.MsgBoxRight)
+                Else
+                    Response = MsgBox("This Will Remove All User Settings." & vbCr & "Sure You Want To Continue?", MsgBoxStyle.YesNo + MsgBoxStyle.Question)
+                End If
+            End Using
+            If Response = vbNo Then Exit Sub
+        End If
+        If varSC.BackUpWhenChanging = True Then varSC.Save(varUserFile & ".Bak " & Now.ToString("M-d-yy H.m"))
+
+
+        'save Locations & Zmanim
+        Dim tempZmanim As New List(Of aZman)
+        Dim tempLocation As New List(Of aLocation)
+        varSC.Zmanim.Items.ForEach(Sub(x) tempZmanim.Add(x))
+        varSC.Location.Items.ForEach(Sub(x) tempLocation.Add(x))
+        varSC = New SettingsCollection
+        tempZmanim.ForEach(Sub(x) varSC.Zmanim.Add(x))
+        tempLocation.ForEach(Sub(x) varSC.Location.Add(x))
+
+        varSC.Save(varUserFile)
+        LoadSettingsandVariables()
+
+        Me.CenterToScreen()
+        Me.Size = New System.Drawing.Size(305, 908)
+        DataGridView1.Columns(1).Width = 160
+        DataGridView1.Columns(2).Width = 100
+
+        TimerLocationsLoad.Enabled = True
+    End Sub
     Private Sub mGetCurrnetLocation_Click(sender As Object, e As EventArgs) Handles mGetCurrnetLocation.Click
         Dim MyGeowatcher As GeoCoordinateWatcher = New GeoCoordinateWatcher
 
         'Dim MyStopwatch As New Stopwatch
         'MyStopwatch.Start()
 
-        MyGeowatcher.TryStart(true, TimeSpan.FromSeconds(5))
+        MyGeowatcher.TryStart(True, TimeSpan.FromSeconds(5))
 
         TimerStatusLabel.Enabled = False
         'varSavedStatusLabel = "Working On Getting Current GeoLocation"
         'StatusLabel.Text = TrimStringEllipsis(varSavedStatusLabel, StatusLabel.Font, StatusStrip1.Size.Width - 70)
         StatusLabel.Text = ""
-        ToolStripProgressBar1.Maximum = 590000
+        ToolStripProgressBar1.Maximum = 790000
         ToolStripProgressBar1.Value = 0
         ToolStripProgressBar1.Visible = True
 
         Dim WaitUntil As Date = Now.AddSeconds(5)
         Do Until Now > WaitUntil
-            If ToolStripProgressBar1.Value < 589999 Then ToolStripProgressBar1.Value = ToolStripProgressBar1.Value + 1
+            If ToolStripProgressBar1.Value < 789999 Then ToolStripProgressBar1.Value = ToolStripProgressBar1.Value + 1
             If MyGeowatcher.Status = GeoPositionStatus.Ready Then Exit Do
             System.Windows.Forms.Application.DoEvents()
         Loop
@@ -441,7 +509,7 @@ Public Class Frminfo
             TimerStatusLabel.Interval = 7000
         End If
 
-            TimerStatusLabel.Enabled = True
+        TimerStatusLabel.Enabled = True
         MyGeowatcher.Dispose()
 
         'Debug.Print("Position Permission: " & MyGeowatcher.Permission.ToString)
@@ -520,7 +588,7 @@ Public Class Frminfo
         TimerStatusLabel.Interval = 5000
         TimerStatusLabel.Enabled = True
     End Sub
-    Private Sub RemovePlace_Click(sender As Object, e As EventArgs) Handles mRemoveLocation.Click
+    Private Sub mRemoveLocation_Click(sender As Object, e As EventArgs) Handles mRemoveLocation.Click
         If cbLocationList.Text = "" Then Exit Sub
 
         If cbLocationList.SelectedIndex < 0 And varSelectedIndexBeforChange < 0 Then Exit Sub
@@ -836,73 +904,6 @@ Public Class Frminfo
         If varDataGridNumColumn > 0 Then varSC.Zmanim.Items.RemoveAt(varDataGridNumColumn - 1)
         Place_orDate_changed()
     End Sub
-    Private Sub mAddZman_Click(sender As Object, e As EventArgs) Handles mAddZman.Click
-        Dim NewZman As aZman = New aZman
-        NewZman.DisplayName = "הזן פרטי הזמן"
-        NewZman.FunctionName = "GetAlos120"
-        NewZman.ObjectName = "varCZC"
-        If DataGridView1.Rows.Count > 0 Then
-            varSC.Zmanim.Items.Insert(DataGridView1.SelectedRows(0).Index + 1, NewZman)
-            varDataGridNumRow = DataGridView1.SelectedRows(0).Index + 1
-        Else
-            varSC.Zmanim.Items.Insert(0, NewZman)
-            varDataGridNumRow = 0
-        End If
-        Place_orDate_changed()
-        DataGridView1.BeginEdit(True)
-    End Sub
-    Private Sub mResetZmanimList_Click(sender As Object, e As EventArgs) Handles mResetZmanimList.Click
-        If varSC.AskWhenChanging = True Then
-            Dim Response
-            Using New Centered_MessageBox(Me, "MouseCenter")
-                If varSC.HebrewMenus = True Then
-                    Response = MsgBox(".פעולה זו תסיר שינויים ותוספות שנעשו ברשימת הזמנים" & vbCr & "?בטוח שאתה רוצה להמשיך", MsgBoxStyle.YesNo + MsgBoxStyle.Question + MsgBoxStyle.MsgBoxRight)
-                Else
-                    Response = MsgBox("This Will Remove Changes & Additions Made To The Zmanim List." & vbCr & "Sure You Want To Continue?", MsgBoxStyle.YesNo + MsgBoxStyle.Question)
-                End If
-            End Using
-            If Response = vbNo Then Exit Sub
-        End If
-        If varSC.BackUpWhenChanging = True Then varSC.Save(varUserFile & ".Bak " & Now.ToString("M-d-yy H.m"))
-
-        UseDefultzmnaim()
-        varSC.Save(varUserFile)
-        Place_orDate_changed()
-    End Sub
-    Private Sub mResetSettings_Click(sender As Object, e As EventArgs) Handles mResetSettings.Click
-        If varSC.AskWhenChanging = True Then
-            Dim Response
-            Using New Centered_MessageBox(Me, "MouseCenter")
-                If varSC.HebrewMenus = True Then
-                    Response = MsgBox(".פעולה זו תסיר את כל הגדרות המשתמש" & vbCr & "?בטוח שאתה רוצה להמשיך", MsgBoxStyle.YesNo + MsgBoxStyle.Question + MsgBoxStyle.MsgBoxRight)
-                Else
-                    Response = MsgBox("This Will Remove All User Settings." & vbCr & "Sure You Want To Continue?", MsgBoxStyle.YesNo + MsgBoxStyle.Question)
-                End If
-            End Using
-            If Response = vbNo Then Exit Sub
-        End If
-        If varSC.BackUpWhenChanging = True Then varSC.Save(varUserFile & ".Bak " & Now.ToString("M-d-yy H.m"))
-
-
-        'save Locations & Zmanim
-        Dim tempZmanim As New List(Of aZman)
-        Dim tempLocation As New List(Of aLocation)
-        varSC.Zmanim.Items.ForEach(Sub(x) tempZmanim.Add(x))
-        varSC.Location.Items.ForEach(Sub(x) tempLocation.Add(x))
-        varSC = New SettingsCollection
-        tempZmanim.ForEach(Sub(x) varSC.Zmanim.Add(x))
-        tempLocation.ForEach(Sub(x) varSC.Location.Add(x))
-
-        varSC.Save(varUserFile)
-        LoadSettingsandVariables()
-
-        Me.CenterToScreen()
-        Me.Size = New System.Drawing.Size(305, 908)
-        DataGridView1.Columns(1).Width = 160
-        DataGridView1.Columns(2).Width = 100
-
-        TimerLocationsLoad.Enabled = True
-    End Sub
 
     '======== vars for DragAndDrop
     Private dragBoxFromMouseDown As Rectangle
@@ -958,7 +959,7 @@ Public Class Frminfo
 
     Public Sub mHebrewMenus_Click() Handles mHebrewMenus.Click
         varSC.HebrewMenus = mHebrewMenus.Checked
-        Place_orDate_changed()
+        change_zman()
 
         If mHebrewMenus.Checked = True Then
             Me.RightToLeft = 1
