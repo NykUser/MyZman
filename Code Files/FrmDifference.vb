@@ -23,8 +23,10 @@
             Me.Text = "השווה זמנים"
             GroupBox1.Text = "זמן א"
             GroupBox2.Text = "זמן ב"
-            LabelDifference.Text = "הבדל"
             LabelDifference.Font = MemoryFonts.GetFont(0, 8.75, FontStyle.Regular)
+            LabelDifference.Text = "הבדל"
+            LabelDifference.RightToLeft = 1
+
         Else
             GroupBox1.RightToLeft = 0
             GroupBox2.RightToLeft = 0
