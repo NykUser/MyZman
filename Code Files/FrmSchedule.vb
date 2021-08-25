@@ -4,7 +4,7 @@ Public Class FrmSchedule
     Private TempTimeZone As TimeZoneInfo
 
     Private Sub FrmSchedule_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        Me.Location = New System.Drawing.Point(Frminfo.Location.X + ((Frminfo.Width - Me.Width) / 2), Frminfo.Bounds.Bottom - (Me.Height + 25))
+        Me.Location = New System.Drawing.Point(Frminfo.Location.X + ((Frminfo.Width - Me.Width) / 2), Frminfo.Bounds.Bottom - (Me.Height + 45))
 
         GroupBox2.Font = MemoryFonts.GetFont(1, 12, FontStyle.Regular)
         cbLocationList.Font = MemoryFonts.GetFont(0, 9, FontStyle.Regular)

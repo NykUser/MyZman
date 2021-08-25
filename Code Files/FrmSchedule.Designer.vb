@@ -45,6 +45,7 @@ Partial Class FrmSchedule
         Me.tbSound = New System.Windows.Forms.TextBox()
         Me.tbReminderTotal = New System.Windows.Forms.TextBox()
         Me.LabelMessage = New System.Windows.Forms.Label()
+        Me.rbtClear = New zman.WindowsFormsApplication1.RoundButton()
         Me.tbReminderNum = New System.Windows.Forms.TextBox()
         Me.btNext = New System.Windows.Forms.Button()
         Me.LabelFrom = New System.Windows.Forms.Label()
@@ -65,7 +66,6 @@ Partial Class FrmSchedule
         Me.LabelLongitude = New System.Windows.Forms.Label()
         Me.cbTimeZone = New System.Windows.Forms.ComboBox()
         Me.LabelLatitude = New System.Windows.Forms.Label()
-        Me.rbtClear = New zman.WindowsFormsApplication1.RoundButton()
         Me.GroupBox2.SuspendLayout()
         CType(Me.pbTasksON, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox1.SuspendLayout()
@@ -312,6 +312,18 @@ Partial Class FrmSchedule
         Me.LabelMessage.TabIndex = 61
         Me.LabelMessage.Text = "Reminder Message"
         '
+        'rbtClear
+        '
+        Me.rbtClear.FlatAppearance.BorderSize = 0
+        Me.rbtClear.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.rbtClear.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
+        Me.rbtClear.Image = Global.zman.My.Resources.Resources.broombrushclearsweep22
+        Me.rbtClear.Location = New System.Drawing.Point(176, 119)
+        Me.rbtClear.Name = "rbtClear"
+        Me.rbtClear.Size = New System.Drawing.Size(26, 23)
+        Me.rbtClear.TabIndex = 9
+        Me.rbtClear.UseVisualStyleBackColor = True
+        '
         'tbReminderNum
         '
         Me.tbReminderNum.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
@@ -520,18 +532,6 @@ Partial Class FrmSchedule
         Me.LabelLatitude.TabIndex = 47
         Me.LabelLatitude.Text = "Latitude"
         '
-        'rbtClear
-        '
-        Me.rbtClear.FlatAppearance.BorderSize = 0
-        Me.rbtClear.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.rbtClear.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
-        Me.rbtClear.Image = Global.zman.My.Resources.Resources.broombrushclearsweep22
-        Me.rbtClear.Location = New System.Drawing.Point(176, 119)
-        Me.rbtClear.Name = "rbtClear"
-        Me.rbtClear.Size = New System.Drawing.Size(26, 23)
-        Me.rbtClear.TabIndex = 9
-        Me.rbtClear.UseVisualStyleBackColor = True
-        '
         'FrmSchedule
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -545,6 +545,7 @@ Partial Class FrmSchedule
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
         Me.MaximumSize = New System.Drawing.Size(260, 610)
+        Me.MinimumSize = New System.Drawing.Size(260, 465)
         Me.Name = "FrmSchedule"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Schedule"

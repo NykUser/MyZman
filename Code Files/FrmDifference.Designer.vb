@@ -27,7 +27,6 @@ Partial Class FrmDifference
         Me.CBMday = New System.Windows.Forms.CheckBox()
         Me.btSystemInfo = New System.Windows.Forms.Button()
         Me.make_dat_file = New System.Windows.Forms.Button()
-        Me.Button2 = New System.Windows.Forms.Button()
         Me.TextBox1 = New System.Windows.Forms.TextBox()
         Me.CbTimeA = New System.Windows.Forms.ComboBox()
         Me.CbTimeB = New System.Windows.Forms.ComboBox()
@@ -37,15 +36,16 @@ Partial Class FrmDifference
         Me.btSunOffset = New System.Windows.Forms.Button()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
-        Me.LabelDifference = New System.Windows.Forms.Label()
         Me.Butexit = New System.Windows.Forms.Button()
+        Me.LabelDifference = New System.Windows.Forms.Label()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.SuspendLayout()
         '
         'btAddTimeZoneId
         '
-        Me.btAddTimeZoneId.Location = New System.Drawing.Point(280, 74)
+        Me.btAddTimeZoneId.Enabled = False
+        Me.btAddTimeZoneId.Location = New System.Drawing.Point(361, 72)
         Me.btAddTimeZoneId.Name = "btAddTimeZoneId"
         Me.btAddTimeZoneId.Size = New System.Drawing.Size(75, 21)
         Me.btAddTimeZoneId.TabIndex = 74
@@ -79,15 +79,6 @@ Partial Class FrmDifference
         Me.make_dat_file.TabIndex = 66
         Me.make_dat_file.Text = "make_dat_file"
         Me.make_dat_file.UseVisualStyleBackColor = True
-        '
-        'Button2
-        '
-        Me.Button2.Location = New System.Drawing.Point(361, 74)
-        Me.Button2.Name = "Button2"
-        Me.Button2.Size = New System.Drawing.Size(75, 21)
-        Me.Button2.TabIndex = 65
-        Me.Button2.Text = "זמנים לטל"
-        Me.Button2.UseVisualStyleBackColor = True
         '
         'TextBox1
         '
@@ -166,6 +157,7 @@ Partial Class FrmDifference
         'GroupBox2
         '
         Me.GroupBox2.Controls.Add(Me.tbTimeB)
+        Me.GroupBox2.Controls.Add(Me.Butexit)
         Me.GroupBox2.Controls.Add(Me.CbTimeB)
         Me.GroupBox2.Font = New System.Drawing.Font("David", 12.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
         Me.GroupBox2.ForeColor = System.Drawing.Color.DodgerBlue
@@ -176,6 +168,20 @@ Partial Class FrmDifference
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Zman 2"
         '
+        'Butexit
+        '
+        Me.Butexit.BackColor = System.Drawing.SystemColors.Info
+        Me.Butexit.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Me.Butexit.FlatAppearance.BorderColor = System.Drawing.SystemColors.Info
+        Me.Butexit.FlatAppearance.MouseDownBackColor = System.Drawing.SystemColors.Info
+        Me.Butexit.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.Info
+        Me.Butexit.Location = New System.Drawing.Point(188, 58)
+        Me.Butexit.Name = "Butexit"
+        Me.Butexit.Size = New System.Drawing.Size(10, 10)
+        Me.Butexit.TabIndex = 78
+        Me.Butexit.Text = "&exit"
+        Me.Butexit.UseVisualStyleBackColor = False
+        '
         'LabelDifference
         '
         Me.LabelDifference.AutoSize = True
@@ -185,20 +191,6 @@ Partial Class FrmDifference
         Me.LabelDifference.TabIndex = 77
         Me.LabelDifference.Text = "Difference"
         '
-        'Butexit
-        '
-        Me.Butexit.BackColor = System.Drawing.SystemColors.Info
-        Me.Butexit.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.Butexit.FlatAppearance.BorderColor = System.Drawing.SystemColors.Info
-        Me.Butexit.FlatAppearance.MouseDownBackColor = System.Drawing.SystemColors.Info
-        Me.Butexit.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.Info
-        Me.Butexit.Location = New System.Drawing.Point(448, 200)
-        Me.Butexit.Name = "Butexit"
-        Me.Butexit.Size = New System.Drawing.Size(10, 10)
-        Me.Butexit.TabIndex = 78
-        Me.Butexit.Text = "&exit"
-        Me.Butexit.UseVisualStyleBackColor = False
-        '
         'FrmDifference
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -206,7 +198,6 @@ Partial Class FrmDifference
         Me.BackColor = System.Drawing.Color.AliceBlue
         Me.CancelButton = Me.Butexit
         Me.ClientSize = New System.Drawing.Size(255, 231)
-        Me.Controls.Add(Me.Butexit)
         Me.Controls.Add(Me.LabelDifference)
         Me.Controls.Add(Me.GroupBox2)
         Me.Controls.Add(Me.GroupBox1)
@@ -214,7 +205,6 @@ Partial Class FrmDifference
         Me.Controls.Add(Me.CBMday)
         Me.Controls.Add(Me.btSystemInfo)
         Me.Controls.Add(Me.make_dat_file)
-        Me.Controls.Add(Me.Button2)
         Me.Controls.Add(Me.TextBox1)
         Me.Controls.Add(Me.tbTimeR)
         Me.Controls.Add(Me.btSunOffset)
@@ -238,7 +228,6 @@ Partial Class FrmDifference
     Friend WithEvents CBMday As CheckBox
     Friend WithEvents btSystemInfo As Button
     Friend WithEvents make_dat_file As Button
-    Friend WithEvents Button2 As Button
     Friend WithEvents TextBox1 As TextBox
     Friend WithEvents CbTimeA As ComboBox
     Friend WithEvents CbTimeB As ComboBox
