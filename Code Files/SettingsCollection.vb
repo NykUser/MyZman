@@ -1,38 +1,38 @@
 ﻿Public Class SettingsCollection
     Inherits SerializableData
 
-    Public LastSelectedIndex As Integer = 0
-    Public PlaceListInHebrew As Boolean = False
-    Public IsraeliYomTov As Boolean = False
-    Public DefaultType As String = "Last"
-    Public DefaultSelectedindex As Integer = 1
-    Public DefaultName As String = ""
-    Public DefaultPlaceListInHebrew As Boolean = False
-    Public ColorZman As Boolean = False
-    Public StayOnTop As Boolean = False
-    Public UseOlderUsnoAlgorithm As Boolean = False
-    Public CalculateElevation As Boolean = False
-    Public Clock24Hour As Boolean = False
-    Public ChangeKeybordLayout As Boolean = True
-    Public AskWhenChanging As Boolean = True
-    Public BackUpWhenChanging As Boolean = True
-    Public ShowTimesOnStatusBar As Boolean = True
-    Public ShowTooltips As Boolean = True
-    Public LineBetweenZmanim As Boolean = False
-    Public TransparencyValue As Double = 1
-    Public LocationY As Integer = -1
-    Public LocationX As Integer = -1
-    Public SizeW As Integer = -1
-    Public SizeH As Integer = -1
-    Public DataGridCol1W As Integer = -1
-    Public DataGridCol2W As Integer = -1
-    Public HebrewMenus As Boolean = False
-    Public MenuLanguageWasChanged As Boolean = False
-    Public SchedulerLocation As String
-    Public SchedulerLatitude As String
-    Public SchedulerLongitude As String
-    Public SchedulerElevation As String
-    Public SchedulerTimeZone As String
+    Public Property LastSelectedIndex As Integer = 0
+    Public Property PlaceListInHebrew As Boolean = False
+    Public Property IsraeliYomTov As Boolean = False
+    Public Property DefaultType As String = "Last"
+    Public Property DefaultSelectedindex As Integer = 1
+    Public Property DefaultName As String = ""
+    Public Property DefaultPlaceListInHebrew As Boolean = False
+    Public Property ColorZman As Boolean = False
+    Public Property StayOnTop As Boolean = False
+    Public Property UseOlderUsnoAlgorithm As Boolean = False
+    Public Property CalculateElevation As Boolean = False
+    Public Property Clock24Hour As Boolean = False
+    Public Property ChangeKeybordLayout As Boolean = True
+    Public Property AskWhenChanging As Boolean = True
+    Public Property BackUpWhenChanging As Boolean = True
+    Public Property ShowTimesOnStatusBar As Boolean = True
+    Public Property ShowTooltips As Boolean = True
+    Public Property LineBetweenZmanim As Boolean = False
+    Public Property TransparencyValue As Double = 1
+    Public Property LocationY As Integer = -1
+    Public Property LocationX As Integer = -1
+    Public Property SizeW As Integer = -1
+    Public Property SizeH As Integer = -1
+    Public Property DataGridCol1W As Integer = -1
+    Public Property DataGridCol2W As Integer = -1
+    Public Property HebrewMenus As Boolean = False
+    Public Property MenuLanguageWasChanged As Boolean = False
+    Public Property SchedulerLocation As String
+    Public Property SchedulerLatitude As String
+    Public Property SchedulerLongitude As String
+    Public Property SchedulerElevation As String
+    Public Property SchedulerTimeZone As String
 
     Private oZmanim As ZmanimCollection = New ZmanimCollection
     Private oLocation As LocationCollection = New LocationCollection
