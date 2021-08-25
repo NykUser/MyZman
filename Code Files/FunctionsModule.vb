@@ -431,14 +431,16 @@ Module FunctionsModule
             DateTime.Parse(HebDateStringtoNom(myhebdate(0)), varHculture)
         Catch ex As Exception
             Using New Centered_MessageBox(Frminfo, "MouseCenter")
-                MsgBox("!אי אפשר להחליף תאריך זה", MsgBoxStyle.Exclamation + MsgBoxStyle.OkOnly + MsgBoxStyle.MsgBoxRight) ' + MsgBoxStyle.MsgBoxRtlReading
+                If varSC.HebrewMenus = True Then
+                    MsgBox("!תאריך לא מובן", MsgBoxStyle.Exclamation + MsgBoxStyle.OkOnly + MsgBoxStyle.MsgBoxRight) ' + MsgBoxStyle.MsgBoxRtlReading
+                Else
+                    MsgBox("Date Incomprehensible!", MsgBoxStyle.Exclamation + MsgBoxStyle.OkOnly)
+                End If
             End Using
 
             change_hebdate()
-            'hebdate.Text = engdate.Value.ToString("dd MMM yyy")
             Exit Sub
         End Try
-
         Dim mydate As DateTime = DateTime.Parse(HebDateStringtoNom(myhebdate(0)), varHculture)
         Frminfo.dpEngdate.Value = mydate '.ToString("ddddMM/dd/yyyy", New CultureInfo("en-US"))
     End Sub
@@ -710,10 +712,10 @@ A:
         'Month = HebMtoNom(Month)
 
         'HebDateStringtoNom = Month & "/" & day & "/" & Year
-        HebDateStringtoNom = day & " " & Month & " " & Year
+        Return day & " " & Month & " " & Year
 
     End Function
-    Private Function HebLtoNom(ByVal hebstring As String) 'ðëúá òì éãé ayg
+    Private Function HebLtoNom(ByVal hebstring As String)
         Dim temp1
         Dim mynum1() As Integer = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
             10, 20, 30, 40, 50, 60, 70, 80, 90,
@@ -728,10 +730,9 @@ A:
             If hebstring = mynum2(i) Then temp1 = mynum1(i)
         Next
 
-
-        HebLtoNom = temp1
+        Return temp1
     End Function
-    Private Function HebMtoNom(ByVal hebstring) 'ðëúá òì éãé ayg
+    Private Function HebMtoNom(ByVal hebstring)
         Dim temp1
         Dim myMonthM1() As String = {"", "תשרי", "חשון", "כסלו", "טבת", "שבט", "אדר א", "אדר ב", "ניסן", "אייר", "סיון", "תמוז", "אב", "אלול"}
         Dim myMonthM2() As Integer = {0, 1, 2, 3, 4, 5, 6.1, 6.2, 7, 8, 9, 10, 11, 12}
@@ -739,7 +740,7 @@ A:
         For i = 0 To UBound(myMonthM1)
             If hebstring = myMonthM1(i) Then temp1 = myMonthM2(i)
         Next
-        HebMtoNom = temp1
+        Return temp1
     End Function
     Private Function add_till_sab(ByVal day)
         'כדי להחזיר שם הפרשה של שבת הבא
@@ -754,7 +755,7 @@ A:
         add_till_sab = temp1
     End Function
     Private Function fix_month_num(ByVal mddate)
-        'for use with Dll - not in use anymore
+        'not in use anymore
         Dim month_num As Integer
 
         If varHC.GetMonth(mddate) <= 6 Then month_num = varHC.GetMonth(mddate) + 6
@@ -765,7 +766,7 @@ A:
         Else
             If varHC.GetMonth(mddate) >= 7 Then month_num = varHC.GetMonth(mddate) - 6
         End If
-        fix_month_num = month_num
+        Return month_num
     End Function
     Public Function GetParshaNew(ByVal DateIn As Date, inIsrael As Boolean, Optional EngNames As Boolean = False) As String
         'below is based on oldJewishCalendar.cs 2013 ParshaIndex 
@@ -930,13 +931,12 @@ A:
     'hebday.Text = hebday.Text & " " & GetParshaNew(jc.GetweekforParshaAyg(engdate.Value, False)(0), jc.GetweekforParshaAyg(engdate.Value, False)(1))
     '=================================================================================
 
-
     Public Function TrimStringEllipsis(TextIn As String, FontIn As System.Drawing.Font, MaxSizeInPixels As Integer) As String
         Dim TrimmedText As String
         Dim graphics = (New System.Windows.Forms.Label()).CreateGraphics()
         Dim CurrentSize As Integer = graphics.MeasureString(TextIn, FontIn).Width
         'no need to trim
-        If CurrentSize <= maxSizeInPixels Then Return TextIn
+        If CurrentSize <= MaxSizeInPixels Then Return TextIn
 
         For Each c As Char In TextIn
             TrimmedText += c
@@ -951,16 +951,10 @@ A:
         my_num = Len(name) + Len(zman)
         my_num = my_num / 4
 
-        'MsgBox(num)
-        MsgBox(name.PadRight(num, ".") & zman)
-        fill_strings = name.PadRight(num, ".") & zman
+        'debug.print(name.PadRight(num, ".") & zman)
+        Return name.PadRight(num, ".") & zman
     End Function
 
 End Module
-
-
-'sample
-
-
 
 
