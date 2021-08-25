@@ -111,8 +111,6 @@ Module FunctionsModule
         Dim MyZmanim = DefaultZmanim()
         MyZmanim.ForEach(Sub(x) varSC.Zmanim.Add(x))
     End Sub
-
-
     Sub ClearAndReLoadPlaceLists(Optional SelectName As String = "", Optional SelectNum As Integer = 0)
         varFinishedLoading = False
         'reset all Location lists
@@ -345,16 +343,7 @@ Module FunctionsModule
                     DVItems(DVItems.Count - 1).CreateCells(Frminfo.DataGridView1, i, Z.DisplayName)
                     CType(DVItems(DVItems.Count - 1).Cells(2), DataGridViewComboBoxCell).Items.Add("")
                 End Try
-
                 'Color setings - are now done in TimerStatusLabel
-                'If varSC.ColorZman = True And DVItems(DVItems.Count - 1).Cells(2).Value IsNot "" Then
-                '    MyTimeSpan = MyZman - DateAndTime.TimeOfDay
-                '    Try
-                '        If MyTimeSpan.TotalMilliseconds < 0 Then DVItems(DVItems.Count - 1).Cells(2).Style.ForeColor = Color.Red '"עבר"
-                '        If MyTimeSpan.TotalMilliseconds > 0 Then DVItems(DVItems.Count - 1).Cells(2).Style.ForeColor = Color.Green '"נשאר"
-                '    Catch ex As Exception
-                '    End Try
-                'End If
             End If
             'set to not be bold
             DVItems(DVItems.Count - 1).DefaultCellStyle.Font = New Font(Frminfo.DataGridView1.Font, FontStyle.Regular)
@@ -370,7 +359,6 @@ Module FunctionsModule
             End If
             CType(DVItems(DVItems.Count - 1).Cells(2), DataGridViewComboBoxCell).ToolTipText = Z.FunctionName
         Next
-
 
         Frminfo.DataGridView1.Rows.Clear()
         'Debug.Print(Frminfo.DataGridView1.Rows.Count & vbCr & DVItems.Count)
@@ -454,7 +442,6 @@ Module FunctionsModule
         Dim mydate As DateTime = DateTime.Parse(HebDateStringtoNom(myhebdate(0)), varHculture)
         Frminfo.dpEngdate.Value = mydate '.ToString("ddddMM/dd/yyyy", New CultureInfo("en-US"))
     End Sub
-
     Sub change_hebdate()
         'Frminfo.dpEngdate.Value
         Dim ResultArray = Get_HebDate(Frminfo.dpEngdate.Value)
