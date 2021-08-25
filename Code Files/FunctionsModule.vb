@@ -430,19 +430,29 @@ Module FunctionsModule
         Try
             DateTime.Parse(HebDateStringtoNom(myhebdate(0)), varHculture)
         Catch ex As Exception
-            Using New Centered_MessageBox(Frminfo, "MouseCenter")
-                If varSC.HebrewMenus = True Then
-                    MsgBox("!תאריך לא מובן", MsgBoxStyle.Exclamation + MsgBoxStyle.OkOnly + MsgBoxStyle.MsgBoxRight) ' + MsgBoxStyle.MsgBoxRtlReading
-                Else
-                    MsgBox("Date Incomprehensible!", MsgBoxStyle.Exclamation + MsgBoxStyle.OkOnly)
-                End If
-            End Using
-
+            DateNonconvertible()
             change_hebdate()
             Exit Sub
         End Try
-        Dim mydate As DateTime = DateTime.Parse(HebDateStringtoNom(myhebdate(0)), varHculture)
-        Frminfo.dpEngdate.Value = mydate '.ToString("ddddMM/dd/yyyy", New CultureInfo("en-US"))
+
+        Try
+            Dim mydate As DateTime = DateTime.Parse(HebDateStringtoNom(myhebdate(0)), varHculture)
+            Frminfo.dpEngdate.Value = mydate '.ToString("ddddMM/dd/yyyy", New CultureInfo("en-US"))
+        Catch ex As Exception
+            DateNonconvertible()
+            change_hebdate()
+            Exit Sub
+        End Try
+    End Sub
+    Sub DateNonconvertible()
+        Using New Centered_MessageBox(Frminfo, "MouseCenter")
+            If varSC.HebrewMenus = True Then
+                MsgBox("!תאריך לא ניתן להמרה", MsgBoxStyle.Exclamation + MsgBoxStyle.OkOnly + MsgBoxStyle.MsgBoxRight) ' + MsgBoxStyle.MsgBoxRtlReading
+            Else
+                MsgBox("Date Not Convertible!", MsgBoxStyle.Exclamation + MsgBoxStyle.OkOnly)
+            End If
+        End Using
+
     End Sub
     Sub change_hebdate()
         'Frminfo.dpEngdate.Value

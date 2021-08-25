@@ -1155,7 +1155,6 @@ Public Class Frminfo
             ToolTip1.SetToolTip(CbTimeZone, Nothing)
         End If
     End Sub
-
 End Class
 
 
