@@ -1,7 +1,7 @@
 # MyZman
-A compact windows program for calculating Jewish Zmanim.
+A compact windows program for calculating Jewish Zmanim;
 
-And converting between Hebrew & Gregorian Dates [including Parsha, Holiday’s, Daf Yomi].
+Converting between Hebrew & Gregorian Dates [including Parsha, Holiday’s, Daf Yomi].
 
 The program also includes options for exporting and setting reminders.
 
