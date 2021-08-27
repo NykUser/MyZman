@@ -5,7 +5,7 @@ Converting between Hebrew & Gregorian Dates [including Parsha, Holiday’s, Daf 
 
 The program also includes options for exporting and setting reminders.
 
-[This link](https://downgit.github.io/#/home?url=https://github.com/NykUser/MyZman/tree/master/MyZmanPortable) can be used to download the portable .exe.
+[This link](https://downgit.github.io/#/home?url=https://github.com/NykUser/MyZman/tree/master/MyZmanPortable) can be used to download a portable .exe.
 
 The Code is released under the LGPL 2.1 license.
 
