@@ -399,7 +399,7 @@ Public Class Frminfo
             Dim Response
             Using New Centered_MessageBox(Me, "MouseCenter")
                 If varSC.HebrewMenus = True Then
-                    Response = MsgBox(".פעולה זו תסיר שינויים ותוספות שנעשו ברשימת הזמנים" & vbCr & "?בטוח שאתה רוצה להמשיך", MsgBoxStyle.YesNo + MsgBoxStyle.Question + MsgBoxStyle.MsgBoxRight)
+                    Response = MsgBox("!שים לב" & vbCr & ".פעולה זו תסיר שינויים ותוספות שנעשו ברשימת הזמנים" & vbCr & "?בטוח שאתה רוצה להמשיך", MsgBoxStyle.YesNo + MsgBoxStyle.Question + MsgBoxStyle.MsgBoxRight)
                 Else
                     Response = MsgBox("This Will Remove Changes & Additions Made To The Zmanim List." & vbCr & "Sure You Want To Continue?", MsgBoxStyle.YesNo + MsgBoxStyle.Question)
                 End If
@@ -417,7 +417,7 @@ Public Class Frminfo
             Dim Response
             Using New Centered_MessageBox(Me, "MouseCenter")
                 If varSC.HebrewMenus = True Then
-                    Response = MsgBox(".פעולה זו תסיר את כל הגדרות המשתמש" & vbCr & "?בטוח שאתה רוצה להמשיך", MsgBoxStyle.YesNo + MsgBoxStyle.Question + MsgBoxStyle.MsgBoxRight)
+                    Response = MsgBox("!שים לב" & vbCr & ".פעולה זו תסיר את כל הגדרות המשתמש" & vbCr & "?בטוח שאתה רוצה להמשיך", MsgBoxStyle.YesNo + MsgBoxStyle.Question + MsgBoxStyle.MsgBoxRight)
                 Else
                     Response = MsgBox("This Will Remove All User Settings." & vbCr & "Sure You Want To Continue?", MsgBoxStyle.YesNo + MsgBoxStyle.Question)
                 End If
@@ -554,7 +554,7 @@ Public Class Frminfo
             Dim Response
             Using New Centered_MessageBox(Me, "MouseCenter")
                 If varSC.HebrewMenus = True Then
-                    Response = MsgBox(":זה יחליף מידע שמור של" & vbCr & EngName & " - " & ChrW(&H200F) & HebName & vbCr & "?האם אתה רוצה להמשיך", MsgBoxStyle.YesNo + MsgBoxStyle.Question + MsgBoxStyle.MsgBoxRight)
+                    Response = MsgBox("!שים לב" & vbCr & ":פעולה זו תחליף מידע שמור של" & vbCr & EngName & " - " & ChrW(&H200F) & HebName & vbCr & "?האם הינך מעונין להמשיך", MsgBoxStyle.YesNo + MsgBoxStyle.Question + MsgBoxStyle.MsgBoxRight)
                 Else
                     Response = MsgBox("This Will Overwrite: " & EngName & " - " & HebName & " Info!" & vbCr & "Do You Want To Continue?", MsgBoxStyle.YesNo + MsgBoxStyle.Question)
                 End If
@@ -685,7 +685,7 @@ Public Class Frminfo
             Dim Response
             Using New Centered_MessageBox(Me, "MouseCenter")
                 If varSC.HebrewMenus = True Then
-                    Response = MsgBox(".פעולה זו תסיר שינויים ותוספות שנעשו ברשימת המיקומים" & vbCr & "?בטוח שאתה רוצה להמשיך", MsgBoxStyle.YesNo + MsgBoxStyle.Question + MsgBoxStyle.MsgBoxRight)
+                    Response = MsgBox("!שים לב" & vbCr & ".פעולה זו תסיר שינויים ותוספות שנעשו ברשימת המיקומים" & vbCr & "?בטוח שאתה רוצה להמשיך", MsgBoxStyle.YesNo + MsgBoxStyle.Question + MsgBoxStyle.MsgBoxRight)
                 Else
                     Response = MsgBox("This Will Remove Changes & Additions Made To The Location List." & vbCr & "Sure You Want To Continue?", MsgBoxStyle.YesNo + MsgBoxStyle.Question)
                 End If
@@ -991,7 +991,7 @@ Public Class Frminfo
             Catch ex As Exception
             End Try
 
-            LabelDisclaimer.Text = "אל תסמכו על הזמנים עד הרגע האחרון"
+            LabelDisclaimer.Text = "אין לסמוך על הזמנים עד הרגע האחרון"
             mGetCurrnetLocation.Text = "קבל את המיקום הנוכחי"
             mSaveLocationChanges.Text = "שמור שינויי מיקום"
             mRemoveLocation.Text = "הסר מיקום"
@@ -1001,8 +1001,8 @@ Public Class Frminfo
             mDefaultsMenu.Text = "מיקום ברירת מחדל"
             mDefaultLastUsed.Text = "בשימוש אחרון"
             SettingsToolStripMenuItem.Text = "הגדרות"
-            mIsraeliYomTov.Text = "פרשה ויום טוב כארץ ישראל"
-            m24HourFormatTime.Text = "זמן פורמט של 24 שעות"
+            mIsraeliYomTov.Text = "פרשיות וימים טובים כארץ ישראל"
+            m24HourFormatTime.Text = "פורמט 24 שעות"
             mShowTimesOnStatusBar.Text = "הצג זמן בשורת המצב"
             mAskWhenChanging.Text = "שאל על שינויים"
             mBackUpWhenChanging.Text = "גיבוי בעת שינוי"
@@ -1016,7 +1016,7 @@ Public Class Frminfo
             mAddZman.Text = "הוסף זמן חדש למטה"
             mDeleteZman.Text = "מחק את זמן הנבחר"
             mResetZmanimList.Text = "אפס את רשימת הזמנים"
-            mColorZmanMenuItem.Text = "צבע לזמנים"
+            mColorZmanMenuItem.Text = "הדגשת הזמנים לפי צבעים"
             mCalculateElevation.Text = "חישוב גובה"
             mUseUSNO.Text = "השתמש באלגוריתם USNO ישן"
             mLineBetweenZmanim.Text = "קו בין זמנים"
@@ -1039,7 +1039,7 @@ Public Class Frminfo
                 ToolTip1.SetToolTip(tblatitude, "הזן קו רוחב")
                 ToolTip1.SetToolTip(tblongitude, "הזן קו אורך")
                 ToolTip1.SetToolTip(tbElevation, "הזן את גובה המיקום")
-                ToolTip1.SetToolTip(CbTimeZone, "בחר אוזר זמן")
+                ToolTip1.SetToolTip(CbTimeZone, "בחר אזור זמן")
             End If
 
             'do it here after SettingsToolStripMenuItem.Width is set
@@ -1050,7 +1050,6 @@ Public Class Frminfo
                 SettingsToolStripMenuItem.DropDownItems.RemoveAt(SettingsToolStripMenuItem.DropDownItems.Count - 2)
             End If
             SettingsToolStripMenuItem.DropDownItems.Insert(SettingsToolStripMenuItem.DropDownItems.Count - 1, TransparencyBox)
-
         Else
             'used not to force Hebrew Menus when InStr(CultureInfo.CurrentCulture.Name, "he-IL") is ture on next run of program
             varSC.MenuLanguageWasChanged = True

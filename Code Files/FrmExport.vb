@@ -202,7 +202,7 @@ Public Class FrmExport
         If IsNumeric(tbDays.Text) = False Or IsNumeric(tbPer.Text) = False Or tbDays.Text = 0 Or tbPer.Text = 0 Then
             Using New Centered_MessageBox(Me, "ParentCenter")
                 If varSC.HebrewMenus = True Then
-                    MsgBox("!מידע על ימים לייצוא חסרה", MsgBoxStyle.OkOnly + MsgBoxStyle.Information + MsgBoxStyle.MsgBoxRight)
+                    MsgBox("!לא נמצאה מידע על ימים לייצוא", MsgBoxStyle.OkOnly + MsgBoxStyle.Information + MsgBoxStyle.MsgBoxRight)
                 Else
                     MsgBox("Missing Days To Export Info!", MsgBoxStyle.OkOnly + MsgBoxStyle.Information)
                 End If
@@ -213,7 +213,7 @@ Public Class FrmExport
         If varSC.Zmanim.Count < 1 Then
             Using New Centered_MessageBox(Me, "ParentCenter")
                 If varSC.HebrewMenus = True Then
-                    MsgBox("!רשימת הזמנים חסרה", MsgBoxStyle.OkOnly + MsgBoxStyle.Information + MsgBoxStyle.MsgBoxRight)
+                    MsgBox("!רשימת הזמנים לא נמצאה", MsgBoxStyle.OkOnly + MsgBoxStyle.Information + MsgBoxStyle.MsgBoxRight)
                 Else
                     MsgBox("Missing Zmanim List!", MsgBoxStyle.OkOnly + MsgBoxStyle.Information)
                 End If

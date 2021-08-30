@@ -87,7 +87,7 @@ Public Class FrmSchedule
 
         Else
             GroupBox1.Text = "Location info"
-            GroupBox1.Text = "תזכורות"
+            GroupBox1.Text = "Reminders"
             GroupBox1.RightToLeft = 0
             GroupBox2.RightToLeft = 0
             LabelLatitude.RightToLeft = 0
@@ -601,11 +601,11 @@ Public Class FrmSchedule
                 Exit Sub
 
             ElseIf valid = 2 Then
-                Response = msgMaker(If(varSC.HebrewMenus = True, "אינו שעה תקף. האם ברצונך לנקות תזכורת זו", "Not a valid time. Do you want to clear this Reminder?"), If(varSC.HebrewMenus = True, MsgBoxStyle.YesNo + MsgBoxStyle.Question + MsgBoxStyle.MsgBoxRight, MsgBoxStyle.YesNo + MsgBoxStyle.Question))
+                Response = msgMaker(If(varSC.HebrewMenus = True, ".אינו שעה תקף" & vbCr & "?האם ברצונך לנקות תזכורת זו", "Not a valid time." & vbCr & "Do you want to clear this Reminder?"), If(varSC.HebrewMenus = True, MsgBoxStyle.YesNo + MsgBoxStyle.Question + MsgBoxStyle.MsgBoxRight, MsgBoxStyle.YesNo + MsgBoxStyle.Question))
             ElseIf valid = 3 Then
-                Response = msgMaker(If(varSC.HebrewMenus = True, "חסרים פרטי מיקום. האם ברצונך לנקות תזכורת זו", "Location info Missing. Do you want to clear this Reminder?"), If(varSC.HebrewMenus = True, MsgBoxStyle.YesNo + MsgBoxStyle.Question + MsgBoxStyle.MsgBoxRight, MsgBoxStyle.YesNo + MsgBoxStyle.Question))
+                Response = msgMaker(If(varSC.HebrewMenus = True, ".חסרים פרטי מיקום" & vbCr & "?האם ברצונך לנקות תזכורת זו", "Location info Missing." & vbCr & "Do you want to clear this Reminder?"), If(varSC.HebrewMenus = True, MsgBoxStyle.YesNo + MsgBoxStyle.Question + MsgBoxStyle.MsgBoxRight, MsgBoxStyle.YesNo + MsgBoxStyle.Question))
             ElseIf valid = 4 Then
-                Response = msgMaker(If(varSC.HebrewMenus = True, "בעיה להשיג את הזמן הזה. האם ברצונך לנקות תזכורת זו", "Problem getting this zman. Do you want to clear this Reminder?"), If(varSC.HebrewMenus = True, MsgBoxStyle.YesNo + MsgBoxStyle.Question + MsgBoxStyle.MsgBoxRight, MsgBoxStyle.YesNo + MsgBoxStyle.Question))
+                Response = msgMaker(If(varSC.HebrewMenus = True, ".בעיה להשיג את הזמן הזה" & vbCr & "?האם ברצונך לנקות תזכורת זו", "Problem getting this zman." & vbCr & "Do you want to clear this Reminder?"), If(varSC.HebrewMenus = True, MsgBoxStyle.YesNo + MsgBoxStyle.Question + MsgBoxStyle.MsgBoxRight, MsgBoxStyle.YesNo + MsgBoxStyle.Question))
             End If
             cbIsActive.Checked = False
             If Response = vbNo Then Exit Sub
@@ -642,11 +642,11 @@ Public Class FrmSchedule
             varSC.Schedule(tbReminderNum.Text - 1).IsFunc = cbTime.SelectedIndex > -1 'true if Selected soometing from dropdown
             Exit Sub
         ElseIf valid = 2 Then
-            Response = msgMaker(If(varSC.HebrewMenus = True, "אינו שעה תקף. האם ברצונך לנקות תזכורת זו", "Not a valid time. Do you want to clear this Reminder?"), If(varSC.HebrewMenus = True, MsgBoxStyle.YesNo + MsgBoxStyle.Question + MsgBoxStyle.MsgBoxRight, MsgBoxStyle.YesNo + MsgBoxStyle.Question))
+            Response = msgMaker(If(varSC.HebrewMenus = True, ".אינו שעה תקף" & vbCr & "?האם ברצונך לנקות תזכורת זו", "Not a valid time." & vbCr & "Do you want to clear this Reminder?"), If(varSC.HebrewMenus = True, MsgBoxStyle.YesNo + MsgBoxStyle.Question + MsgBoxStyle.MsgBoxRight, MsgBoxStyle.YesNo + MsgBoxStyle.Question))
         ElseIf valid = 3 Then
-            Response = msgMaker(If(varSC.HebrewMenus = True, "חסרים פרטי מיקום. האם ברצונך לנקות תזכורת זו", "Location info Missing. Do you want to clear this Reminder?"), If(varSC.HebrewMenus = True, MsgBoxStyle.YesNo + MsgBoxStyle.Question + MsgBoxStyle.MsgBoxRight, MsgBoxStyle.YesNo + MsgBoxStyle.Question))
+            Response = msgMaker(If(varSC.HebrewMenus = True, ".חסרים פרטי מיקום" & vbCr & "?האם ברצונך לנקות תזכורת זו", "Location info Missing." & vbCr & "Do you want to clear this Reminder?"), If(varSC.HebrewMenus = True, MsgBoxStyle.YesNo + MsgBoxStyle.Question + MsgBoxStyle.MsgBoxRight, MsgBoxStyle.YesNo + MsgBoxStyle.Question))
         ElseIf valid = 4 Then
-            Response = msgMaker(If(varSC.HebrewMenus = True, "בעיה להשיג את הזמן הזה. האם ברצונך לנקות תזכורת זו", "Problem getting this zman. Do you want to clear this Reminder?"), If(varSC.HebrewMenus = True, MsgBoxStyle.YesNo + MsgBoxStyle.Question + MsgBoxStyle.MsgBoxRight, MsgBoxStyle.YesNo + MsgBoxStyle.Question))
+            Response = msgMaker(If(varSC.HebrewMenus = True, ".בעיה להשיג את הזמן הזה" & vbCr & "?האם ברצונך לנקות תזכורת זו", "Problem getting this zman." & vbCr & "Do you want to clear this Reminder?"), If(varSC.HebrewMenus = True, MsgBoxStyle.YesNo + MsgBoxStyle.Question + MsgBoxStyle.MsgBoxRight, MsgBoxStyle.YesNo + MsgBoxStyle.Question))
         End If
         cbTime.Text = ""
         If varSC.Schedule.Count >= tbReminderNum.Text Then varSC.Schedule(tbReminderNum.Text - 1).Time = cbTime.Text
