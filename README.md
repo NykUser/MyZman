@@ -1,11 +1,11 @@
 # MyZman
-A compact windows program for calculating Jewish Zmanim.
+A compact windows program for calculating Jewish Zmanim;
 
-And converting between Hebrew & Gregorian Dates [including Parsha, Holiday’s, Daf Yomi].
+Converting between Hebrew & Gregorian Dates [including Parsha, Holiday’s, Daf Yomi].
 
 The program also includes options for exporting and setting reminders.
 
-[This link](https://downgit.github.io/#/home?url=https://github.com/NykUser/MyZman/tree/master/MyZmanPortable) can be used to download the portable .exe.
+[This link](https://downgit.github.io/#/home?url=https://github.com/NykUser/MyZman/tree/master/MyZmanPortable) can be used to download a portable .exe.
 
 The Code is released under the LGPL 2.1 license.
 
@@ -61,7 +61,7 @@ Due to atmospheric conditions (pressure, humidity and other conditions), calcula
 **While I did my best to get accurate results, please double check before relying on these zmanim for halacha lemaaseh.**
 
 # Screenshots
-![1](https://user-images.githubusercontent.com/83419922/129582704-c70581a7-2ead-467a-a055-553da29555fe.jpg)
+![eng](https://user-images.githubusercontent.com/83419922/130814799-ff5d0e7f-ecfe-4055-8771-b48c6e321daf.jpg)
 ![2](https://user-images.githubusercontent.com/83419922/129582744-d270cc55-60b1-4867-a61c-532982cedd1a.jpg)
 
 # Notable points about the Programs Code
