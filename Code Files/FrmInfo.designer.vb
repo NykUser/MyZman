@@ -690,8 +690,8 @@ Partial Class Frminfo
         '
         Me.LabelDisclaimer.Anchor = System.Windows.Forms.AnchorStyles.Top
         Me.LabelDisclaimer.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
-        Me.LabelDisclaimer.ForeColor = System.Drawing.Color.DarkRed
-        Me.LabelDisclaimer.Location = New System.Drawing.Point(11, 283)
+        Me.LabelDisclaimer.ForeColor = System.Drawing.Color.Black
+        Me.LabelDisclaimer.Location = New System.Drawing.Point(11, 285)
         Me.LabelDisclaimer.Name = "LabelDisclaimer"
         Me.LabelDisclaimer.Size = New System.Drawing.Size(266, 22)
         Me.LabelDisclaimer.TabIndex = 28
