@@ -33,6 +33,7 @@ Partial Class Frminfo
         Me.mResetLocationList = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
         Me.mPlaceListInHebrew = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mHideLocationInfo = New System.Windows.Forms.ToolStripMenuItem()
         Me.mDefaultsMenu = New System.Windows.Forms.ToolStripMenuItem()
         Me.mDefaultLastUsed = New System.Windows.Forms.ToolStripMenuItem()
         Me.mDefaultInUse = New System.Windows.Forms.ToolStripMenuItem()
@@ -74,6 +75,8 @@ Partial Class Frminfo
         Me.LabelLongitude = New System.Windows.Forms.Label()
         Me.LabelElevation = New System.Windows.Forms.Label()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
+        Me.PanelOnCbTimeZone = New System.Windows.Forms.Panel()
+        Me.rbtLocationContexOpen = New zman.WindowsFormsApplication1.RoundButton()
         Me.LabelTimeZone = New System.Windows.Forms.Label()
         Me.LabelCountry = New System.Windows.Forms.Label()
         Me.ZmanimContextMenuHelper = New System.Windows.Forms.ContextMenuStrip(Me.components)
@@ -88,6 +91,11 @@ Partial Class Frminfo
         Me.mLineBetweenZmanim = New System.Windows.Forms.ToolStripMenuItem()
         Me.dpEngdate = New System.Windows.Forms.DateTimePicker()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.rtbHoliday = New System.Windows.Forms.RichTextBox()
+        Me.rtbDafYomi = New System.Windows.Forms.RichTextBox()
+        Me.rtbParsha = New System.Windows.Forms.RichTextBox()
+        Me.rbtTodayRefresh = New zman.WindowsFormsApplication1.RoundButton()
+        Me.PanelOndpEngdate = New System.Windows.Forms.Panel()
         Me.TimerTransparency = New System.Windows.Forms.Timer(Me.components)
         Me.TimerZmanimAfterChange = New System.Windows.Forms.Timer(Me.components)
         Me.DataGridView1 = New System.Windows.Forms.DataGridView()
@@ -95,21 +103,21 @@ Partial Class Frminfo
         Me.ColumnZman = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.ColumnTime = New System.Windows.Forms.DataGridViewComboBoxColumn()
         Me.LabelDisclaimer = New System.Windows.Forms.Label()
-        Me.rbtLocationContexOpen = New zman.WindowsFormsApplication1.RoundButton()
-        Me.rbtTodayRefresh = New zman.WindowsFormsApplication1.RoundButton()
         Me.LocationContextMenu.SuspendLayout()
         Me.StatusStrip1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
+        Me.PanelOnCbTimeZone.SuspendLayout()
         Me.ZmanimContextMenu.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
+        Me.PanelOndpEngdate.SuspendLayout()
         CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'LocationContextMenu
         '
-        Me.LocationContextMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mGetCurrnetLocation, Me.mSaveLocationChanges, Me.mRemoveLocation, Me.mAddToUserLocation, Me.mResetLocationList, Me.ToolStripSeparator1, Me.mPlaceListInHebrew, Me.mDefaultsMenu})
+        Me.LocationContextMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mGetCurrnetLocation, Me.mSaveLocationChanges, Me.mRemoveLocation, Me.mAddToUserLocation, Me.mResetLocationList, Me.ToolStripSeparator1, Me.mPlaceListInHebrew, Me.mHideLocationInfo, Me.mDefaultsMenu})
         Me.LocationContextMenu.Name = "ContextMenuStrip1"
-        Me.LocationContextMenu.Size = New System.Drawing.Size(207, 164)
+        Me.LocationContextMenu.Size = New System.Drawing.Size(207, 186)
         '
         'mGetCurrnetLocation
         '
@@ -158,6 +166,13 @@ Partial Class Frminfo
         Me.mPlaceListInHebrew.Size = New System.Drawing.Size(206, 22)
         Me.mPlaceListInHebrew.Text = "Sort Locations In Hebrew"
         '
+        'mHideLocationInfo
+        '
+        Me.mHideLocationInfo.CheckOnClick = True
+        Me.mHideLocationInfo.Name = "mHideLocationInfo"
+        Me.mHideLocationInfo.Size = New System.Drawing.Size(206, 22)
+        Me.mHideLocationInfo.Text = "Hide Location Info"
+        '
         'mDefaultsMenu
         '
         Me.mDefaultsMenu.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mDefaultLastUsed, Me.mDefaultInUse, Me.mDefaultChangeNew})
@@ -197,11 +212,14 @@ Partial Class Frminfo
         '
         'cbLocationList
         '
-        Me.cbLocationList.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.cbLocationList.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.cbLocationList.AutoCompleteCustomSource.AddRange(New String() {"Squre", "york"})
         Me.cbLocationList.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend
         Me.cbLocationList.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems
         Me.cbLocationList.DropDownWidth = 231
+        Me.cbLocationList.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.cbLocationList.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
         Me.cbLocationList.FormattingEnabled = True
         Me.cbLocationList.Location = New System.Drawing.Point(9, 24)
@@ -212,29 +230,32 @@ Partial Class Frminfo
         '
         'tblatitude
         '
-        Me.tblatitude.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.tblatitude.Anchor = System.Windows.Forms.AnchorStyles.Top
+        Me.tblatitude.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.tblatitude.Location = New System.Drawing.Point(10, 70)
         Me.tblatitude.Name = "tblatitude"
-        Me.tblatitude.Size = New System.Drawing.Size(57, 24)
+        Me.tblatitude.Size = New System.Drawing.Size(57, 17)
         Me.tblatitude.TabIndex = 2
         Me.ToolTip1.SetToolTip(Me.tblatitude, "Enter Latitude" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "הזן קו רוחב")
         '
         'tblongitude
         '
-        Me.tblongitude.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.tblongitude.Anchor = System.Windows.Forms.AnchorStyles.Top
+        Me.tblongitude.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.tblongitude.Location = New System.Drawing.Point(73, 70)
         Me.tblongitude.Name = "tblongitude"
-        Me.tblongitude.Size = New System.Drawing.Size(57, 24)
+        Me.tblongitude.Size = New System.Drawing.Size(57, 17)
         Me.tblongitude.TabIndex = 3
         Me.ToolTip1.SetToolTip(Me.tblongitude, "Enter Longitude" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "הזן קו אורך")
         '
         'tbzone
         '
-        Me.tbzone.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.tbzone.Anchor = System.Windows.Forms.AnchorStyles.Top
+        Me.tbzone.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.tbzone.Font = New System.Drawing.Font("David", 12.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
-        Me.tbzone.Location = New System.Drawing.Point(199, 115)
+        Me.tbzone.Location = New System.Drawing.Point(199, 109)
         Me.tbzone.Name = "tbzone"
-        Me.tbzone.Size = New System.Drawing.Size(57, 24)
+        Me.tbzone.Size = New System.Drawing.Size(57, 17)
         Me.tbzone.TabIndex = 7
         '
         'TimerStatusLabel
@@ -254,38 +275,42 @@ Partial Class Frminfo
         'rtbHebrewDate
         '
         Me.rtbHebrewDate.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.rtbHebrewDate.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.rtbHebrewDate.Font = New System.Drawing.Font("Arial", 11.0!)
         Me.rtbHebrewDate.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.rtbHebrewDate.Location = New System.Drawing.Point(8, 55)
+        Me.rtbHebrewDate.Location = New System.Drawing.Point(134, 52)
         Me.rtbHebrewDate.Name = "rtbHebrewDate"
         Me.rtbHebrewDate.RightToLeft = System.Windows.Forms.RightToLeft.Yes
-        Me.rtbHebrewDate.Size = New System.Drawing.Size(246, 45)
+        Me.rtbHebrewDate.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.None
+        Me.rtbHebrewDate.Size = New System.Drawing.Size(125, 25)
         Me.rtbHebrewDate.TabIndex = 2
         Me.rtbHebrewDate.Text = ""
         '
         'tbElevation
         '
-        Me.tbElevation.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.tbElevation.Anchor = System.Windows.Forms.AnchorStyles.Top
+        Me.tbElevation.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.tbElevation.Font = New System.Drawing.Font("David", 12.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
         Me.tbElevation.Location = New System.Drawing.Point(136, 70)
         Me.tbElevation.Name = "tbElevation"
-        Me.tbElevation.Size = New System.Drawing.Size(57, 24)
+        Me.tbElevation.Size = New System.Drawing.Size(57, 17)
         Me.tbElevation.TabIndex = 4
         '
         'tbcountry
         '
-        Me.tbcountry.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.tbcountry.Anchor = System.Windows.Forms.AnchorStyles.Top
+        Me.tbcountry.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.tbcountry.Font = New System.Drawing.Font("David", 12.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
         Me.tbcountry.Location = New System.Drawing.Point(199, 70)
         Me.tbcountry.Name = "tbcountry"
-        Me.tbcountry.Size = New System.Drawing.Size(57, 24)
+        Me.tbcountry.Size = New System.Drawing.Size(57, 17)
         Me.tbcountry.TabIndex = 5
         '
         'StatusStrip1
         '
         Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripDropDownButton1, Me.StatusLabel, Me.ToolStripProgressBar1})
         Me.StatusStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow
-        Me.StatusStrip1.Location = New System.Drawing.Point(0, 848)
+        Me.StatusStrip1.Location = New System.Drawing.Point(0, 838)
         Me.StatusStrip1.Name = "StatusStrip1"
         Me.StatusStrip1.Size = New System.Drawing.Size(289, 21)
         Me.StatusStrip1.TabIndex = 27
@@ -434,10 +459,10 @@ Partial Class Frminfo
         '
         'LabelOffSet
         '
-        Me.LabelOffSet.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.LabelOffSet.Anchor = System.Windows.Forms.AnchorStyles.Top
         Me.LabelOffSet.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
         Me.LabelOffSet.ForeColor = System.Drawing.Color.Black
-        Me.LabelOffSet.Location = New System.Drawing.Point(196, 99)
+        Me.LabelOffSet.Location = New System.Drawing.Point(196, 93)
         Me.LabelOffSet.Name = "LabelOffSet"
         Me.LabelOffSet.Size = New System.Drawing.Size(60, 16)
         Me.LabelOffSet.TabIndex = 43
@@ -445,19 +470,22 @@ Partial Class Frminfo
         '
         'CbTimeZone
         '
-        Me.CbTimeZone.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.CbTimeZone.Anchor = System.Windows.Forms.AnchorStyles.Top
         Me.CbTimeZone.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend
         Me.CbTimeZone.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems
         Me.CbTimeZone.DropDownWidth = 245
+        Me.CbTimeZone.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.CbTimeZone.Font = New System.Drawing.Font("David", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
         Me.CbTimeZone.FormattingEnabled = True
-        Me.CbTimeZone.Location = New System.Drawing.Point(10, 115)
+        Me.CbTimeZone.ItemHeight = 11
+        Me.CbTimeZone.Location = New System.Drawing.Point(0, -5)
         Me.CbTimeZone.Name = "CbTimeZone"
-        Me.CbTimeZone.Size = New System.Drawing.Size(183, 24)
+        Me.CbTimeZone.Size = New System.Drawing.Size(183, 19)
         Me.CbTimeZone.TabIndex = 6
         '
         'LabelLatitude
         '
-        Me.LabelLatitude.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.LabelLatitude.Anchor = System.Windows.Forms.AnchorStyles.Top
         Me.LabelLatitude.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
         Me.LabelLatitude.ForeColor = System.Drawing.Color.Black
         Me.LabelLatitude.Location = New System.Drawing.Point(7, 54)
@@ -468,7 +496,7 @@ Partial Class Frminfo
         '
         'LabelLongitude
         '
-        Me.LabelLongitude.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.LabelLongitude.Anchor = System.Windows.Forms.AnchorStyles.Top
         Me.LabelLongitude.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
         Me.LabelLongitude.ForeColor = System.Drawing.Color.Black
         Me.LabelLongitude.Location = New System.Drawing.Point(70, 54)
@@ -479,7 +507,7 @@ Partial Class Frminfo
         '
         'LabelElevation
         '
-        Me.LabelElevation.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.LabelElevation.Anchor = System.Windows.Forms.AnchorStyles.Top
         Me.LabelElevation.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
         Me.LabelElevation.ForeColor = System.Drawing.Color.Black
         Me.LabelElevation.Location = New System.Drawing.Point(133, 54)
@@ -491,6 +519,7 @@ Partial Class Frminfo
         'GroupBox2
         '
         Me.GroupBox2.Anchor = System.Windows.Forms.AnchorStyles.Top
+        Me.GroupBox2.Controls.Add(Me.PanelOnCbTimeZone)
         Me.GroupBox2.Controls.Add(Me.rbtLocationContexOpen)
         Me.GroupBox2.Controls.Add(Me.LabelTimeZone)
         Me.GroupBox2.Controls.Add(Me.LabelCountry)
@@ -502,24 +531,44 @@ Partial Class Frminfo
         Me.GroupBox2.Controls.Add(Me.tblongitude)
         Me.GroupBox2.Controls.Add(Me.tbElevation)
         Me.GroupBox2.Controls.Add(Me.LabelLongitude)
-        Me.GroupBox2.Controls.Add(Me.CbTimeZone)
         Me.GroupBox2.Controls.Add(Me.tbzone)
         Me.GroupBox2.Controls.Add(Me.LabelLatitude)
         Me.GroupBox2.Font = New System.Drawing.Font("David", 12.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
         Me.GroupBox2.ForeColor = System.Drawing.Color.DarkRed
         Me.GroupBox2.Location = New System.Drawing.Point(11, 129)
         Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Size = New System.Drawing.Size(266, 153)
+        Me.GroupBox2.Size = New System.Drawing.Size(266, 140)
         Me.GroupBox2.TabIndex = 2
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Location info"
         '
+        'PanelOnCbTimeZone
+        '
+        Me.PanelOnCbTimeZone.Controls.Add(Me.CbTimeZone)
+        Me.PanelOnCbTimeZone.Location = New System.Drawing.Point(10, 109)
+        Me.PanelOnCbTimeZone.Name = "PanelOnCbTimeZone"
+        Me.PanelOnCbTimeZone.Size = New System.Drawing.Size(183, 17)
+        Me.PanelOnCbTimeZone.TabIndex = 29
+        '
+        'rbtLocationContexOpen
+        '
+        Me.rbtLocationContexOpen.Anchor = System.Windows.Forms.AnchorStyles.Top
+        Me.rbtLocationContexOpen.FlatAppearance.BorderSize = 0
+        Me.rbtLocationContexOpen.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.rbtLocationContexOpen.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
+        Me.rbtLocationContexOpen.Image = Global.zman.My.Resources.Resources.three_dots_icon_gray
+        Me.rbtLocationContexOpen.Location = New System.Drawing.Point(241, 20)
+        Me.rbtLocationContexOpen.Name = "rbtLocationContexOpen"
+        Me.rbtLocationContexOpen.Size = New System.Drawing.Size(17, 28)
+        Me.rbtLocationContexOpen.TabIndex = 8
+        Me.rbtLocationContexOpen.UseVisualStyleBackColor = True
+        '
         'LabelTimeZone
         '
-        Me.LabelTimeZone.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.LabelTimeZone.Anchor = System.Windows.Forms.AnchorStyles.Top
         Me.LabelTimeZone.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
         Me.LabelTimeZone.ForeColor = System.Drawing.Color.Black
-        Me.LabelTimeZone.Location = New System.Drawing.Point(7, 99)
+        Me.LabelTimeZone.Location = New System.Drawing.Point(7, 93)
         Me.LabelTimeZone.Name = "LabelTimeZone"
         Me.LabelTimeZone.Size = New System.Drawing.Size(186, 16)
         Me.LabelTimeZone.TabIndex = 62
@@ -527,7 +576,7 @@ Partial Class Frminfo
         '
         'LabelCountry
         '
-        Me.LabelCountry.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.LabelCountry.Anchor = System.Windows.Forms.AnchorStyles.Top
         Me.LabelCountry.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
         Me.LabelCountry.ForeColor = System.Drawing.Color.Black
         Me.LabelCountry.Location = New System.Drawing.Point(196, 54)
@@ -605,21 +654,25 @@ Partial Class Frminfo
         '
         Me.dpEngdate.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.dpEngdate.CalendarFont = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.dpEngdate.CustomFormat = "dddd MM / dd / yyyy"
-        Me.dpEngdate.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.dpEngdate.CustomFormat = "  dddd   MM / dd / yyyy"
+        Me.dpEngdate.DropDownAlign = System.Windows.Forms.LeftRightAlignment.Right
+        Me.dpEngdate.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.dpEngdate.Format = System.Windows.Forms.DateTimePickerFormat.Custom
-        Me.dpEngdate.Location = New System.Drawing.Point(8, 24)
+        Me.dpEngdate.Location = New System.Drawing.Point(-1, -1)
         Me.dpEngdate.MaxDate = New Date(2239, 9, 29, 0, 0, 0, 0)
         Me.dpEngdate.Name = "dpEngdate"
-        Me.dpEngdate.RightToLeft = System.Windows.Forms.RightToLeft.Yes
-        Me.dpEngdate.Size = New System.Drawing.Size(222, 25)
+        Me.dpEngdate.RightToLeft = System.Windows.Forms.RightToLeft.No
+        Me.dpEngdate.Size = New System.Drawing.Size(232, 26)
         Me.dpEngdate.TabIndex = 1
         '
         'GroupBox1
         '
         Me.GroupBox1.Anchor = System.Windows.Forms.AnchorStyles.Top
+        Me.GroupBox1.Controls.Add(Me.rtbHoliday)
+        Me.GroupBox1.Controls.Add(Me.rtbDafYomi)
+        Me.GroupBox1.Controls.Add(Me.rtbParsha)
         Me.GroupBox1.Controls.Add(Me.rbtTodayRefresh)
-        Me.GroupBox1.Controls.Add(Me.dpEngdate)
+        Me.GroupBox1.Controls.Add(Me.PanelOndpEngdate)
         Me.GroupBox1.Controls.Add(Me.rtbHebrewDate)
         Me.GroupBox1.Font = New System.Drawing.Font("David", 12.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
         Me.GroupBox1.ForeColor = System.Drawing.Color.DarkRed
@@ -629,6 +682,68 @@ Partial Class Frminfo
         Me.GroupBox1.TabIndex = 1
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Dates"
+        '
+        'rtbHoliday
+        '
+        Me.rtbHoliday.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.rtbHoliday.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.rtbHoliday.Font = New System.Drawing.Font("Arial", 11.0!)
+        Me.rtbHoliday.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.rtbHoliday.Location = New System.Drawing.Point(9, 81)
+        Me.rtbHoliday.Name = "rtbHoliday"
+        Me.rtbHoliday.RightToLeft = System.Windows.Forms.RightToLeft.Yes
+        Me.rtbHoliday.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.None
+        Me.rtbHoliday.Size = New System.Drawing.Size(125, 25)
+        Me.rtbHoliday.TabIndex = 13
+        Me.rtbHoliday.Text = ""
+        '
+        'rtbDafYomi
+        '
+        Me.rtbDafYomi.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.rtbDafYomi.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.rtbDafYomi.Font = New System.Drawing.Font("Arial", 11.0!)
+        Me.rtbDafYomi.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.rtbDafYomi.Location = New System.Drawing.Point(134, 81)
+        Me.rtbDafYomi.Name = "rtbDafYomi"
+        Me.rtbDafYomi.RightToLeft = System.Windows.Forms.RightToLeft.Yes
+        Me.rtbDafYomi.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.None
+        Me.rtbDafYomi.Size = New System.Drawing.Size(125, 25)
+        Me.rtbDafYomi.TabIndex = 12
+        Me.rtbDafYomi.Text = ""
+        '
+        'rtbParsha
+        '
+        Me.rtbParsha.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.rtbParsha.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.rtbParsha.Font = New System.Drawing.Font("Arial", 11.0!)
+        Me.rtbParsha.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.rtbParsha.Location = New System.Drawing.Point(9, 52)
+        Me.rtbParsha.Name = "rtbParsha"
+        Me.rtbParsha.RightToLeft = System.Windows.Forms.RightToLeft.Yes
+        Me.rtbParsha.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.None
+        Me.rtbParsha.Size = New System.Drawing.Size(125, 25)
+        Me.rtbParsha.TabIndex = 11
+        Me.rtbParsha.Text = ""
+        '
+        'rbtTodayRefresh
+        '
+        Me.rbtTodayRefresh.FlatAppearance.BorderSize = 0
+        Me.rbtTodayRefresh.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.rbtTodayRefresh.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
+        Me.rbtTodayRefresh.Image = Global.zman.My.Resources.Resources.Undo_16x
+        Me.rbtTodayRefresh.Location = New System.Drawing.Point(239, 23)
+        Me.rbtTodayRefresh.Name = "rbtTodayRefresh"
+        Me.rbtTodayRefresh.Size = New System.Drawing.Size(26, 23)
+        Me.rbtTodayRefresh.TabIndex = 3
+        Me.rbtTodayRefresh.UseVisualStyleBackColor = True
+        '
+        'PanelOndpEngdate
+        '
+        Me.PanelOndpEngdate.Controls.Add(Me.dpEngdate)
+        Me.PanelOndpEngdate.Location = New System.Drawing.Point(10, 22)
+        Me.PanelOndpEngdate.Name = "PanelOndpEngdate"
+        Me.PanelOndpEngdate.Size = New System.Drawing.Size(230, 25)
+        Me.PanelOndpEngdate.TabIndex = 5
         '
         'TimerTransparency
         '
@@ -646,11 +761,12 @@ Partial Class Frminfo
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.DataGridView1.BackgroundColor = System.Drawing.Color.White
+        Me.DataGridView1.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.DataGridView1.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None
         Me.DataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.DataGridView1.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.ColumnNum, Me.ColumnZman, Me.ColumnTime})
         Me.DataGridView1.ContextMenuStrip = Me.ZmanimContextMenuHelper
-        Me.DataGridView1.Location = New System.Drawing.Point(11, 310)
+        Me.DataGridView1.Location = New System.Drawing.Point(11, 300)
         Me.DataGridView1.Name = "DataGridView1"
         Me.DataGridView1.RightToLeft = System.Windows.Forms.RightToLeft.Yes
         Me.DataGridView1.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None
@@ -660,7 +776,7 @@ Partial Class Frminfo
         Me.DataGridView1.RowTemplate.DefaultCellStyle.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
         Me.DataGridView1.RowTemplate.Height = 20
         Me.DataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.DataGridView1.Size = New System.Drawing.Size(266, 531)
+        Me.DataGridView1.Size = New System.Drawing.Size(265, 529)
         Me.DataGridView1.TabIndex = 3
         '
         'ColumnNum
@@ -691,37 +807,12 @@ Partial Class Frminfo
         Me.LabelDisclaimer.Anchor = System.Windows.Forms.AnchorStyles.Top
         Me.LabelDisclaimer.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
         Me.LabelDisclaimer.ForeColor = System.Drawing.Color.Black
-        Me.LabelDisclaimer.Location = New System.Drawing.Point(11, 285)
+        Me.LabelDisclaimer.Location = New System.Drawing.Point(11, 275)
         Me.LabelDisclaimer.Name = "LabelDisclaimer"
         Me.LabelDisclaimer.Size = New System.Drawing.Size(266, 22)
         Me.LabelDisclaimer.TabIndex = 28
         Me.LabelDisclaimer.Text = "Don't"
         Me.LabelDisclaimer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
-        'rbtLocationContexOpen
-        '
-        Me.rbtLocationContexOpen.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.rbtLocationContexOpen.FlatAppearance.BorderSize = 0
-        Me.rbtLocationContexOpen.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.rbtLocationContexOpen.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
-        Me.rbtLocationContexOpen.Image = Global.zman.My.Resources.Resources.three_dots_icon_gray
-        Me.rbtLocationContexOpen.Location = New System.Drawing.Point(241, 22)
-        Me.rbtLocationContexOpen.Name = "rbtLocationContexOpen"
-        Me.rbtLocationContexOpen.Size = New System.Drawing.Size(17, 28)
-        Me.rbtLocationContexOpen.TabIndex = 8
-        Me.rbtLocationContexOpen.UseVisualStyleBackColor = True
-        '
-        'rbtTodayRefresh
-        '
-        Me.rbtTodayRefresh.FlatAppearance.BorderSize = 0
-        Me.rbtTodayRefresh.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.rbtTodayRefresh.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
-        Me.rbtTodayRefresh.Image = Global.zman.My.Resources.Resources.Undo_16x
-        Me.rbtTodayRefresh.Location = New System.Drawing.Point(230, 23)
-        Me.rbtTodayRefresh.Name = "rbtTodayRefresh"
-        Me.rbtTodayRefresh.Size = New System.Drawing.Size(26, 23)
-        Me.rbtTodayRefresh.TabIndex = 3
-        Me.rbtTodayRefresh.UseVisualStyleBackColor = True
         '
         'Frminfo
         '
@@ -731,7 +822,7 @@ Partial Class Frminfo
         Me.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange
         Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(248, Byte), Integer), CType(CType(242, Byte), Integer), CType(CType(248, Byte), Integer))
         Me.CancelButton = Me.Butexit
-        Me.ClientSize = New System.Drawing.Size(289, 869)
+        Me.ClientSize = New System.Drawing.Size(289, 859)
         Me.Controls.Add(Me.LabelDisclaimer)
         Me.Controls.Add(Me.DataGridView1)
         Me.Controls.Add(Me.GroupBox2)
@@ -751,8 +842,10 @@ Partial Class Frminfo
         Me.StatusStrip1.PerformLayout()
         Me.GroupBox2.ResumeLayout(False)
         Me.GroupBox2.PerformLayout()
+        Me.PanelOnCbTimeZone.ResumeLayout(False)
         Me.ZmanimContextMenu.ResumeLayout(False)
         Me.GroupBox1.ResumeLayout(False)
+        Me.PanelOndpEngdate.ResumeLayout(False)
         CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
@@ -824,10 +917,16 @@ Partial Class Frminfo
     Friend WithEvents rbtTodayRefresh As WindowsFormsApplication1.RoundButton
     Friend WithEvents ToolStripSeparator3 As ToolStripSeparator
     Friend WithEvents mResetSettings As ToolStripMenuItem
-    Friend WithEvents ColumnNum As DataGridViewTextBoxColumn
-    Friend WithEvents ColumnZman As DataGridViewTextBoxColumn
-    Friend WithEvents ColumnTime As DataGridViewComboBoxColumn
     Friend WithEvents LabelDisclaimer As Label
     Friend WithEvents mInfoHelp As ToolStripMenuItem
     Friend WithEvents mShowTooltips As ToolStripMenuItem
+    Friend WithEvents mHideLocationInfo As ToolStripMenuItem
+    Friend WithEvents PanelOndpEngdate As Panel
+    Friend WithEvents rtbHoliday As RichTextBox
+    Friend WithEvents rtbDafYomi As RichTextBox
+    Friend WithEvents PanelOnCbTimeZone As Panel
+    Friend WithEvents rtbParsha As RichTextBox
+    Friend WithEvents ColumnNum As DataGridViewTextBoxColumn
+    Friend WithEvents ColumnZman As DataGridViewTextBoxColumn
+    Friend WithEvents ColumnTime As DataGridViewComboBoxColumn
 End Class

@@ -10,6 +10,9 @@ Public Class Frminfo
         End If
 
         rtbHebrewDate.Font = MemoryFonts.GetFont(0, 11, FontStyle.Regular)
+        rtbParsha.Font = MemoryFonts.GetFont(0, 11, FontStyle.Regular)
+        rtbDafYomi.Font = MemoryFonts.GetFont(0, 11, FontStyle.Regular)
+        rtbHoliday.Font = MemoryFonts.GetFont(0, 11, FontStyle.Regular)
         dpEngdate.Font = MemoryFonts.GetFont(0, 11, FontStyle.Regular)
         cbLocationList.Font = MemoryFonts.GetFont(0, 10, FontStyle.Regular)
         CbTimeZone.Font = MemoryFonts.GetFont(0, 10, FontStyle.Regular)
@@ -28,7 +31,7 @@ Public Class Frminfo
         'AddHandler varTransparencyLabel.TextChanged, AddressOf Me.varTransparencyLabel_TextChanged
 
         change_hebdate()
-
+        DataGridView1.Select()
         TimerLocationsLoad.Enabled = True 'used to load locations after form is open
     End Sub
     Private Sub Frminfo_FormClosed(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles Me.FormClosed
@@ -269,8 +272,9 @@ Public Class Frminfo
         change_hebdate()
         Place_orDate_changed()
     End Sub
-    Private Sub RBHebAll_MouseClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles rtbHebrewDate.MouseClick
-        rtbHebrewDate.[Select](0, Len(rtbHebrewDate.Text))
+    Private Sub rtbHebrewDate_MouseClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles rtbHebrewDate.MouseClick
+        'Selects all
+        'rtbHebrewDate.[Select](0, Len(rtbHebrewDate.Text))
         If varSC.ChangeKeybordLayout = False Then Exit Sub
         Try
             varSavedInputLanguage = InputLanguage.CurrentInputLanguage
@@ -283,16 +287,25 @@ Public Class Frminfo
         Catch ex As Exception
         End Try
     End Sub
-    Private Sub RBHebAll_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles rtbHebrewDate.KeyPress
+    Private Sub rtbHebrewDate_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles rtbHebrewDate.KeyPress
         If e.KeyChar = Chr(13) Then parse_hebdate()
     End Sub
-    Private Sub RBHebAll_Leave(ByVal sender As Object, ByVal e As System.EventArgs) Handles rtbHebrewDate.Leave
+    Private Sub rtbHebrewDate_Leave(ByVal sender As Object, ByVal e As System.EventArgs) Handles rtbHebrewDate.Leave
         parse_hebdate()
         If varSC.ChangeKeybordLayout = False Then Exit Sub
         Try
             InputLanguage.CurrentInputLanguage = varSavedInputLanguage
         Catch ex As Exception
         End Try
+    End Sub
+    Private Sub rtbParsha_KeyPress(sender As Object, e As KeyPressEventArgs) Handles rtbParsha.KeyPress
+        e.KeyChar = ""
+    End Sub
+    Private Sub rtbDafYomi_KeyPress(sender As Object, e As KeyPressEventArgs) Handles rtbDafYomi.KeyPress
+        e.KeyChar = ""
+    End Sub
+    Private Sub rtbHoliday_KeyPress(sender As Object, e As KeyPressEventArgs) Handles rtbHoliday.KeyPress
+        e.KeyChar = ""
     End Sub
     Private Sub tblatitude_Leave(ByVal sender As Object, ByVal e As System.EventArgs) Handles tblatitude.Leave
         Place_orDate_changed()
@@ -426,6 +439,10 @@ Public Class Frminfo
         End If
         If varSC.BackUpWhenChanging = True Then varSC.Save(varUserFile & ".Bak " & Now.ToString("M-d-yy H.m"))
 
+        If varSC.HideLocationBox = True Then
+            mHideLocationInfo.Checked = False
+            mHideLocationInfo_Click()
+        End If
 
         'save Locations & Zmanim
         Dim tempZmanim As New List(Of aZman)
@@ -440,9 +457,10 @@ Public Class Frminfo
         LoadSettingsandVariables()
 
         Me.CenterToScreen()
-        Me.Size = New System.Drawing.Size(305, 908)
+        Me.Size = New System.Drawing.Size(305, 898)
         DataGridView1.Columns(1).Width = 160
         DataGridView1.Columns(2).Width = 100
+
 
         TimerLocationsLoad.Enabled = True
     End Sub
@@ -956,7 +974,15 @@ Public Class Frminfo
         If e.Column.Index = 1 Then varSC.DataGridCol1W = e.Column.Width
         If e.Column.Index = 2 Then varSC.DataGridCol2W = e.Column.Width
     End Sub
-
+    Private Sub DataGridView1_Paint(sender As Object, e As PaintEventArgs) Handles DataGridView1.Paint
+        Using borderPen As Pen = New Pen(Color.LightGray)
+            e.Graphics.DrawRectangle(borderPen, New Rectangle(0, 0, DataGridView1.Width - 1, DataGridView1.Height - 1))
+        End Using
+        'MyBase.OnPaint(e)
+    End Sub
+    Private Sub DataGridView1_Scroll(sender As Object, e As ScrollEventArgs) Handles DataGridView1.Scroll
+        DataGridView1.Invalidate()
+    End Sub
     Public Sub mHebrewMenus_Click() Handles mHebrewMenus.Click
         varSC.HebrewMenus = mHebrewMenus.Checked
         change_zman()
@@ -1031,6 +1057,7 @@ Public Class Frminfo
             LabelElevation.Text = "גובה"
             LabelTimeZone.Text = "אזור זמן"
             mShowTooltips.Text = "הצג טולטיפס"
+            mHideLocationInfo.Text = "הסתר פרטי מיקום"
             If varSC.ShowTooltips = True Then
                 ToolTip1.SetToolTip(rbtTodayRefresh, "לחץ כדי לאפס את התאריך להיום")
                 ToolTip1.SetToolTip(rtbHebrewDate, "הקלד את התאריך העברי")
@@ -1075,7 +1102,6 @@ Public Class Frminfo
                 LabelDisclaimer.Font = MemoryFonts.GetFont(1, 8.5, FontStyle.Regular)
             Catch ex As Exception
             End Try
-
             LabelDisclaimer.Text = "Do not rely on zmanim to the last moment"
             mGetCurrnetLocation.Text = "Get Current Location"
             mSaveLocationChanges.Text = "Save Location Changes"
@@ -1107,6 +1133,7 @@ Public Class Frminfo
             mLineBetweenZmanim.Text = "Line Between Zmanim"
             GroupBox1.Text = "Dates"
             mHebrewMenus.Text = "Hebrew Menus"
+            mHideLocationInfo.Text = "Hide Location Info"
             ToolStripDropDownButton1.Text = "Tools"
             mInfoHelp.Text = "Info and Help"
             LabelCountry.RightToLeft = 0
@@ -1153,6 +1180,40 @@ Public Class Frminfo
             ToolTip1.SetToolTip(tbElevation, Nothing)
             ToolTip1.SetToolTip(CbTimeZone, Nothing)
         End If
+    End Sub
+
+    Public Sub mHideLocationInfo_Click() Handles mHideLocationInfo.Click
+        varSC.HideLocationBox = mHideLocationInfo.Checked
+        If mHideLocationInfo.Checked Then
+            varSC.DataGridSizeH = DataGridView1.Size.Height
+            DoHideLocationBox()
+            Me.DataGridView1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.Size = New System.Drawing.Size(Me.Size.Width, Me.Size.Height - 80)
+            Me.DataGridView1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) Or System.Windows.Forms.AnchorStyles.Left) Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            varSC.SizeH = Me.Height
+        Else
+            GroupBox2.Size = New System.Drawing.Size(GroupBox2.Size.Width, 140)
+            LabelLatitude.Location = New System.Drawing.Point(LabelLatitude.Location.X, LabelLatitude.Location.Y - 10)
+            LabelLongitude.Location = New System.Drawing.Point(LabelLongitude.Location.X, LabelLongitude.Location.Y - 10)
+            LabelCountry.Location = New System.Drawing.Point(LabelCountry.Location.X, LabelCountry.Location.Y - 10)
+            LabelElevation.Location = New System.Drawing.Point(LabelElevation.Location.X, LabelElevation.Location.Y - 10)
+            LabelDisclaimer.Location = New System.Drawing.Point(LabelDisclaimer.Location.X, LabelDisclaimer.Location.Y + 80)
+            DataGridView1.Location = New System.Drawing.Point(DataGridView1.Location.X, DataGridView1.Location.Y + 80)
+            Me.DataGridView1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.Size = New System.Drawing.Size(Me.Size.Width, Me.Size.Height + 80)
+            Me.DataGridView1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) Or System.Windows.Forms.AnchorStyles.Left) Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            varSC.SizeH = Me.Height
+        End If
+    End Sub
+    Public Sub DoHideLocationBox()
+        GroupBox2.Size = New System.Drawing.Size(GroupBox2.Size.Width, 60)
+        LabelLatitude.Location = New System.Drawing.Point(LabelLatitude.Location.X, LabelLatitude.Location.Y + 10)
+        LabelLongitude.Location = New System.Drawing.Point(LabelLongitude.Location.X, LabelLongitude.Location.Y + 10)
+        LabelCountry.Location = New System.Drawing.Point(LabelCountry.Location.X, LabelCountry.Location.Y + 10)
+        LabelElevation.Location = New System.Drawing.Point(LabelElevation.Location.X, LabelElevation.Location.Y + 10)
+        LabelDisclaimer.Location = New System.Drawing.Point(LabelDisclaimer.Location.X, LabelDisclaimer.Location.Y - 80)
+        DataGridView1.Location = New System.Drawing.Point(DataGridView1.Location.X, DataGridView1.Location.Y - 80)
+        DataGridView1.Size = New System.Drawing.Size(DataGridView1.Size.Width, varSC.DataGridSizeH)
     End Sub
 End Class
 

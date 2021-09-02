@@ -24,6 +24,7 @@
     Public Property LocationX As Integer = -1
     Public Property SizeW As Integer = -1
     Public Property SizeH As Integer = -1
+    Public Property DataGridSizeH As Integer = -1
     Public Property DataGridCol1W As Integer = -1
     Public Property DataGridCol2W As Integer = -1
     Public Property HebrewMenus As Boolean = False
@@ -33,6 +34,7 @@
     Public Property SchedulerLongitude As String
     Public Property SchedulerElevation As String
     Public Property SchedulerTimeZone As String
+    Public Property HideLocationBox As Boolean = False
 
     Private oZmanim As ZmanimCollection = New ZmanimCollection
     Private oLocation As LocationCollection = New LocationCollection

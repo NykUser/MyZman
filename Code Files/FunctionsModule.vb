@@ -43,6 +43,12 @@ Module FunctionsModule
         If varSC.MenuLanguageWasChanged = False Then If InStr(CultureInfo.CurrentCulture.Name, "he-IL") Then Frminfo.mHebrewMenus.Checked = True
         Frminfo.mHebrewMenus_Click()
 
+        Frminfo.mHideLocationInfo.Checked = varSC.HideLocationBox
+        If varSC.HideLocationBox = True Then Frminfo.DoHideLocationBox()
+
+
+
+
         If varSC.DefaultType = "Default" Then
             Frminfo.mPlaceListInHebrew.Checked = varSC.DefaultPlaceListInHebrew
             Frminfo.mPlaceListInHebrew_Click()
@@ -421,6 +427,7 @@ Module FunctionsModule
         End If
     End Sub
     Sub parse_hebdate()
+        If varFinishedLoading = False Then Exit Sub
         varHculture.DateTimeFormat.Calendar = varHC
         'Thread.CurrentThread.CurrentCulture = varHculture
 
@@ -456,33 +463,61 @@ Module FunctionsModule
     End Sub
     Sub change_hebdate()
         'Frminfo.dpEngdate.Value
-        Dim ResultArray = Get_HebDate(Frminfo.dpEngdate.Value)
+        Dim ResultArray()
+        ResultArray = Get_HebDate(Frminfo.dpEngdate.Value)
         Dim HebDatetoShow As String
 
-        HebDatetoShow = ResultArray(0) & " / " & ResultArray(1)
-        If ResultArray(2) <> " " Then HebDatetoShow = HebDatetoShow & " / " & ResultArray(2)
-        If ResultArray(3) <> "קודם הדף" And ResultArray(3) <> "??" Then HebDatetoShow = HebDatetoShow & " / " & ResultArray(3)
-        Frminfo.rtbHebrewDate.Text = HebDatetoShow
+        'HebDatetoShow = ResultArray(0) & " / יום " & ResultArray(1) & " " & ResultArray(2)
+        'If ResultArray(3) <> " " Then HebDatetoShow = HebDatetoShow & " / " & ResultArray(3)
+        'If ResultArray(4) <> "קודם הדף" And ResultArray(4) <> "??" Then HebDatetoShow = HebDatetoShow & " / " & ResultArray(4)
+        'Frminfo.rtbHebrewDate.Text = HebDatetoShow
+
+        Frminfo.rtbHebrewDate.Text = ResultArray(0)
+        Frminfo.rtbDafYomi.Text = ResultArray(4)
+        If ResultArray(3) <> " " Then 'the is a holiday
+            Frminfo.rtbHoliday.Text = ResultArray(3)
+            Frminfo.rtbParsha.Text = "יום " & ResultArray(1) & " " & ResultArray(2)
+            If ResultArray(2) = Nothing Then
+                ResultArray = Get_HebDate(Frminfo.dpEngdate.Value, True)
+                Frminfo.rtbParsha.Text = "יום " & ResultArray(1)
+            End If
+        Else 'no holiday
+            ResultArray = Get_HebDate(Frminfo.dpEngdate.Value, True)
+            Frminfo.rtbParsha.Text = "יום " & ResultArray(1)
+            Frminfo.rtbHoliday.Text = "פרשת " & ResultArray(2)
+        End If
+
+        RichTextBoxAlignment()
     End Sub
-    Public Function Get_HebDate(DateIn As Date) As String()
-        Dim Hebdate, Holiday, Hebday, Daf As String
+    Sub RichTextBoxAlignment()
+        Frminfo.rtbParsha.SelectAll()
+        Frminfo.rtbParsha.SelectionAlignment = HorizontalAlignment.Center
+        Frminfo.rtbHoliday.SelectAll()
+        Frminfo.rtbHoliday.SelectionAlignment = HorizontalAlignment.Center
+        Frminfo.rtbDafYomi.SelectAll()
+        Frminfo.rtbDafYomi.SelectionAlignment = HorizontalAlignment.Center
+        Frminfo.rtbHebrewDate.SelectAll()
+        Frminfo.rtbHebrewDate.SelectionAlignment = HorizontalAlignment.Center
+    End Sub
+    Public Function Get_HebDate(DateIn As Date, Optional LongHebDayFormat As Boolean = False) As String()
+        Dim Hebdate, Holiday, Hebday, Parsha, Daf As String
         Dim JC As New JewishCalendar()
         Dim HDF As New HebrewDateFormatter()
         Dim YC As New YomiCalculator()
         HDF.HebrewFormat = True
-        HDF.LongWeekFormat = False
+        HDF.LongWeekFormat = LongHebDayFormat
         varHculture.DateTimeFormat.Calendar = varHC
 
         Hebdate = DateIn.ToString("dd MMM yyy", varHculture)
         Holiday = HDF.FormatYomTov(DateIn, False) & " " & HDF.FormatOmer(DateIn)
         If varSC.IsraeliYomTov = True Then Holiday = HDF.FormatYomTov(DateIn, True) & " " & HDF.FormatOmer(DateIn)
-        Hebday = "יום " & HDF.FormatDayOfWeek(DateIn)
+        Hebday = HDF.FormatDayOfWeek(DateIn)
 
         Try
             If varSC.IsraeliYomTov = True Then
-                Hebday = Hebday & " " & GetParshaNew(DateIn, True)
+                Parsha = GetParshaNew(DateIn, True)
             Else
-                Hebday = Hebday & " " & GetParshaNew(DateIn, False)
+                Parsha = GetParshaNew(DateIn, False)
             End If
         Catch
         End Try
@@ -499,11 +534,12 @@ Module FunctionsModule
             Daf = "קודם הדף"
         End If
 A:
-        Return New String() {Hebdate, Hebday, Holiday, Daf}
+        Return New String() {Hebdate, Hebday, Parsha, Holiday, Daf}
         '0 Hebdate
-        '1 Hebday of week and Parsha
-        '2 Holiday
-        '3 DafYomi
+        '1 Hebday of week 'long or short
+        '2 Parsha
+        '3 Holiday
+        '4 DafYomi
 
         'Debug.Print("ParshaIndex " & GetParshaNew(Frminfo.dpEngdate.Value, False, True))
         'Debug.Print("ParshaYearType | " & JC.GetweekforParshaAyg(Frminfo.dpEngdate.Value, False)(0))

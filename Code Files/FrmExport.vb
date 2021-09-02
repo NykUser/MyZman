@@ -92,9 +92,9 @@ Public Class FrmExport
             End If
 
             ResultArray = Get_HebDate(Work_Date)
-            HebDatetoShow = ResultArray(0) & " " & ResultArray(1)
-            If ResultArray(2) <> " " Then HebDatetoShow = HebDatetoShow & " " & ResultArray(2)
-            If ResultArray(3) <> "קודם הדף" And ResultArray(3) <> "??" Then HebDatetoShow = HebDatetoShow & " " & ResultArray(3)
+            HebDatetoShow = ResultArray(0) & " יום " & ResultArray(1) & " " & ResultArray(2)
+            If ResultArray(3) <> " " Then HebDatetoShow = HebDatetoShow & " " & ResultArray(3)
+            If ResultArray(4) <> "קודם הדף" And ResultArray(4) <> "??" Then HebDatetoShow = HebDatetoShow & " " & ResultArray(4)
             TempCZC = New ComplexZmanimCalendar(Work_Date, TempLocation)
 
             file.WriteLine("BEGIN:VEVENT" & vbCrLf & "DTSTART:" & Work_Date.ToString("yyyyMMdd") & vbCrLf _
@@ -167,7 +167,7 @@ Public Class FrmExport
         For i = 1 To NumDays
             TempCZC = New ComplexZmanimCalendar(Work_Date, TempLocation)
             ResultArray = Get_HebDate(Work_Date)
-            RowString = Work_Date.ToShortDateString & "," & ResultArray(0) & "," & ResultArray(1) & "," & ResultArray(2) & "," & ResultArray(3) & ","
+            RowString = Work_Date.ToShortDateString & "," & ResultArray(0) & "," & "יום " & ResultArray(1) & " " & ResultArray(2) & "," & ResultArray(3) & "," & ResultArray(4) & ","
 
             For Each Z In varSC.Zmanim
                 If InStr(Z.FunctionName, "ShaahZmanis") > 0 Then
