@@ -239,6 +239,7 @@
   <ItemGroup>
     <None Include="Resources\TimeZoneConverter.dll" />
     <None Include="Resources\ArialUnicodeCompact.ttf" />
+    <None Include="Resources\UnicodeCompact.ttf" />
     <None Include="Resources\VarelaRound-Regular.ttf" />
     <None Include="Resources\Zmanim.dll" />
     <None Include="Resources\icons\1041645_add_add file_files_icon.png" />
@@ -317,6 +318,30 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Images\Info_16x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\down-button-ISO-50.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\down-button-Win-26.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\slide-up-50.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\up-win-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\Blue_Down_16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\Blue_Up_16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\Gray_Down_16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\Gray_Up_16.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <PropertyGroup>

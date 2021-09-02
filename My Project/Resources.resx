@@ -130,6 +130,12 @@
   <data name="BlueAlarmBell1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Images\BlueAlarmBell.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Blue_Down_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Blue_Down_16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Blue_Up_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Blue_Up_16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="broombrushclearsweep22" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Images\broombrushclearsweep22.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -163,6 +169,12 @@
   <data name="GeoTimeZone" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\GeoTimeZone.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="Gray_Down_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Gray_Down_16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Gray_Up_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Gray_Up_16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="green_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Images\green-16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -194,6 +206,9 @@
     <value>..\Resources\Images\previous 32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="red_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\red-16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="red_161" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Images\red-16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="refresh_2" type="System.Resources.ResXFileRef, System.Windows.Forms">

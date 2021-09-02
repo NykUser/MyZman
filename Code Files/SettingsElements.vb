@@ -8,10 +8,29 @@
 
     End Sub
 
-    Public Sub New(ByVal ozman As aZman) ' byval oplace as alocation
+    Public Sub New(ByVal ozman As aZman)
         Me.DisplayName = ozman.DisplayName
         Me.ObjectName = ozman.ObjectName
         Me.FunctionName = ozman.FunctionName
+    End Sub
+
+End Class
+Public Class aZmanimFunc
+    Inherits SerializableData
+    Public Property HebName As String
+    Public Property EngName As String
+    Public Property ObjectName As String
+    Public Property FunctionName As String
+
+    Public Sub New()
+
+    End Sub
+
+    Public Sub New(ByVal oZmanimFunc As aZmanimFunc)
+        Me.HebName = oZmanimFunc.HebName
+        Me.HebName = oZmanimFunc.EngName
+        Me.ObjectName = oZmanimFunc.ObjectName
+        Me.FunctionName = oZmanimFunc.FunctionName
     End Sub
 
 End Class

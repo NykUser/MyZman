@@ -18,6 +18,7 @@
     Public Property BackUpWhenChanging As Boolean = True
     Public Property ShowTimesOnStatusBar As Boolean = True
     Public Property ShowTooltips As Boolean = True
+    Public Property DisplayDafYomi As Boolean = True
     Public Property LineBetweenZmanim As Boolean = False
     Public Property TransparencyValue As Double = 1
     Public Property LocationY As Integer = -1

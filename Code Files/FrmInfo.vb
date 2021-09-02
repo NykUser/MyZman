@@ -11,8 +11,6 @@ Public Class Frminfo
 
         rtbHebrewDate.Font = MemoryFonts.GetFont(0, 11, FontStyle.Regular)
         rtbParsha.Font = MemoryFonts.GetFont(0, 11, FontStyle.Regular)
-        rtbDafYomi.Font = MemoryFonts.GetFont(0, 11, FontStyle.Regular)
-        rtbHoliday.Font = MemoryFonts.GetFont(0, 11, FontStyle.Regular)
         dpEngdate.Font = MemoryFonts.GetFont(0, 11, FontStyle.Regular)
         cbLocationList.Font = MemoryFonts.GetFont(0, 10, FontStyle.Regular)
         CbTimeZone.Font = MemoryFonts.GetFont(0, 10, FontStyle.Regular)
@@ -301,10 +299,10 @@ Public Class Frminfo
     Private Sub rtbParsha_KeyPress(sender As Object, e As KeyPressEventArgs) Handles rtbParsha.KeyPress
         e.KeyChar = ""
     End Sub
-    Private Sub rtbDafYomi_KeyPress(sender As Object, e As KeyPressEventArgs) Handles rtbDafYomi.KeyPress
+    Private Sub rtbDafYomi_KeyPress(sender As Object, e As KeyPressEventArgs)
         e.KeyChar = ""
     End Sub
-    Private Sub rtbHoliday_KeyPress(sender As Object, e As KeyPressEventArgs) Handles rtbHoliday.KeyPress
+    Private Sub rtbHoliday_KeyPress(sender As Object, e As KeyPressEventArgs)
         e.KeyChar = ""
     End Sub
     Private Sub tblatitude_Leave(ByVal sender As Object, ByVal e As System.EventArgs) Handles tblatitude.Leave
@@ -364,6 +362,10 @@ Public Class Frminfo
         varSC.ShowTooltips = mShowTooltips.Checked
         mHebrewMenus_Click()
     End Sub
+    Private Sub mDisplayDafYomi_Click(sender As Object, e As EventArgs) Handles mDisplayDafYomi.Click
+        varSC.DisplayDafYomi = mDisplayDafYomi.Checked
+        change_hebdate()
+    End Sub
     Private Sub mAskWhenChanging_Click(sender As Object, e As EventArgs) Handles mAskWhenChanging.Click
         varSC.AskWhenChanging = mAskWhenChanging.Checked
     End Sub
@@ -412,7 +414,7 @@ Public Class Frminfo
             Dim Response
             Using New Centered_MessageBox(Me, "MouseCenter")
                 If varSC.HebrewMenus = True Then
-                    Response = MsgBox("!שים לב" & vbCr & ".פעולה זו תסיר שינויים ותוספות שנעשו ברשימת הזמנים" & vbCr & "?בטוח שאתה רוצה להמשיך", MsgBoxStyle.YesNo + MsgBoxStyle.Question + MsgBoxStyle.MsgBoxRight)
+                    Response = MsgBox("!שים לב" & vbCr & ".פעולה זו תאפס את כל השינויים שבוצעו על ידך ברשימת הזמנים" & vbCr & "?האם אתה בטוח שברצונך להמשיך", MsgBoxStyle.YesNo + MsgBoxStyle.Question + MsgBoxStyle.MsgBoxRight)
                 Else
                     Response = MsgBox("This Will Remove Changes & Additions Made To The Zmanim List." & vbCr & "Sure You Want To Continue?", MsgBoxStyle.YesNo + MsgBoxStyle.Question)
                 End If
@@ -430,7 +432,7 @@ Public Class Frminfo
             Dim Response
             Using New Centered_MessageBox(Me, "MouseCenter")
                 If varSC.HebrewMenus = True Then
-                    Response = MsgBox("!שים לב" & vbCr & ".פעולה זו תסיר את כל הגדרות המשתמש" & vbCr & "?בטוח שאתה רוצה להמשיך", MsgBoxStyle.YesNo + MsgBoxStyle.Question + MsgBoxStyle.MsgBoxRight)
+                    Response = MsgBox("!שים לב" & vbCr & ".פעולה זו תסיר את כל הגדרות המשתמש" & vbCr & "?האם אתה בטוח שברצונך להמשיך", MsgBoxStyle.YesNo + MsgBoxStyle.Question + MsgBoxStyle.MsgBoxRight)
                 Else
                     Response = MsgBox("This Will Remove All User Settings." & vbCr & "Sure You Want To Continue?", MsgBoxStyle.YesNo + MsgBoxStyle.Question)
                 End If
@@ -572,7 +574,7 @@ Public Class Frminfo
             Dim Response
             Using New Centered_MessageBox(Me, "MouseCenter")
                 If varSC.HebrewMenus = True Then
-                    Response = MsgBox("!שים לב" & vbCr & ":פעולה זו תחליף מידע שמור של" & vbCr & EngName & " - " & ChrW(&H200F) & HebName & vbCr & "?האם הינך מעונין להמשיך", MsgBoxStyle.YesNo + MsgBoxStyle.Question + MsgBoxStyle.MsgBoxRight)
+                    Response = MsgBox("!שים לב" & vbCr & ":פעולה זו תחליף מידע שמור של" & vbCr & EngName & " - " & ChrW(&H200F) & HebName & vbCr & "?האם אתה בטוח שברצונך להמשיך", MsgBoxStyle.YesNo + MsgBoxStyle.Question + MsgBoxStyle.MsgBoxRight)
                 Else
                     Response = MsgBox("This Will Overwrite: " & EngName & " - " & HebName & " Info!" & vbCr & "Do You Want To Continue?", MsgBoxStyle.YesNo + MsgBoxStyle.Question)
                 End If
@@ -1017,7 +1019,7 @@ Public Class Frminfo
             Catch ex As Exception
             End Try
 
-            LabelDisclaimer.Text = "אין לסמוך על הזמנים עד הרגע האחרון"
+            LabelDisclaimer.Text = "אין לסמוך על זמנים אלו בצמצום"
             mGetCurrnetLocation.Text = "קבל את המיקום הנוכחי"
             mSaveLocationChanges.Text = "שמור שינויי מיקום"
             mRemoveLocation.Text = "הסר מיקום"
@@ -1038,7 +1040,7 @@ Public Class Frminfo
             mResetSettings.Text = "אפס את כל ההגדרות"
             mOpenCompare.Text = "השווה זמנים"
             mOpenSchedule.Text = "מתזמן"
-            GroupBox2.Text = "פרטי מקום"
+            GroupBox2.Text = "פרטי מקום    "
             mAddZman.Text = "הוסף זמן חדש למטה"
             mDeleteZman.Text = "מחק את זמן הנבחר"
             mResetZmanimList.Text = "אפס את רשימת הזמנים"
@@ -1057,17 +1059,24 @@ Public Class Frminfo
             LabelElevation.Text = "גובה"
             LabelTimeZone.Text = "אזור זמן"
             mShowTooltips.Text = "הצג טולטיפס"
+            mDisplayDafYomi.Text = "הצג דף היומי"
             mHideLocationInfo.Text = "הסתר פרטי מיקום"
             If varSC.ShowTooltips = True Then
                 ToolTip1.SetToolTip(rbtTodayRefresh, "לחץ כדי לאפס את התאריך להיום")
-                ToolTip1.SetToolTip(rtbHebrewDate, "הקלד את התאריך העברי")
+                ToolTip1.SetToolTip(rtbHebrewDate, "הכנס כאן תאריך עברי בכדי לעבור אליו")
                 ToolTip1.SetToolTip(cbLocationList, "בחר או הקלד מיקום")
                 ToolTip1.SetToolTip(rbtLocationContexOpen, "לחץ כדי לפתוח את התפריט")
                 ToolTip1.SetToolTip(tblatitude, "הזן קו רוחב")
                 ToolTip1.SetToolTip(tblongitude, "הזן קו אורך")
                 ToolTip1.SetToolTip(tbElevation, "הזן את גובה המיקום")
                 ToolTip1.SetToolTip(CbTimeZone, "בחר אזור זמן")
+                If varSC.HideLocationBox = True Then
+                    ToolTip1.SetToolTip(btHideLocationInfo, "הרחב פרטי מיקום")
+                Else
+                    ToolTip1.SetToolTip(btHideLocationInfo, "הסתר פרטי מיקום")
+                End If
             End If
+            btHideLocationInfo.Location = New System.Drawing.Point(153, btHideLocationInfo.Location.Y)
 
             'do it here after SettingsToolStripMenuItem.Width is set
             Dim TransparencyBox As New ToolStripMenuTextBoxAndLabel("אי שקיפות:", 35, True, SettingsToolStripMenuItem.Width)
@@ -1123,7 +1132,7 @@ Public Class Frminfo
             mResetSettings.Text = "Reset All Settings"
             mOpenCompare.Text = "Compare"
             mOpenSchedule.Text = "Scheduler"
-            GroupBox2.Text = "Location info"
+            GroupBox2.Text = "Location info    "
             mAddZman.Text = "Add New Zman Below"
             mDeleteZman.Text = "Delete This Zman"
             mResetZmanimList.Text = "Reset Zmanim List"
@@ -1150,16 +1159,23 @@ Public Class Frminfo
             LabelTimeZone.Text = "Time Zone"
 
             mShowTooltips.Text = "Display Tool Tips"
+            mDisplayDafYomi.Text = "Display Daf Yomi"
             If varSC.ShowTooltips = True Then
                 ToolTip1.SetToolTip(rbtTodayRefresh, "Press to Reset Date to Today")
-                ToolTip1.SetToolTip(rtbHebrewDate, "Enter the Hebrew Date")
+                ToolTip1.SetToolTip(rtbHebrewDate, "Enter a Hebrew date to go to it")
                 ToolTip1.SetToolTip(cbLocationList, "Select or Type Location")
                 ToolTip1.SetToolTip(rbtLocationContexOpen, "Press to Open Menu")
                 ToolTip1.SetToolTip(tblatitude, "Enter Latitude")
                 ToolTip1.SetToolTip(tblongitude, "Enter Longitude")
                 ToolTip1.SetToolTip(tbElevation, "Enter Location Height")
                 ToolTip1.SetToolTip(CbTimeZone, "Select Time Zone")
+                If varSC.HideLocationBox = True Then
+                    ToolTip1.SetToolTip(btHideLocationInfo, "More Location Details")
+                Else
+                    ToolTip1.SetToolTip(btHideLocationInfo, "Hide Location Details")
+                End If
             End If
+            btHideLocationInfo.Location = New System.Drawing.Point(113, btHideLocationInfo.Location.Y)
 
             Dim TransparencyBox As New ToolStripMenuTextBoxAndLabel("Opacity:", 35, False, SettingsToolStripMenuItem.Width)
             TransparencyBox.Text = varSC.TransparencyValue * 100 & "%" ' convert from decimal
@@ -1181,8 +1197,11 @@ Public Class Frminfo
             ToolTip1.SetToolTip(CbTimeZone, Nothing)
         End If
     End Sub
-
-    Public Sub mHideLocationInfo_Click() Handles mHideLocationInfo.Click
+    Private Sub btHideLocationInfo_Click(sender As Object, e As EventArgs) Handles btHideLocationInfo.Click
+        mHideLocationInfo.Checked = Not mHideLocationInfo.Checked
+        mHideLocationInfo_Click()
+    End Sub
+    Private Sub mHideLocationInfo_Click() Handles mHideLocationInfo.Click
         varSC.HideLocationBox = mHideLocationInfo.Checked
         If mHideLocationInfo.Checked Then
             varSC.DataGridSizeH = DataGridView1.Size.Height
@@ -1203,7 +1222,11 @@ Public Class Frminfo
             Me.Size = New System.Drawing.Size(Me.Size.Width, Me.Size.Height + 80)
             Me.DataGridView1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) Or System.Windows.Forms.AnchorStyles.Left) Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             varSC.SizeH = Me.Height
+            btHideLocationInfo.Image = My.Resources.Gray_Up_16
+            btHideLocationInfo.Location = New System.Drawing.Point(btHideLocationInfo.Location.X, btHideLocationInfo.Location.Y - 5)
         End If
+        'for tool tips
+        mHebrewMenus_Click()
     End Sub
     Public Sub DoHideLocationBox()
         GroupBox2.Size = New System.Drawing.Size(GroupBox2.Size.Width, 60)
@@ -1214,6 +1237,8 @@ Public Class Frminfo
         LabelDisclaimer.Location = New System.Drawing.Point(LabelDisclaimer.Location.X, LabelDisclaimer.Location.Y - 80)
         DataGridView1.Location = New System.Drawing.Point(DataGridView1.Location.X, DataGridView1.Location.Y - 80)
         DataGridView1.Size = New System.Drawing.Size(DataGridView1.Size.Width, varSC.DataGridSizeH)
+        btHideLocationInfo.Image = My.Resources.Gray_Down_16
+        btHideLocationInfo.Location = New System.Drawing.Point(btHideLocationInfo.Location.X, btHideLocationInfo.Location.Y + 5)
     End Sub
 End Class
 

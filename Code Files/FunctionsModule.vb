@@ -36,6 +36,7 @@ Module FunctionsModule
         Frminfo.mPlaceListInHebrew.Checked = varSC.PlaceListInHebrew
         Frminfo.mLineBetweenZmanim.Checked = varSC.LineBetweenZmanim
         Frminfo.mIsraeliYomTov.Checked = varSC.IsraeliYomTov
+        Frminfo.mDisplayDafYomi.Checked = varSC.DisplayDafYomi
 
 
         Frminfo.mHebrewMenus.Checked = varSC.HebrewMenus
@@ -45,9 +46,6 @@ Module FunctionsModule
 
         Frminfo.mHideLocationInfo.Checked = varSC.HideLocationBox
         If varSC.HideLocationBox = True Then Frminfo.DoHideLocationBox()
-
-
-
 
         If varSC.DefaultType = "Default" Then
             Frminfo.mPlaceListInHebrew.Checked = varSC.DefaultPlaceListInHebrew
@@ -467,35 +465,23 @@ Module FunctionsModule
         ResultArray = Get_HebDate(Frminfo.dpEngdate.Value)
         Dim HebDatetoShow As String
 
-        'HebDatetoShow = ResultArray(0) & " / יום " & ResultArray(1) & " " & ResultArray(2)
-        'If ResultArray(3) <> " " Then HebDatetoShow = HebDatetoShow & " / " & ResultArray(3)
-        'If ResultArray(4) <> "קודם הדף" And ResultArray(4) <> "??" Then HebDatetoShow = HebDatetoShow & " / " & ResultArray(4)
-        'Frminfo.rtbHebrewDate.Text = HebDatetoShow
-
         Frminfo.rtbHebrewDate.Text = ResultArray(0)
-        Frminfo.rtbDafYomi.Text = ResultArray(4)
         If ResultArray(3) <> " " Then 'the is a holiday
-            Frminfo.rtbHoliday.Text = ResultArray(3)
-            Frminfo.rtbParsha.Text = "יום " & ResultArray(1) & " " & ResultArray(2)
-            If ResultArray(2) = Nothing Then
+            If ResultArray(2) = Nothing Then 'the is No Parsha
                 ResultArray = Get_HebDate(Frminfo.dpEngdate.Value, True)
-                Frminfo.rtbParsha.Text = "יום " & ResultArray(1)
+                Frminfo.rtbParsha.Text = "יום " & ResultArray(1) & " " & ChrW(&HCB) & " " & ResultArray(3) & If(ResultArray(4) = Nothing, "", " " & ChrW(&HCB) & " " & ResultArray(4))
+            Else
+                Frminfo.rtbParsha.Text = ResultArray(1) & " " & ResultArray(2) & " " & ChrW(&HCB) & " " & ResultArray(3) & If(ResultArray(4) = Nothing, "", " " & ChrW(&HCB) & " " & ResultArray(4))
             End If
         Else 'no holiday
             ResultArray = Get_HebDate(Frminfo.dpEngdate.Value, True)
-            Frminfo.rtbParsha.Text = "יום " & ResultArray(1)
-            Frminfo.rtbHoliday.Text = "פרשת " & ResultArray(2)
+            Frminfo.rtbParsha.Text = "יום " & ResultArray(1) & " " & ResultArray(2) & If(ResultArray(4) = Nothing, "", " " & ChrW(&HCB) & " " & ResultArray(4))
         End If
-
         RichTextBoxAlignment()
     End Sub
     Sub RichTextBoxAlignment()
         Frminfo.rtbParsha.SelectAll()
         Frminfo.rtbParsha.SelectionAlignment = HorizontalAlignment.Center
-        Frminfo.rtbHoliday.SelectAll()
-        Frminfo.rtbHoliday.SelectionAlignment = HorizontalAlignment.Center
-        Frminfo.rtbDafYomi.SelectAll()
-        Frminfo.rtbDafYomi.SelectionAlignment = HorizontalAlignment.Center
         Frminfo.rtbHebrewDate.SelectAll()
         Frminfo.rtbHebrewDate.SelectionAlignment = HorizontalAlignment.Center
     End Sub
@@ -522,16 +508,15 @@ Module FunctionsModule
         Catch
         End Try
 
-        If DateIn > #9/11/1923# Then
-            Try
-                'used to have a isue with some days, looks fine with newer YomiCalculator.cs
-                Daf = HDF.FormatDafYomiBavli(YomiCalculator.GetDafYomiBavli(DateIn))
-            Catch
-                Daf = "??"
-                GoTo A
-            End Try
-        Else
-            Daf = "קודם הדף"
+        'only send back daf if not closed by user, is after 1923 and was able to get - else will be Nothing
+        If varSC.DisplayDafYomi = True Then
+            If DateIn > #9/11/1923# Then
+                Try
+                    'used to have a isue with some days, looks fine with newer YomiCalculator.cs
+                    Daf = HDF.FormatDafYomiBavli(YomiCalculator.GetDafYomiBavli(DateIn))
+                Catch
+                End Try
+            End If
         End If
 A:
         Return New String() {Hebdate, Hebday, Parsha, Holiday, Daf}
@@ -651,6 +636,16 @@ A:
         'New aZman With {.DisplayName = "מנחה ק' לבוש נ-ש", .FunctionName = "GetMinchaKetana", .ObjectName = "varCZC"},
         'New aZman With {.DisplayName = "מנחה ק' מג""א ע-צ", .FunctionName = "GetMinchaKetana72Minutes", .ObjectName = "varCZC"},
     End Function
+    Public Function ListOfZmanimFunctions() As List(Of aZmanimFunc)
+        'Collections start from 0
+        Return New List(Of aZmanimFunc) From
+         {
+                New aZmanimFunc With {.HebName = "עלות השחר כשחמה 16.1 מעלת מתחת לאופק", .EngName = "", .FunctionName = "GetAlos16Point1Degrees", .ObjectName = "varCZC"},
+                New aZmanimFunc With {.HebName = "עלות השחר כשחמה 16.1 מעלת מתחת לאופק", .EngName = "", .FunctionName = "GetAlos16Point1Degrees", .ObjectName = "varCZC"},
+                New aZmanimFunc With {.HebName = "עלות השחר כשחמה 16.1 מעלת מתחת לאופק", .EngName = "", .FunctionName = "GetAlos16Point1Degrees", .ObjectName = "varCZC"}
+         }
+    End Function
+
     Function getnamebyTimeOffset(ByVal num As Double, ByVal windowsName As Boolean)
         'not in use
         'Using  GeoTimeZone.TimeZoneLookup and TimeZoneConverter.TZConvert

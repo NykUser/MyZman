@@ -15,6 +15,7 @@ Namespace My
             AddHandler AppDomain.CurrentDomain.AssemblyResolve, AddressOf ResolveAssemblies
             MemoryFonts.AddMemoryFont(My.Resources.ArialUnicodeCompact)
             MemoryFonts.AddMemoryFont(My.Resources.VarelaRound_Regular)
+            'MemoryFonts.AddMemoryFont(My.Resources.UnicodeCompact)
 
             'switch for Scheduler  
             Dim args As String() = e.CommandLine.ToArray ' Environment.GetCommandLineArgs()
