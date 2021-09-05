@@ -47,7 +47,7 @@ Most of the locations are missing elevation info.
 # Calculations Info and Credits
 * Core Zmanim calculations are based on Eliyahu Hershfeld’s work [Kosher Java](https://kosherjava.com/) available on its [GitHub Home](https://github.com/KosherJava/zmanim).
 * Project uses the above’s NET port developed by Yitzchok Gottlieb [Found here](https://github.com/Yitzchok/Zmanim) (Release 1.5.0)
-* The Net Port’s Function GetParsha has [an issue](https://github.com/Yitzchok/Zmanim/issues/28) Custom Function GetParshaNew used instead.
+* Some new Functions were added for additional zmanim and Parsha Names (in Class AddedGets)
 * By default, all zmanim calculations use the NOAA algorithm (developed by Jean Meeus).
 * By default, all zmanim calculations are based on sea level.
 * The is an options to use the older USNO algorithm (more on the differences see below) or to use the locations elevation via the right click context menu in the zmanim box (as mentioned above the saved locations elevation is incomplete).

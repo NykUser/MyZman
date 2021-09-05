@@ -94,7 +94,8 @@ Public Class FrmExport
             ResultArray = Get_HebDate(Work_Date)
             HebDatetoShow = ResultArray(0) & " יום " & ResultArray(1) & " " & ResultArray(2)
             If ResultArray(3) <> " " Then HebDatetoShow = HebDatetoShow & " " & ResultArray(3)
-            If ResultArray(4) <> "קודם הדף" And ResultArray(4) <> "??" Then HebDatetoShow = HebDatetoShow & " " & ResultArray(4)
+            If ResultArray(4) IsNot Nothing And varSC.DisplayDafYomi = True Then HebDatetoShow = HebDatetoShow & " " & ResultArray(4)
+            'If ResultArray(4) <> "קודם הדף" And ResultArray(4) <> "??" Then HebDatetoShow = HebDatetoShow & " " & ResultArray(4)
             TempCZC = New ComplexZmanimCalendar(Work_Date, TempLocation)
 
             file.WriteLine("BEGIN:VEVENT" & vbCrLf & "DTSTART:" & Work_Date.ToString("yyyyMMdd") & vbCrLf _
@@ -156,7 +157,7 @@ Public Class FrmExport
 
         File = My.Computer.FileSystem.OpenTextFileWriter(FileFullPath, False, System.Text.Encoding.UTF8) 'System.Text.Encoding.UTF8
         Dim RowString As String
-        Dim HeaderString As String = "Date,תאריך,פרשה,יום טוב,דף היומי,"
+        Dim HeaderString As String = "Date,תאריך,פרשה,יום טוב," & If(varSC.DisplayDafYomi = True, "דף היומי,", "")
 
         For Each Z In varSC.Zmanim
             HeaderString = HeaderString & Z.DisplayName & ","
@@ -167,7 +168,7 @@ Public Class FrmExport
         For i = 1 To NumDays
             TempCZC = New ComplexZmanimCalendar(Work_Date, TempLocation)
             ResultArray = Get_HebDate(Work_Date)
-            RowString = Work_Date.ToShortDateString & "," & ResultArray(0) & "," & "יום " & ResultArray(1) & " " & ResultArray(2) & "," & ResultArray(3) & "," & ResultArray(4) & ","
+            RowString = Work_Date.ToShortDateString & "," & ResultArray(0) & "," & "יום " & ResultArray(1) & " " & ResultArray(2) & "," & ResultArray(3) & "," & If(varSC.DisplayDafYomi = True, ResultArray(4) & ",", "")
 
             For Each Z In varSC.Zmanim
                 If InStr(Z.FunctionName, "ShaahZmanis") > 0 Then

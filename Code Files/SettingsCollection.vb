@@ -8,7 +8,7 @@
     Public Property DefaultSelectedindex As Integer = 1
     Public Property DefaultName As String = ""
     Public Property DefaultPlaceListInHebrew As Boolean = False
-    Public Property ColorZman As Boolean = False
+    Public Property ColorZman As Boolean = True
     Public Property StayOnTop As Boolean = False
     Public Property UseOlderUsnoAlgorithm As Boolean = False
     Public Property CalculateElevation As Boolean = False
@@ -30,6 +30,7 @@
     Public Property DataGridCol2W As Integer = -1
     Public Property HebrewMenus As Boolean = False
     Public Property MenuLanguageWasChanged As Boolean = False
+    Public Property UserChangedLocationSort As Boolean = False
     Public Property SchedulerLocation As String
     Public Property SchedulerLatitude As String
     Public Property SchedulerLongitude As String

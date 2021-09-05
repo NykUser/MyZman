@@ -11,10 +11,6 @@ namespace Zmanim.JewishCalendar
         /// which changes the index of several months depending on whether or not it is a leap year
         /// see: https://msdn.microsoft.com/en-us/library/system.globalization.hebrewcalendar(v=vs.110).aspx
         /// </summary>
-
-        
-        
-        
         public enum JewishMonth
         {
             /// <summary>
@@ -191,7 +187,7 @@ namespace Zmanim.JewishCalendar
             KI_SISA,
             VAYAKHEL,
             PEKUDEI,
-            VAYIKRA, 
+            VAYIKRA,
             TZAV,
             SHMINI,
             TAZRIA,
@@ -215,10 +211,10 @@ namespace Zmanim.JewishCalendar
             VAESCHANAN,
             EIKEV,
             REEH,
-            SHOFTIM, 
+            SHOFTIM,
             KI_SEITZEI,
             KI_SAVO,
-            NITZAVIM, 
+            NITZAVIM,
             VAYEILECH,
             HAAZINU,
             VZOS_HABERACHA,
@@ -965,19 +961,14 @@ namespace Zmanim.JewishCalendar
             return GetDayOfOmer(GetJewishMonth(dt), GetDayOfMonth(dt));
         }
 
-
-        public int[] GetweekforParshaAyg(DateTime date, bool inIsrael)
-        {
-            int[] MyArray = new int[3];
-            MyArray[0] = GetParshaYearType(date, inIsrael);
-            int roshHashanaDayOfWeek = (int)base.GetDayOfWeek(base.ToDateTime(base.GetYear(date), 1, 1, 14, 0, 0, 0));
-            TimeSpan daysSinceRoshHashana = date - base.ToDateTime(base.GetYear(date), 1, 1, 14, 0, 0, 0);
-            int day = roshHashanaDayOfWeek + daysSinceRoshHashana.Days + 1;
-            MyArray[1] = day / 7;
-            MyArray[2] = day;
-            return MyArray;
-        }
-
+        /// <summary>
+        /// Return the type of year for parsha calculations.
+        /// The algorithm follows the
+        /// <a href="http://hebrewbooks.org/pdfpager.aspx?req=14268&amp;st=&amp;pgnum=222"> Luach Arba'ah Shearim</a> in the Tur Ohr Hachaim.
+        /// </summary>
+        /// <param name="date"></param>
+        /// <param name="inIsrael"></param>
+        /// <returns>the type of year for parsha calculations.</returns>
         private int GetParshaYearType(DateTime date, bool inIsrael)
         {
 
@@ -1088,7 +1079,7 @@ namespace Zmanim.JewishCalendar
                             return 5;
                         }
                         break;
-                        default:
+                    default:
                         break;//TODO add code to handle exception
                 }
             }
@@ -1140,7 +1131,7 @@ namespace Zmanim.JewishCalendar
             TimeSpan daysSinceRoshHashana = date - base.ToDateTime(base.GetYear(date), 1, 1, 14, 0, 0, 0);
             int day = roshHashanaDayOfWeek + daysSinceRoshHashana.Days + 1;
 
-            
+
             if (yearType >= 0)
             { // negative year should be impossible, but lets cover all bases
                 return ParshaList[yearType, day / 7];
@@ -1150,7 +1141,7 @@ namespace Zmanim.JewishCalendar
 
 
         private bool IsCheshvanLong(DateTime date) => base.GetDaysInMonth(base.GetYear(date), 2) == 30;
-        private bool IsKislevShort(DateTime date) => base.GetDaysInMonth(base.GetYear(date), 2) == 29;
+        private bool IsKislevShort(DateTime date) => base.GetDaysInMonth(base.GetYear(date), 3) == 29;
 
         private readonly Parsha[,] ParshaList = new Parsha[,]{
         {Parsha.NONE, Parsha.VAYEILECH, Parsha.HAAZINU, Parsha.NONE, Parsha.BERESHIS, Parsha.NOACH, Parsha.LECH_LECHA, Parsha.VAYERA, Parsha.CHAYEI_SARA, Parsha.TOLDOS, Parsha.VAYETZEI, Parsha.VAYISHLACH, Parsha.VAYESHEV, Parsha.MIKETZ, Parsha.VAYIGASH, Parsha.VAYECHI, Parsha.SHEMOS, Parsha.VAERA, Parsha.BO, Parsha.BESHALACH, Parsha.YISRO, Parsha.MISHPATIM, Parsha.TERUMAH, Parsha.TETZAVEH, Parsha.KI_SISA, Parsha.VAYAKHEL_PEKUDEI, Parsha.VAYIKRA, Parsha.TZAV, Parsha.NONE, Parsha.SHMINI, Parsha.TAZRIA_METZORA, Parsha.ACHREI_MOS_KEDOSHIM, Parsha.EMOR, Parsha.BEHAR_BECHUKOSAI, Parsha.BAMIDBAR, Parsha.NASSO, Parsha.BEHAALOSCHA, Parsha.SHLACH, Parsha.KORACH, Parsha.CHUKAS, Parsha.BALAK, Parsha.PINCHAS, Parsha.MATOS_MASEI, Parsha.DEVARIM, Parsha.VAESCHANAN, Parsha.EIKEV, Parsha.REEH, Parsha.SHOFTIM, Parsha.KI_SEITZEI, Parsha.KI_SAVO, Parsha.NITZAVIM_VAYEILECH, Parsha.NONE, Parsha.NONE, Parsha.NONE, Parsha.NONE, Parsha.NONE},

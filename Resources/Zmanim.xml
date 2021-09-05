@@ -3209,6 +3209,16 @@
             </summary>
             <returns>The Omer count as an int or -1 if it is not a day of the Omer.</returns>
         </member>
+        <member name="M:Zmanim.JewishCalendar.JewishCalendar.GetParshaYearType(System.DateTime,System.Boolean)">
+            <summary>
+            Return the type of year for parsha calculations.
+            The algorithm follows the
+            <a href="http://hebrewbooks.org/pdfpager.aspx?req=14268&amp;st=&amp;pgnum=222"> Luach Arba'ah Shearim</a> in the Tur Ohr Hachaim.
+            </summary>
+            <param name="date"></param>
+            <param name="inIsrael"></param>
+            <returns>the type of year for parsha calculations.</returns>
+        </member>
         <member name="M:Zmanim.JewishCalendar.JewishCalendar.GetParshah(System.DateTime)">
             <summary>
             Gets the current <seealso cref="T:Zmanim.JewishCalendar.JewishCalendar.Parsha"/> outside israel, based on the date

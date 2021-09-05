@@ -3,7 +3,6 @@
 Public Class Frminfo
     Private Sub Frminfo_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         'see switch [/s] for Scheduler in ApplicationEvents.vb
-
         LoadSettingsandVariables()
         If Screen.PrimaryScreen.Bounds.Contains(Me.Bounds) = False Then
             Me.CenterToScreen()
@@ -24,9 +23,9 @@ Public Class Frminfo
         GroupBox1.Font = MemoryFonts.GetFont(1, 12, FontStyle.Regular)
         GroupBox2.Font = MemoryFonts.GetFont(1, 12, FontStyle.Regular)
 
-        'SettingsToolStripMenuItem.DropDownItems.Insert(SettingsToolStripMenuItem.DropDownItems.Count - 2, varTransparencyBox)
-        'event Handler is in ToolStripMenuTextBoxAndLabel Class
-        'AddHandler varTransparencyLabel.TextChanged, AddressOf Me.varTransparencyLabel_TextChanged
+        'Date picker set to CurrentCulture
+        Dim CultureDateFL = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern(0)
+        dpEngdate.CustomFormat = "  dddd   " & If(CultureDateFL = "M", "MM / dd / yyyy", "dd / MM / yyyy")
 
         change_hebdate()
         DataGridView1.Select()
@@ -58,10 +57,6 @@ Public Class Frminfo
         varSC.LocationY = Location.Y
         varSC.LocationX = Location.X
     End Sub
-    'Private Sub SettingsToolStripMenuItem_DropDownClosed(sender As Object, e As EventArgs) Handles SettingsToolStripMenuItem.DropDownClosed
-    '    'this is for storing Transparency seting, Transparency will be set by MouseMove
-    '    'varSC.TransparencyValue = Val(Replace(varTransparencyBox.Text, "%", "") / 100) ' convert percentage to decimal and remove percentage sign
-    'End Sub
     Private Sub Frminfo_MouseEnter(sender As Object, e As EventArgs) Handles Me.MouseEnter, MyBase.MouseEnter, Me.Activated, Me.GotFocus, GroupBox1.MouseEnter, GroupBox2.MouseEnter, DataGridView1.MouseEnter, StatusStrip1.Enter, dpEngdate.GotFocus, rtbHebrewDate.GotFocus, cbLocationList.GotFocus, tblatitude.GotFocus, tblongitude.GotFocus, tbcountry.GotFocus, tbElevation.GotFocus, tbzone.GotFocus
         varMouseEnter = True
     End Sub
@@ -111,7 +106,7 @@ Public Class Frminfo
             change_place(varSC.LastSelectedIndex)
         End If
 
-        'till now Place_orDate_changed() and change_zman() did not run for every seting
+        '''till now Place_orDate_changed() and change_zman() did not run for every seting
         varFinishedLoading = True
         Place_orDate_changed()
 
@@ -286,7 +281,10 @@ Public Class Frminfo
         End Try
     End Sub
     Private Sub rtbHebrewDate_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles rtbHebrewDate.KeyPress
-        If e.KeyChar = Chr(13) Then parse_hebdate()
+        If e.KeyChar = Chr(13) Then
+            rtbHebrewDate.Text = rtbHebrewDate.Text.Replace(vbCr, "").Replace(vbLf, "")
+            parse_hebdate()
+        End If
     End Sub
     Private Sub rtbHebrewDate_Leave(ByVal sender As Object, ByVal e As System.EventArgs) Handles rtbHebrewDate.Leave
         parse_hebdate()
@@ -553,7 +551,6 @@ Public Class Frminfo
         End If
         ClearAndReLoadPlaceLists(EngName)
     End Sub
-
     Private Sub mSaveLocationChanges_Click(sender As Object, e As EventArgs) Handles mSaveLocationChanges.Click
         'Debug.Print(cbLocationList.SelectedIndex & " - " & varSelectedIndexBeforChange)
 
@@ -770,7 +767,7 @@ Public Class Frminfo
     Private Sub DefaultInUse_Click(sender As Object, e As EventArgs) Handles mDefaultInUse.Click
         'to reload Default place 
         mPlaceListInHebrew.Checked = varSC.DefaultPlaceListInHebrew
-        mPlaceListInHebrew_Click()
+        'TogglePlaceListSorting()
         ClearAndReLoadPlaceLists("", varSC.DefaultSelectedindex)
     End Sub
     Private Sub mColorZmanMenuItem_CheckedChanged(sender As Object, e As EventArgs) Handles mColorZmanMenuItem.Click
@@ -987,7 +984,12 @@ Public Class Frminfo
     End Sub
     Public Sub mHebrewMenus_Click() Handles mHebrewMenus.Click
         varSC.HebrewMenus = mHebrewMenus.Checked
-        change_zman()
+
+        'don't force Hebrew sort if it was changed by user on last run
+        'If varSC.UserChangedLocationSort = False Then
+        '    varSC.PlaceListInHebrew = mHebrewMenus.Checked
+
+        'End If
 
         If mHebrewMenus.Checked = True Then
             Me.RightToLeft = 1
@@ -1047,7 +1049,7 @@ Public Class Frminfo
             mColorZmanMenuItem.Text = "הדגשת הזמנים לפי צבעים"
             mCalculateElevation.Text = "חישוב גובה"
             mUseUSNO.Text = "השתמש באלגוריתם USNO ישן"
-            mLineBetweenZmanim.Text = "קו בין זמנים"
+            mLineBetweenZmanim.Text = "הוסף קו בין השורות"
             GroupBox1.Text = "תאריכים"
             mHebrewMenus.Text = "תפריטים בעברית"
             ToolStripDropDownButton1.Text = "כלים"
@@ -1070,6 +1072,9 @@ Public Class Frminfo
                 ToolTip1.SetToolTip(tblongitude, "הזן קו אורך")
                 ToolTip1.SetToolTip(tbElevation, "הזן את גובה המיקום")
                 ToolTip1.SetToolTip(CbTimeZone, "בחר אזור זמן")
+                For i = 0 To DataGridView1.Rows.Count - 1
+                    DataGridView1(1, i).ToolTipText = "לחץ פעמיים לעריכה" & vbCr & "גרור ושחרר לסידור מחדש" & vbCr & "קליק ימני לאפשרויות נוספות"
+                Next
                 If varSC.HideLocationBox = True Then
                     ToolTip1.SetToolTip(btHideLocationInfo, "הרחב פרטי מיקום")
                 Else
@@ -1139,7 +1144,7 @@ Public Class Frminfo
             mColorZmanMenuItem.Text = "Color for Zmanim"
             mCalculateElevation.Text = "Calculate Elevation"
             mUseUSNO.Text = "Use Older USNO Algorithm"
-            mLineBetweenZmanim.Text = "Line Between Zmanim"
+            mLineBetweenZmanim.Text = "Add Line Between Zmanim"
             GroupBox1.Text = "Dates"
             mHebrewMenus.Text = "Hebrew Menus"
             mHideLocationInfo.Text = "Hide Location Info"
@@ -1169,6 +1174,10 @@ Public Class Frminfo
                 ToolTip1.SetToolTip(tblongitude, "Enter Longitude")
                 ToolTip1.SetToolTip(tbElevation, "Enter Location Height")
                 ToolTip1.SetToolTip(CbTimeZone, "Select Time Zone")
+                'DataGridView ToolTip's
+                For i = 0 To DataGridView1.Rows.Count - 1
+                    DataGridView1(1, i).ToolTipText = "Double Click to Edit" & vbCr & "Drag and Drop to Rearrange" & vbCr & "Right Click for More Options"
+                Next
                 If varSC.HideLocationBox = True Then
                     ToolTip1.SetToolTip(btHideLocationInfo, "More Location Details")
                 Else
