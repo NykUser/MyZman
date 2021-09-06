@@ -116,7 +116,6 @@ Module FunctionsModule
         MyZmanim.ForEach(Sub(x) varSC.Zmanim.Add(x))
     End Sub
     Sub ClearAndReLoadPlaceLists(Optional SelectName As String = "", Optional SelectNum As Integer = 0)
-        If varFinishedLoading = False Then Exit Sub
         varFinishedLoading = False
         'reset all Location lists
         Frminfo.cbLocationList.Items.Clear()
@@ -147,7 +146,7 @@ Module FunctionsModule
                     counter += 1
                 Next
             End If
-            Debug.Print(counter)
+            'Debug.Print(counter)
             varSC.LastSelectedIndex = counter
         End If
 
@@ -355,6 +354,13 @@ Module FunctionsModule
             'selcet value for ComboBoxCell
             CType(DVItems(DVItems.Count - 1).Cells(2), DataGridViewComboBoxCell).Value = CType(DVItems(DVItems.Count - 1).Cells(2), DataGridViewComboBoxCell).Items(0)
             'set ToolTip's
+            If varSC.ShowTooltips = True Then
+                If varSC.HebrewMenus = True Then
+                    CType(DVItems(DVItems.Count - 1).Cells(1), DataGridViewTextBoxCell).ToolTipText = "לחץ פעמיים לעריכה" & vbCr & "גרור ושחרר לסידור מחדש" & vbCr & "קליק ימני לאפשרויות נוספות"
+                Else
+                    CType(DVItems(DVItems.Count - 1).Cells(1), DataGridViewTextBoxCell).ToolTipText = "Double Click to Edit" & vbCr & "Drag and Drop to Rearrange" & vbCr & "Right Click for More Options"
+                End If
+            End If
             CType(DVItems(DVItems.Count - 1).Cells(2), DataGridViewComboBoxCell).ToolTipText = Z.FunctionName
         Next
 
@@ -368,9 +374,6 @@ Module FunctionsModule
 
         Frminfo.TimerStatusLabel.Enabled = True
         varFinishedLoading = True
-        'to get ToolTip's for zmanim names
-        Frminfo.mHebrewMenus_Click()
-
 
         'using listview
         'Dim LVItems As New List(Of ListViewItem)

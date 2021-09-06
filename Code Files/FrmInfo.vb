@@ -536,22 +536,27 @@ Public Class Frminfo
 
     End Sub
     Public Sub mPlaceListInHebrew_Click() Handles mPlaceListInHebrew.Click
+        Dim EngName As String = fGetEngName(varSC.PlaceListInHebrew) 'as was befor change
         varSC.PlaceListInHebrew = mPlaceListInHebrew.Checked
-        If varFinishedLoading = False Then Exit Sub
-
+        'If varFinishedLoading = False Then Exit Sub
+        ClearAndReLoadPlaceLists(EngName)
+    End Sub
+    Function fGetEngName(HebFirst As Boolean) As String
         Dim EngName As String
         If cbLocationList.Text <> "" Then
             Dim splitname() As String = Split(cbLocationList.Text, "|", -1)
             If splitname.Count > 1 Then ' there is a | in string
-                If varSC.PlaceListInHebrew = True Then 'this just changed - need to use as if its EngName First
+                If HebFirst = False Then
                     EngName = Trim(splitname(0))
                 Else
                     EngName = Trim(splitname(1))
                 End If
             End If
+            Return EngName
+        Else
+            Return Nothing
         End If
-        ClearAndReLoadPlaceLists(EngName)
-    End Sub
+    End Function
     Private Sub mSaveLocationChanges_Click(sender As Object, e As EventArgs) Handles mSaveLocationChanges.Click
         'Debug.Print(cbLocationList.SelectedIndex & " - " & varSelectedIndexBeforChange)
 
@@ -986,13 +991,12 @@ Public Class Frminfo
     Public Sub mHebrewMenus_Click() Handles mHebrewMenus.Click
         varSC.HebrewMenus = mHebrewMenus.Checked
 
-        'don't force Hebrew sort if it was changed by user on last run
-        'If varSC.UserChangedLocationSort = False Then
-        '    varSC.PlaceListInHebrew = mHebrewMenus.Checked
-
-        'End If
-
         If mHebrewMenus.Checked = True Then
+            'change Locations Sort to Hebrew
+            If varSC.PlaceListInHebrew = False Then
+                mPlaceListInHebrew.Checked = True
+                mPlaceListInHebrew_Click()
+            End If
             Me.RightToLeft = 1
             LocationContextMenu.RightToLeft = 1
             ZmanimContextMenu.RightToLeft = 1
@@ -1093,19 +1097,16 @@ Public Class Frminfo
             End If
             SettingsToolStripMenuItem.DropDownItems.Insert(SettingsToolStripMenuItem.DropDownItems.Count - 1, TransparencyBox)
         Else
-            'used not to force Hebrew Menus when InStr(CultureInfo.CurrentCulture.Name, "he-IL") is ture on next run of program
-            varSC.MenuLanguageWasChanged = True
+            'change Locations Sort to eng
+            If varSC.PlaceListInHebrew = True Then
+                mPlaceListInHebrew.Checked = False
+                mPlaceListInHebrew_Click()
+            End If
 
             Me.RightToLeft = 0
             LocationContextMenu.RightToLeft = 0
             ZmanimContextMenu.RightToLeft = 0
             If InStr(CultureInfo.CurrentCulture.Name, "en-") Then CbTimeZone.RightToLeft = 0
-            'LabelCountry.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
-            'LabelOffSet.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
-            'LabelLatitude.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
-            'LabelLongitude.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
-            'LabelElevation.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
-            'LabelTimeZone.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
 
             Try
                 LabelCountry.Font = MemoryFonts.GetFont(1, 7.75, FontStyle.Regular)

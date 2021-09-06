@@ -30,7 +30,6 @@
     Public Property DataGridCol2W As Integer = -1
     Public Property HebrewMenus As Boolean = False
     Public Property MenuLanguageWasChanged As Boolean = False
-    Public Property UserChangedLocationSort As Boolean = False
     Public Property SchedulerLocation As String
     Public Property SchedulerLatitude As String
     Public Property SchedulerLongitude As String
