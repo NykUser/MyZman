@@ -74,7 +74,6 @@ Public Class FrmExport
         Dim TempLocation As GeoLocation = varGeoLocation
         Dim TempCZC As ComplexZmanimCalendar
 
-
         'Debug.Print("numdays: " & NumDays & " daysper: " & DaysPerFile & " daycount: " & DayCount)
         file = My.Computer.FileSystem.OpenTextFileWriter(folder & "\" & Work_Date.ToString("MM-dd-yy") & ".vcs", False, utf8WithoutBom) ' .GetEncoding(1255) 'System.Text.Encoding.UTF8
         file.WriteLine("BEGIN:VCALENDAR" & vbCrLf & "VERSION:1.0")
@@ -97,6 +96,11 @@ Public Class FrmExport
             If ResultArray(4) IsNot Nothing And varSC.DisplayDafYomi = True Then HebDatetoShow = HebDatetoShow & " " & ResultArray(4)
             'If ResultArray(4) <> "קודם הדף" And ResultArray(4) <> "??" Then HebDatetoShow = HebDatetoShow & " " & ResultArray(4)
             TempCZC = New ComplexZmanimCalendar(Work_Date, TempLocation)
+            If varSC.UseOlderUsnoAlgorithm = False Then
+                TempCZC.AstronomicalCalculator = New NOAACalculator()
+            Else
+                TempCZC.AstronomicalCalculator = New ZmanimCalculator()
+            End If
 
             file.WriteLine("BEGIN:VEVENT" & vbCrLf & "DTSTART:" & Work_Date.ToString("yyyyMMdd") & vbCrLf _
                            & "DTEND:" & Work_Date.AddDays(1).ToString("yyyyMMdd") & vbCrLf _
@@ -167,6 +171,11 @@ Public Class FrmExport
 
         For i = 1 To NumDays
             TempCZC = New ComplexZmanimCalendar(Work_Date, TempLocation)
+            If varSC.UseOlderUsnoAlgorithm = False Then
+                TempCZC.AstronomicalCalculator = New NOAACalculator()
+            Else
+                TempCZC.AstronomicalCalculator = New ZmanimCalculator()
+            End If
             ResultArray = Get_HebDate(Work_Date)
             RowString = Work_Date.ToShortDateString & "," & ResultArray(0) & "," & "יום " & ResultArray(1) & " " & ResultArray(2) & "," & ResultArray(3) & "," & If(varSC.DisplayDafYomi = True, ResultArray(4) & ",", "")
 
@@ -233,15 +242,15 @@ Public Class FrmExport
         MY_FolderBrowser.IsFolderPicker = True
         MY_FolderBrowser.InitialDirectory = My.Computer.FileSystem.SpecialDirectories.Desktop
 
-        Using New Centered_MessageBox(Me, "ParentCenter")
-            'If MY_FolderBrowser.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
-            If MY_FolderBrowser.ShowDialog() = CommonFileDialogResult.OK Then
+        'Using New Centered_MessageBox(Me, "ParentCenter")
+        'If MY_FolderBrowser.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
+        If MY_FolderBrowser.ShowDialog() = CommonFileDialogResult.OK Then
                 'folder = MY_FolderBrowser.SelectedPath Then
                 folder = MY_FolderBrowser.FileName
             Else
                 Return ""
             End If
-        End Using
+        'End Using
         Return folder
     End Function
 End Class

@@ -428,7 +428,8 @@ Public Class Frminfo
     Private Sub mResetSettings_Click(sender As Object, e As EventArgs) Handles mResetSettings.Click
         If varSC.AskWhenChanging = True Then
             Dim Response
-            Using New Centered_MessageBox(Me, "MouseCenter")
+            'Using New Centered_MessageBox(Me, "MouseCenter")
+            Using New Centered_MessageBox(Me, "ParentCenter")
                 If varSC.HebrewMenus = True Then
                     Response = MsgBox("!שים לב" & vbCr & ".פעולה זו תסיר את כל הגדרות המשתמש" & vbCr & "?האם אתה בטוח שברצונך להמשיך", MsgBoxStyle.YesNo + MsgBoxStyle.Question + MsgBoxStyle.MsgBoxRight)
                 Else

@@ -193,5 +193,33 @@
         If day = 5 Then temp1 = 1
         Return temp1
     End Function
+    Public Function GetParshaNew2(ByRef ParshaEng As String)
+        'uses the JewishCalendar.cs name to get the heb name - this usess the new JewishCalendar.cs from 2021 - but the is an issue with some years like תשע"ח תשפ"ט
+        Dim hebrewParshiyos As String() = {"", "בראשית", "נח", "לך לך", "וירא", "חיי שרה", "תולדות", "ויצא", "וישלח", "וישב", "מקץ", "ויגש", "ויחי", "שמות", "וארא", "בא", "בשלח", "יתרו", "משפטים", "תרומה", "תצוה", "כי תשא", "ויקהל", "פקודי", "ויקרא", "צו", "שמיני", "תזריע", "מצרע", "אחרי מות", "קדושים", "אמור", "בהר", "בחקתי", "במדבר", "נשא", "בהעלתך", "שלח לך", "קרח", "חוקת", "בלק", "פינחס", "מטות", "מסעי", "דברים", "ואתחנן", "עקב", "ראה", "שופטים", "כי תצא", "כי תבוא", "ניצבים", "וילך", "האזינו", "ויקהל פקודי", "תזריע מצרע", "אחרי מות קדושים", "בהר בחקתי", "חוקת בלק", "מטות מסעי", "ניצבים וילך"}
+        Dim EngParshiyos As String() = {"NONE", "BERESHIS", "NOACH", "LECH_LECHA", "VAYERA", "CHAYEI_SARA", "TOLDOS", "VAYETZEI", "VAYISHLACH", "VAYESHEV", "MIKETZ", "VAYIGASH", "VAYECHI", "SHEMOS", "VAERA", "BO", "BESHALACH", "YISRO", "MISHPATIM", "TERUMAH", "TETZAVEH", "KI_SISA", "VAYAKHEL", "PEKUDEI", "VAYIKRA", "TZAV", "SHMINI", "TAZRIA", "METZORA", "ACHREI_MOS", "KEDOSHIM", "EMOR", "BEHAR", "BECHUKOSAI", "BAMIDBAR", "NASSO", "BEHAALOSCHA", "SHLACH", "KORACH", "CHUKAS", "BALAK", "PINCHAS", "MATOS", "MASEI", "DEVARIM", "VAESCHANAN", "EIKEV", "REEH", "SHOFTIM", "KI_SEITZEI", "KI_SAVO", "NITZAVIM", "VAYEILECH", "HAAZINU", "VAYAKHEL_PEKUDEI", "TAZRIA_METZORA", "ACHREI_MOS_KEDOSHIM", "BEHAR_BECHUKOSAI", "CHUKAS_BALAK", "NITZAVIM_VAYEILECH", "MATOS_MASEI"}
+        Dim ParshaHeb As String = ""
+
+        For i = 0 To UBound(EngParshiyos)
+            If ParshaEng = EngParshiyos(i) Then ParshaHeb = hebrewParshiyos(i)
+        Next
+        Return ParshaHeb
+    End Function
+    '=================================================================================
+    'for below add new function to JewishCalendar.cs - 
+    '//public int[] GetweekforParshaAyg(DateTime date, bool inIsrael)
+    '//{
+    '//    int[] MyArray = new int[2];
+    '//    MyArray[0] = GetParshaYearType(date, inIsrael);
+    '//    int roshHashanaDayOfWeek = (int)base.GetDayOfWeek(base.ToDateTime(base.GetYear(date), 1, 1, 14, 0, 0, 0));
+    '//    TimeSpan daysSinceRoshHashana = date - base.ToDateTime(base.GetYear(date), 1, 1, 14, 0, 0, 0);
+    '//    int day = roshHashanaDayOfWeek + daysSinceRoshHashana.Days + 1;
+    '//    MyArray[1] = day / 7;
+    '//    return MyArray;
+    '//}
+    'sample using in vb
+    '0 is the ParshaYearType 1 is week
+    'hebday.Text = hebday.Text & " " & GetParshaNew(jc.GetweekforParshaAyg(engdate.Value, False)(0), jc.GetweekforParshaAyg(engdate.Value, False)(1))
+    '=================================================================================
+
 End Class
 
