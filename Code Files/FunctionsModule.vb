@@ -8,15 +8,20 @@ Module FunctionsModule
         If My.Computer.FileSystem.FileExists(varUserFile) Then
             varSC = SerializableData.Load(varUserFile, GetType(SettingsCollection))
         End If
-
-        'Frminfo_Load Location and size
+        'Frminfo Location
         If varSC.LocationX > -1 And varSC.LocationY > 1 Then
             Frminfo.Location = New System.Drawing.Point(varSC.LocationX, varSC.LocationY)
             'the is a check on Screen.PrimaryScreen.Bounds in Frminfo_Load
         End If
+        'Frminfo Location and size
+        Frminfo.mHideLocationInfo.Checked = varSC.HideLocationBox
+        If varSC.HideLocationBox = True Then Frminfo.DoHideLocationBox(varSC.FirstRun)
         If varSC.SizeH > -1 And varSC.SizeW > -1 Then
             Frminfo.Size = New System.Drawing.Size(varSC.SizeW, varSC.SizeH)
+            If varSC.DataGridSizeH < 10 Then varSC.DataGridSizeH = 529
+            Frminfo.DataGridView1.Size = New System.Drawing.Size(Frminfo.DataGridView1.Size.Width, varSC.DataGridSizeH)
         End If
+
         If varSC.DataGridCol1W > -1 Then Frminfo.DataGridView1.Columns(1).Width = varSC.DataGridCol1W
         If varSC.DataGridCol2W > -1 Then Frminfo.DataGridView1.Columns(2).Width = varSC.DataGridCol2W
 
@@ -44,9 +49,6 @@ Module FunctionsModule
         If varSC.MenuLanguageWasChanged = False Then If InStr(CultureInfo.CurrentCulture.Name, "he-IL") Then Frminfo.mHebrewMenus.Checked = True
         Frminfo.mHebrewMenus_Click()
 
-        Frminfo.mHideLocationInfo.Checked = varSC.HideLocationBox
-        If varSC.HideLocationBox = True Then Frminfo.DoHideLocationBox()
-
         If varSC.DefaultType = "Default" Then
             Frminfo.mPlaceListInHebrew.Checked = varSC.DefaultPlaceListInHebrew
             Frminfo.mPlaceListInHebrew_Click()
@@ -62,6 +64,9 @@ Module FunctionsModule
 
         Load_Zmanim_Func()
 
+        varSC.FirstRun = False
+
+        Debug.Print("LoadSettingsandVariables() at end:" & varSC.DataGridSizeH)
     End Sub
     Public Sub LoadPlaceLists()
         'load into memory sorted eng & heb list
@@ -101,6 +106,7 @@ Module FunctionsModule
                 Frminfo.cbLocationList.Items.Add(If(LI.HebName <> "", LI.HebName & " | " & LI.EngName, LI.EngName))
             Next
         End If
+
     End Sub
     Public Sub UseDefultLocationsFile()
         Dim TempPlaceList As LocationCollection

@@ -32,6 +32,7 @@ Public Class Frminfo
         TimerLocationsLoad.Enabled = True 'used to load locations after form is open
     End Sub
     Private Sub Frminfo_FormClosed(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles Me.FormClosed
+        varSC.DataGridSizeH = DataGridView1.Size.Height 'doning it in Frminfo_Resize made issue
         varSC.LastSelectedIndex = cbLocationList.SelectedIndex
         'save SettingsCollection
         varSC.Save(varUserFile)
@@ -455,13 +456,15 @@ Public Class Frminfo
         tempLocation.ForEach(Sub(x) varSC.Location.Add(x))
 
         varSC.Save(varUserFile)
-        LoadSettingsandVariables()
 
-        Me.CenterToScreen()
-        Me.Size = New System.Drawing.Size(305, 898)
+        Me.Hide()
+        LoadSettingsandVariables()
+        Me.Size = New System.Drawing.Size(305, 818)
+        DataGridView1.Size = New System.Drawing.Size(265, 529)
         DataGridView1.Columns(1).Width = 160
         DataGridView1.Columns(2).Width = 100
-
+        Me.CenterToScreen()
+        Me.Show()
 
         TimerLocationsLoad.Enabled = True
     End Sub
@@ -1216,11 +1219,8 @@ Public Class Frminfo
         varSC.HideLocationBox = mHideLocationInfo.Checked
         If mHideLocationInfo.Checked Then
             varSC.DataGridSizeH = DataGridView1.Size.Height
-            DoHideLocationBox()
-            Me.DataGridView1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.Size = New System.Drawing.Size(Me.Size.Width, Me.Size.Height - 80)
-            Me.DataGridView1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) Or System.Windows.Forms.AnchorStyles.Left) Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             varSC.SizeH = Me.Height
+            DoHideLocationBox(True)
         Else
             GroupBox2.Size = New System.Drawing.Size(GroupBox2.Size.Width, 140)
             LabelLatitude.Location = New System.Drawing.Point(LabelLatitude.Location.X, LabelLatitude.Location.Y - 10)
@@ -1239,7 +1239,7 @@ Public Class Frminfo
         'for tool tips
         mHebrewMenus_Click()
     End Sub
-    Public Sub DoHideLocationBox()
+    Public Sub DoHideLocationBox(ShrinkFrmSize As Boolean)
         GroupBox2.Size = New System.Drawing.Size(GroupBox2.Size.Width, 60)
         LabelLatitude.Location = New System.Drawing.Point(LabelLatitude.Location.X, LabelLatitude.Location.Y + 10)
         LabelLongitude.Location = New System.Drawing.Point(LabelLongitude.Location.X, LabelLongitude.Location.Y + 10)
@@ -1247,7 +1247,14 @@ Public Class Frminfo
         LabelElevation.Location = New System.Drawing.Point(LabelElevation.Location.X, LabelElevation.Location.Y + 10)
         LabelDisclaimer.Location = New System.Drawing.Point(LabelDisclaimer.Location.X, LabelDisclaimer.Location.Y - 80)
         DataGridView1.Location = New System.Drawing.Point(DataGridView1.Location.X, DataGridView1.Location.Y - 80)
-        DataGridView1.Size = New System.Drawing.Size(DataGridView1.Size.Width, varSC.DataGridSizeH)
+        If ShrinkFrmSize = True Then
+            'size is set in SettingsCollection to default and in mHideLocationInfo_Click() & Frminfo_FormClosed
+            DataGridView1.Size = New System.Drawing.Size(DataGridView1.Size.Width, varSC.DataGridSizeH)
+            Me.DataGridView1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.Size = New System.Drawing.Size(Me.Size.Width, Me.Size.Height - 80)
+            Me.DataGridView1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) Or System.Windows.Forms.AnchorStyles.Left) Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        End If
+
         btHideLocationInfo.Image = My.Resources.Gray_Down_16
         btHideLocationInfo.Location = New System.Drawing.Point(btHideLocationInfo.Location.X, btHideLocationInfo.Location.Y + 5)
     End Sub
