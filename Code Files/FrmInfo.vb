@@ -3,11 +3,6 @@
 Public Class Frminfo
     Private Sub Frminfo_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         'see switch [/s] for Scheduler in ApplicationEvents.vb
-        LoadSettingsandVariables()
-        If Screen.PrimaryScreen.Bounds.Contains(Me.Bounds) = False Then
-            Me.CenterToScreen()
-        End If
-
         rtbHebrewDate.Font = MemoryFonts.GetFont(0, 11, FontStyle.Regular)
         rtbParsha.Font = MemoryFonts.GetFont(0, 11, FontStyle.Regular)
         dpEngdate.Font = MemoryFonts.GetFont(0, 11, FontStyle.Regular)
@@ -19,9 +14,13 @@ Public Class Frminfo
         tbzone.Font = MemoryFonts.GetFont(0, 9, FontStyle.Regular)
         tbcountry.Font = MemoryFonts.GetFont(0, 9, FontStyle.Regular)
         DataGridView1.Font = MemoryFonts.GetFont(0, 9.5, FontStyle.Bold)
-
         GroupBox1.Font = MemoryFonts.GetFont(1, 12, FontStyle.Regular)
         GroupBox2.Font = MemoryFonts.GetFont(1, 12, FontStyle.Regular)
+
+        LoadSettingsandVariables()
+        If Screen.PrimaryScreen.Bounds.Contains(Me.Bounds) = False Then
+            Me.CenterToScreen()
+        End If
 
         'Date picker set to CurrentCulture
         Dim CultureDateFL = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern(0)
