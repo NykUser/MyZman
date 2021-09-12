@@ -3,8 +3,13 @@
 Public Class Frminfo
     Private Sub Frminfo_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         'see switch [/s] for Scheduler in ApplicationEvents.vb
-        rtbHebrewDate.Font = MemoryFonts.GetFont(0, 11, FontStyle.Regular)
-        rtbParsha.Font = MemoryFonts.GetFont(0, 11, FontStyle.Regular)
+        LoadSettingsandVariables()
+        If Screen.PrimaryScreen.Bounds.Contains(Me.Bounds) = False Then
+            Me.CenterToScreen()
+        End If
+
+        rtbHebrewDate.Font = MemoryFonts.GetFont(0, 11.0!, FontStyle.Regular)
+        rtbParsha.Font = MemoryFonts.GetFont(0, 11.0!, FontStyle.Regular)
         dpEngdate.Font = MemoryFonts.GetFont(0, 11, FontStyle.Regular)
         cbLocationList.Font = MemoryFonts.GetFont(0, 10, FontStyle.Regular)
         CbTimeZone.Font = MemoryFonts.GetFont(0, 10, FontStyle.Regular)
@@ -17,17 +22,14 @@ Public Class Frminfo
         GroupBox1.Font = MemoryFonts.GetFont(1, 12, FontStyle.Regular)
         GroupBox2.Font = MemoryFonts.GetFont(1, 12, FontStyle.Regular)
 
-        LoadSettingsandVariables()
-        If Screen.PrimaryScreen.Bounds.Contains(Me.Bounds) = False Then
-            Me.CenterToScreen()
-        End If
-
         'Date picker set to CurrentCulture
         Dim CultureDateFL = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern(0)
         dpEngdate.CustomFormat = "  dddd   " & If(CultureDateFL = "M", "MM / dd / yyyy", "dd / MM / yyyy")
 
-        change_hebdate()
         DataGridView1.Select()
+        change_hebdate()
+        RichTextBoxAlignment()
+
         TimerLocationsLoad.Enabled = True 'used to load locations after form is open
     End Sub
     Private Sub Frminfo_FormClosed(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles Me.FormClosed
@@ -287,6 +289,10 @@ Public Class Frminfo
         End If
     End Sub
     Private Sub rtbHebrewDate_Leave(ByVal sender As Object, ByVal e As System.EventArgs) Handles rtbHebrewDate.Leave
+        'having truble with parse_hebdate() on strat
+        Dim mytimespan As TimeSpan = Now - varProgramRunTime
+        If mytimespan.TotalSeconds < 3 Then Exit Sub
+
         parse_hebdate()
         If varSC.ChangeKeybordLayout = False Then Exit Sub
         Try

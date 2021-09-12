@@ -65,8 +65,6 @@ Module FunctionsModule
         Load_Zmanim_Func()
 
         varSC.FirstRun = False
-
-        Debug.Print("LoadSettingsandVariables() at end:" & varSC.DataGridSizeH)
     End Sub
     Public Sub LoadPlaceLists()
         'load into memory sorted eng & heb list
@@ -195,9 +193,7 @@ Module FunctionsModule
         End If
         Dim mytime As Date
         Try
-            'Debug.Print(s)
             s = CallByName(varCZC, s, CallType.Get)
-            'Debug.Print(s)
             If checkIsDate = True Then If DateTime.TryParse(s, mytime) = False Then Return False
             Return True
         Catch ex As Exception
@@ -206,7 +202,6 @@ Module FunctionsModule
     End Function
     Sub change_place(ByVal num As Integer)
         If varSC.Location.Count < 1 Then Exit Sub
-        'Debug.Print(num)
         Dim SelectedPlace As Object
         'if num is not valid with .Items - can happen when loading on start
         Try
@@ -328,7 +323,6 @@ Module FunctionsModule
 
         Dim i As Integer = 0
         For Each Z In varSC.Zmanim
-            'Debug.Print(i)
             i += 1
             DVItems.Add(New DataGridViewRow())
             If InStr(Z.FunctionName, "ShaahZmanis") > 0 Then
@@ -371,7 +365,6 @@ Module FunctionsModule
         Next
 
         Frminfo.DataGridView1.Rows.Clear()
-        'Debug.Print(Frminfo.DataGridView1.Rows.Count & vbCr & DVItems.Count)
         Frminfo.DataGridView1.Rows.AddRange(DVItems.ToArray)
         Try
             Frminfo.DataGridView1.CurrentCell = Frminfo.DataGridView1(2, mySelectedRow)
@@ -446,7 +439,6 @@ Module FunctionsModule
             'add this year
             Try
                 myhebdate = myhebdate & " " & Now.ToString("yyy", varHculture)
-                Debug.Print(myhebdate)
                 DateTime.Parse(HebDateStringtoNom(myhebdate), varHculture)
             Catch
                 DateNonconvertible()
@@ -472,10 +464,10 @@ Module FunctionsModule
                 MsgBox("Date Not Convertible!", MsgBoxStyle.Exclamation + MsgBoxStyle.OkOnly)
             End If
         End Using
-
     End Sub
     Sub change_hebdate()
-        'Frminfo.dpEngdate.Value
+        If varFinishedLoading = False Then Exit Sub
+
         Dim ResultArray()
         ResultArray = Get_HebDate(Frminfo.dpEngdate.Value)
         Dim HebDatetoShow As String
@@ -500,6 +492,8 @@ Module FunctionsModule
         Frminfo.rtbParsha.SelectionAlignment = HorizontalAlignment.Center
         Frminfo.rtbHebrewDate.SelectAll()
         Frminfo.rtbHebrewDate.SelectionAlignment = HorizontalAlignment.Center
+        Frminfo.rtbHebrewDate.Font = MemoryFonts.GetFont(0, 11.0!, FontStyle.Regular)
+        Frminfo.rtbParsha.Font = MemoryFonts.GetFont(0, 11.0!, FontStyle.Regular)
     End Sub
     Public Function Get_HebDate(DateIn As Date, Optional LongHebDayFormat As Boolean = False) As String()
         Dim Hebdate, Holiday, Hebday, Parsha, Daf As String

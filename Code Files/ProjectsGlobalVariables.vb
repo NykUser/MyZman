@@ -24,7 +24,7 @@ Module ProjectsGlobalVariables
     Public Property varDataGridNumRow As Integer = 0
     Public Property varGeoLocation As GeoLocation
     Public Property varLocationSecondTry As Boolean = False
-
     Public Property varHC As New HebrewCalendar()
     Public Property varHculture As CultureInfo = CultureInfo.CreateSpecificCulture("he-IL")
+    Public Property varProgramRunTime As Date = Now
 End Module
