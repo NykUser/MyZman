@@ -61,7 +61,7 @@ Due to atmospheric conditions (pressure, humidity and other conditions), calcula
 **While I did my best to get accurate results, please double check before relying on these zmanim for halacha lemaaseh.**
 
 # Screenshots
-![eng](https://user-images.githubusercontent.com/83419922/130814799-ff5d0e7f-ecfe-4055-8771-b48c6e321daf.jpg)
+![1](https://user-images.githubusercontent.com/83419922/132996519-dfe17ccb-0d8f-4d7a-86bc-27033ee65ad7.jpg)
 ![2](https://user-images.githubusercontent.com/83419922/129582744-d270cc55-60b1-4867-a61c-532982cedd1a.jpg)
 
 # Notable points about the Programs Code
