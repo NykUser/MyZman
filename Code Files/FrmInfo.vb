@@ -2,12 +2,8 @@
 'MemoryFonts.GetFont(1, = Varela Round
 Public Class Frminfo
     Private Sub Frminfo_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Me.Hide()
         'see switch [/s] for Scheduler in ApplicationEvents.vb
-        LoadSettingsandVariables()
-        If Screen.PrimaryScreen.Bounds.Contains(Me.Bounds) = False Then
-            Me.CenterToScreen()
-        End If
-
         rtbHebrewDate.Font = MemoryFonts.GetFont(0, 11.0!, FontStyle.Regular)
         rtbParsha.Font = MemoryFonts.GetFont(0, 11.0!, FontStyle.Regular)
         dpEngdate.Font = MemoryFonts.GetFont(0, 11, FontStyle.Regular)
@@ -21,6 +17,11 @@ Public Class Frminfo
         DataGridView1.Font = MemoryFonts.GetFont(0, 9.5, FontStyle.Bold)
         GroupBox1.Font = MemoryFonts.GetFont(1, 12, FontStyle.Regular)
         GroupBox2.Font = MemoryFonts.GetFont(1, 12, FontStyle.Regular)
+
+        LoadSettingsandVariables()
+        If Screen.PrimaryScreen.Bounds.Contains(Me.Bounds) = False Then
+            Me.CenterToScreen()
+        End If
 
         'Date picker set to CurrentCulture
         Dim CultureDateFL = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern(0)
@@ -114,6 +115,8 @@ Public Class Frminfo
 
         'for showing the time and time left till zman
         TimerStatusLabel.Enabled = True
+        Me.Show()
+        Me.Activate()
     End Sub
     Private Sub TimerStatusLabel_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TimerStatusLabel.Tick
         'time at top of form is set by TimerTransparency

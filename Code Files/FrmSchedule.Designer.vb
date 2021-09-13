@@ -33,7 +33,7 @@ Partial Class FrmSchedule
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
         Me.LabelDivider1 = New System.Windows.Forms.Label()
         Me.cbLocationList = New System.Windows.Forms.ComboBox()
-        Me.Label2 = New System.Windows.Forms.Label()
+        Me.LabelLocation = New System.Windows.Forms.Label()
         Me.btOpenScheduler = New System.Windows.Forms.Button()
         Me.pbTasksON = New System.Windows.Forms.PictureBox()
         Me.btToggleTaskScheduler = New System.Windows.Forms.Button()
@@ -135,7 +135,7 @@ Partial Class FrmSchedule
         '
         Me.GroupBox2.Controls.Add(Me.LabelDivider1)
         Me.GroupBox2.Controls.Add(Me.cbLocationList)
-        Me.GroupBox2.Controls.Add(Me.Label2)
+        Me.GroupBox2.Controls.Add(Me.LabelLocation)
         Me.GroupBox2.Controls.Add(Me.btOpenScheduler)
         Me.GroupBox2.Controls.Add(Me.pbTasksON)
         Me.GroupBox2.Controls.Add(Me.btToggleTaskScheduler)
@@ -192,15 +192,15 @@ Partial Class FrmSchedule
         Me.cbLocationList.Size = New System.Drawing.Size(184, 24)
         Me.cbLocationList.TabIndex = 1
         '
-        'Label2
+        'LabelLocation
         '
-        Me.Label2.AutoSize = True
-        Me.Label2.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
-        Me.Label2.Location = New System.Drawing.Point(15, 335)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(89, 15)
-        Me.Label2.TabIndex = 69
-        Me.Label2.Text = "Zman Location"
+        Me.LabelLocation.AutoSize = True
+        Me.LabelLocation.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
+        Me.LabelLocation.Location = New System.Drawing.Point(15, 335)
+        Me.LabelLocation.Name = "LabelLocation"
+        Me.LabelLocation.Size = New System.Drawing.Size(89, 15)
+        Me.LabelLocation.TabIndex = 69
+        Me.LabelLocation.Text = "Zman Location"
         '
         'btOpenScheduler
         '
@@ -598,5 +598,5 @@ Partial Class FrmSchedule
     Friend WithEvents tbzone As TextBox
     Friend WithEvents Labeloffset As Label
     Friend WithEvents LabelDivider1 As Label
-    Friend WithEvents Label2 As Label
+    Friend WithEvents LabelLocation As Label
 End Class

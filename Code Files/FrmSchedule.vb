@@ -85,6 +85,18 @@ Public Class FrmSchedule
             btTest.Text = "בדק"
             btOpenScheduler.Text = "פתח מתזמן"
 
+            LabelReminders.Text = "תזכורות"
+            LabelReminders.Font = MemoryFonts.GetFont(1, 9.5, FontStyle.Regular)
+            LabelReminders.Location = New System.Drawing.Point(155, LabelReminders.Location.Y)
+            LabelDivider2.Location = New System.Drawing.Point(20, LabelDivider2.Location.Y)
+            LabelDivider2.Size = New System.Drawing.Size(133, 2)
+            LabelLocation.Text = "מיקום לזמן"
+            LabelLocation.Font = MemoryFonts.GetFont(1, 9.5, FontStyle.Regular)
+            LabelLocation.Location = New System.Drawing.Point(140, LabelLocation.Location.Y)
+            LabelDivider1.Location = New System.Drawing.Point(20, LabelDivider1.Location.Y)
+            LabelDivider1.Size = New System.Drawing.Size(118, 2)
+
+
         Else
             GroupBox1.Text = "Location info"
             GroupBox1.Text = "Reminders"
@@ -297,6 +309,7 @@ Public Class FrmSchedule
             TimeBefore = #1/2/2000#.AddMilliseconds(mytimespan.TotalMilliseconds).ToString("H:mm") & If(varSC.HebrewMenus = True, ChrW(&H200F) & " שעות לפני " & ChrW(&H200E), " Hours Before ")
         Else
             TimeBefore = #1/2/2000#.AddMilliseconds(mytimespan.TotalMilliseconds).ToString("mm") & If(varSC.HebrewMenus = True, ChrW(&H200F) & " דקות לפני " & ChrW(&H200E), " Minutes Before ")
+            If TestRuning = True And Now > myzman Then TimeBefore = #1/2/2000#.AddMilliseconds(mytimespan.TotalMilliseconds).ToString("H:mm") & If(varSC.HebrewMenus = True, ChrW(&H200F) & " שעות לפני " & ChrW(&H200E), " Hours Before ")
         End If
 
         If varSC.HebrewMenus = True Then
