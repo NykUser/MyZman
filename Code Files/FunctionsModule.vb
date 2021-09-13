@@ -476,14 +476,14 @@ Module FunctionsModule
         If ResultArray(3) <> Nothing Then 'the is a holiday
             If ResultArray(2) = Nothing Then 'the is No Parsha
                 ResultArray = Get_HebDate(Frminfo.dpEngdate.Value, True)
-                Frminfo.rtbParsha.Text = "יום " & ResultArray(1) & " " & ChrW(&HCB) & " " & ResultArray(3) & If(ResultArray(4) = Nothing, "", " " & ChrW(&HCB) & " " & ResultArray(4))
+                Frminfo.rtbParsha.Text = "יום " & ResultArray(1) & " " & ChrW(&H2022) & " " & ResultArray(3) & If(ResultArray(4) = Nothing, "", " " & ChrW(&H2022) & " " & ResultArray(4)) 'ChrW(&H2022)
             Else
                 Debug.Print(ResultArray(3) & "=")
-                Frminfo.rtbParsha.Text = ResultArray(1) & If(ResultArray(2) <> "", " " & ResultArray(2), "") & " " & ChrW(&HCB) & " " & ResultArray(3) & If(ResultArray(4) = Nothing, "", " " & ChrW(&HCB) & " " & ResultArray(4))
+                Frminfo.rtbParsha.Text = ResultArray(1) & If(ResultArray(2) <> "", " " & ResultArray(2), "") & " " & ChrW(&H2022) & " " & ResultArray(3) & If(ResultArray(4) = Nothing, "", " " & ChrW(&H2022) & " " & ResultArray(4))
             End If
         Else 'no holiday
             ResultArray = Get_HebDate(Frminfo.dpEngdate.Value, True)
-            Frminfo.rtbParsha.Text = "יום " & ResultArray(1) & If(ResultArray(2) <> "", " " & If(ResultArray(4) = Nothing, "פרשת ", "") & ResultArray(2), "") & If(ResultArray(4) = Nothing, "", " " & ChrW(&HCB) & " " & ResultArray(4))
+            Frminfo.rtbParsha.Text = "יום " & ResultArray(1) & If(ResultArray(2) <> "", " " & If(ResultArray(4) = Nothing, "פרשת ", "") & ResultArray(2), "") & If(ResultArray(4) = Nothing, "", " " & ChrW(&H2022) & " " & ResultArray(4))
         End If
         RichTextBoxAlignment()
     End Sub
@@ -492,8 +492,6 @@ Module FunctionsModule
         Frminfo.rtbParsha.SelectionAlignment = HorizontalAlignment.Center
         Frminfo.rtbHebrewDate.SelectAll()
         Frminfo.rtbHebrewDate.SelectionAlignment = HorizontalAlignment.Center
-        Frminfo.rtbHebrewDate.Font = MemoryFonts.GetFont(0, 11.0!, FontStyle.Regular)
-        Frminfo.rtbParsha.Font = MemoryFonts.GetFont(0, 11.0!, FontStyle.Regular)
     End Sub
     Public Function Get_HebDate(DateIn As Date, Optional LongHebDayFormat As Boolean = False) As String()
         Dim Hebdate, Holiday, Hebday, Parsha, Daf As String

@@ -4,8 +4,8 @@ Public Class Frminfo
     Private Sub Frminfo_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Me.Hide()
         'see switch [/s] for Scheduler in ApplicationEvents.vb
-        rtbHebrewDate.Font = MemoryFonts.GetFont(0, 11.0!, FontStyle.Regular)
-        rtbParsha.Font = MemoryFonts.GetFont(0, 11.0!, FontStyle.Regular)
+        rtbHebrewDate.Font = MemoryFonts.GetFont(1, 11.0!, FontStyle.Regular)
+        rtbParsha.Font = MemoryFonts.GetFont(1, 10.5!, FontStyle.Regular)
         dpEngdate.Font = MemoryFonts.GetFont(0, 11, FontStyle.Regular)
         cbLocationList.Font = MemoryFonts.GetFont(0, 10, FontStyle.Regular)
         CbTimeZone.Font = MemoryFonts.GetFont(0, 10, FontStyle.Regular)
@@ -64,8 +64,8 @@ Public Class Frminfo
         varMouseEnter = False
     End Sub
     Private Sub TimerTransparency_Tick(sender As Object, e As EventArgs) Handles TimerTransparency.Tick
-        rtbHebrewDate.Font = MemoryFonts.GetFont(0, 11.0!, FontStyle.Regular)
-        rtbParsha.Font = MemoryFonts.GetFont(0, 11.0!, FontStyle.Regular)
+        rtbHebrewDate.Font = MemoryFonts.GetFont(1, 11.0!, FontStyle.Regular)
+        rtbParsha.Font = MemoryFonts.GetFont(1, 10.5!, FontStyle.Regular)
         'If varSC.TransparencyValue = 1 Then Exit Sub
 
         'Me.MouseLeave did not respond to fast movements, using Bounds.Contains
