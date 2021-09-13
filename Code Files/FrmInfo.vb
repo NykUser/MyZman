@@ -27,9 +27,6 @@ Public Class Frminfo
         dpEngdate.CustomFormat = "  dddd   " & If(CultureDateFL = "M", "MM / dd / yyyy", "dd / MM / yyyy")
 
         DataGridView1.Select()
-        change_hebdate()
-        RichTextBoxAlignment()
-
         TimerLocationsLoad.Enabled = True 'used to load locations after form is open
     End Sub
     Private Sub Frminfo_FormClosed(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles Me.FormClosed
@@ -66,6 +63,8 @@ Public Class Frminfo
         varMouseEnter = False
     End Sub
     Private Sub TimerTransparency_Tick(sender As Object, e As EventArgs) Handles TimerTransparency.Tick
+        rtbHebrewDate.Font = MemoryFonts.GetFont(0, 11.0!, FontStyle.Regular)
+        rtbParsha.Font = MemoryFonts.GetFont(0, 11.0!, FontStyle.Regular)
         'If varSC.TransparencyValue = 1 Then Exit Sub
 
         'Me.MouseLeave did not respond to fast movements, using Bounds.Contains
@@ -111,6 +110,7 @@ Public Class Frminfo
         '''till now Place_orDate_changed() and change_zman() did not run for every seting
         varFinishedLoading = True
         Place_orDate_changed()
+        change_hebdate()
 
         'for showing the time and time left till zman
         TimerStatusLabel.Enabled = True
