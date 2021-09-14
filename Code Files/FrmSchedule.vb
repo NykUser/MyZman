@@ -2,9 +2,19 @@
 Public Class FrmSchedule
     Private TempCZC As ComplexZmanimCalendar
     Private TempTimeZone As TimeZoneInfo
+    Private TimechangedProgrammatic As Boolean = False
+    Private MinuteschangedProgrammatic As Boolean = False
 
     Private Sub FrmSchedule_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Me.Location = New System.Drawing.Point(Frminfo.Location.X + ((Frminfo.Width - Me.Width) / 2), Frminfo.Bounds.Bottom - (Me.Height + 45))
+
+        'Dim myBrush As System.Drawing.SolidBrush = New System.Drawing.SolidBrush(System.Drawing.Color.Red)
+        'Dim formGraphics As System.Drawing.Graphics
+        'formGraphics = PictureBox1.CreateGraphics() 'Me.CreateGraphics()
+        'formGraphics.InterpolationMode = InterpolationMode.Bilinear
+        'formGraphics.PixelOffsetMode = PixelOffsetMode.Half
+        'formGraphics.SmoothingMode = SmoothingMode.None
+        'formGraphics.FillEllipse(myBrush, 0, 0, 16, 16) 'New Rectangle(0, 0, 20, 20)
 
         GroupBox2.Font = MemoryFonts.GetFont(1, 12, FontStyle.Regular)
         cbLocationList.Font = MemoryFonts.GetFont(0, 9, FontStyle.Regular)
@@ -12,10 +22,20 @@ Public Class FrmSchedule
         tblatitude.Font = MemoryFonts.GetFont(0, 9, FontStyle.Regular)
         tblongitude.Font = MemoryFonts.GetFont(0, 9, FontStyle.Regular)
         tbElevation.Font = MemoryFonts.GetFont(0, 9, FontStyle.Regular)
-        cbTime.Font = MemoryFonts.GetFont(0, 9, FontStyle.Regular)
-        tbMinutes.Font = MemoryFonts.GetFont(0, 9, FontStyle.Regular)
-        tbMessage.Font = MemoryFonts.GetFont(0, 9, FontStyle.Regular)
+        cbZman.Font = MemoryFonts.GetFont(0, 9, FontStyle.Regular)
+        tbMessage.Font = MemoryFonts.GetFont(1, 9, FontStyle.Regular)
         tbSound.Font = MemoryFonts.GetFont(0, 9, FontStyle.Regular)
+        dtpTime.Font = MemoryFonts.GetFont(0, 9, FontStyle.Regular)
+
+        If varSC.Clock24Hour = True Then
+            dtpTime.CustomFormat = " HH:mm:ss"
+        Else
+            dtpTime.CustomFormat = " hh:mm:ss  tt"
+        End If
+
+        MinuteschangedProgrammatic = True
+        dtpMinutes.Value = #1/2/2000#
+
 
         If Frminfo.mHebrewMenus.Checked = True Then
             'for layout changes for RightToLeft
@@ -38,7 +58,6 @@ Public Class FrmSchedule
             LabelLongitude.Font = MemoryFonts.GetFont(1, 8.75, FontStyle.Regular)
             LabelElevation.Font = MemoryFonts.GetFont(1, 8.75, FontStyle.Regular)
             LabelTimeZone.Font = MemoryFonts.GetFont(1, 8.75, FontStyle.Regular)
-            LabelTimeOrZman.Font = MemoryFonts.GetFont(1, 8.75, FontStyle.Regular)
             LabelMessage.Font = MemoryFonts.GetFont(1, 8.75, FontStyle.Regular)
             LabelMinutes.Font = MemoryFonts.GetFont(1, 8.75, FontStyle.Regular)
             cbIsActive.Font = MemoryFonts.GetFont(1, 8.75, FontStyle.Regular)
@@ -46,6 +65,9 @@ Public Class FrmSchedule
             btOpenScheduler.Font = MemoryFonts.GetFont(1, 8.75, FontStyle.Regular)
             btToggleTaskScheduler.Font = MemoryFonts.GetFont(1, 8.75, FontStyle.Regular)
             btTest.Font = MemoryFonts.GetFont(1, 8.75, FontStyle.Regular)
+            TabPageTime.Font = MemoryFonts.GetFont(1, 8.75, FontStyle.Regular)
+            TabPageZman.Font = MemoryFonts.GetFont(1, 8.75, FontStyle.Regular)
+            TabControlTimeZman.Font = MemoryFonts.GetFont(1, 8.75, FontStyle.Regular)
 
             Me.Text = "מתזמן"
             pbTasksON.Location = New System.Drawing.Point(78, 2.5)
@@ -56,9 +78,8 @@ Public Class FrmSchedule
             tbElevation.RightToLeft = 0
             tblatitude.RightToLeft = 0
             tblongitude.RightToLeft = 0
-            cbTime.RightToLeft = 0
+            cbZman.RightToLeft = 0
             tbSound.RightToLeft = 0
-            tbMinutes.RightToLeft = 0
             LabelLatitude.RightToLeft = 1
             LabelLongitude.RightToLeft = 1
             LabelElevation.RightToLeft = 1
@@ -66,7 +87,7 @@ Public Class FrmSchedule
             LabelFrom.RightToLeft = 1
 
             GroupBox1.Text = "פרטי מקום"
-            GroupBox2.Text = "מתזמן משימות       " '"תזכורות        "
+            GroupBox2.Text = "מתזמן משימות        " '"תזכורות        "
             LabelLatitude.Text = "קו רוחב"
             LabelLongitude.Text = "קו אורך"
             LabelElevation.Text = "גובה"
@@ -74,12 +95,10 @@ Public Class FrmSchedule
             LabelFrom.Text = "מתוך:"
             cbIsActive.Text = "פעיל"
             cbNotToday.Text = "לא היום"
-            LabelTimeOrZman.RightToLeft = 1
-            LabelTimeOrZman.Text = "שעה או זמן"
             LabelMessage.RightToLeft = 1
             LabelMessage.Text = "הודעת תזכורת"
             LabelMinutes.RightToLeft = 1
-            LabelMinutes.Text = "תזכירו דקות לפני"
+            LabelMinutes.Text = "תזכיר לפני"
             LabelSound.RightToLeft = 1
             LabelSound.Text = " תזכורות קולי"
             btTest.Text = "בדק"
@@ -96,6 +115,9 @@ Public Class FrmSchedule
             LabelDivider1.Location = New System.Drawing.Point(20, LabelDivider1.Location.Y)
             LabelDivider1.Size = New System.Drawing.Size(118, 2)
 
+            TabControlTimeZman.RightToLeftLayout = True
+            TabPageTime.Text = "שעה"
+            TabPageZman.Text = "זמן"
 
         Else
             GroupBox1.Text = "Location info"
@@ -111,11 +133,12 @@ Public Class FrmSchedule
             LabelLongitude.Font = MemoryFonts.GetFont(1, 7.75, FontStyle.Regular)
             LabelElevation.Font = MemoryFonts.GetFont(1, 7.75, FontStyle.Regular)
             LabelTimeZone.Font = MemoryFonts.GetFont(1, 7.75, FontStyle.Regular)
-            LabelTimeOrZman.Font = MemoryFonts.GetFont(1, 7.75, FontStyle.Regular)
             LabelMessage.Font = MemoryFonts.GetFont(1, 7.75, FontStyle.Regular)
             LabelMinutes.Font = MemoryFonts.GetFont(1, 7.75, FontStyle.Regular)
             cbIsActive.Font = MemoryFonts.GetFont(1, 7.75, FontStyle.Regular)
             cbNotToday.Font = MemoryFonts.GetFont(1, 7.75, FontStyle.Regular)
+            TabPageTime.Font = MemoryFonts.GetFont(1, 7.75, FontStyle.Regular)
+            TabPageZman.Font = MemoryFonts.GetFont(1, 7.75, FontStyle.Regular)
 
             LabelLatitude.RightToLeft = 0
             LabelLongitude.RightToLeft = 0
@@ -129,16 +152,15 @@ Public Class FrmSchedule
             LabelFrom.Text = "From: "
             cbIsActive.Text = "Is Active"
             cbNotToday.Text = "Not Today"
-            LabelTimeOrZman.RightToLeft = 0
-            LabelTimeOrZman.Text = "Time or Zman"
             LabelMessage.RightToLeft = 0
             LabelMessage.Text = "Reminder Message"
             LabelMinutes.RightToLeft = 0
-            LabelMinutes.Text = "Remind Minutes Before"
+            LabelMinutes.Text = "Remind Before"
             LabelSound.RightToLeft = 0
             LabelSound.Text = "Audio Reminder"
             btTest.Text = "Test"
             btOpenScheduler.Text = "Open Scheduler"
+
         End If
 
         Dim LocationNum As Integer = -1
@@ -167,7 +189,7 @@ Public Class FrmSchedule
         End If
 
 
-        varZmanimFunc.ForEach(Sub(x) cbTime.Items.Add(x))
+        varZmanimFunc.ForEach(Sub(x) cbZman.Items.Add(x))
         'remove the last 4 that are AddedGets
         'For i = 1 To 4
         '    cbTime.Items.RemoveAt(cbTime.Items.Count - 1)
@@ -226,10 +248,13 @@ Public Class FrmSchedule
             'varUserFile set in ProjectsGlobalVariables is Environment.CurrentDirectory & "\MYZman.exe.UserSettings.xml" - not good when it runs from task scheduler it will be C:\Windows\System32\Tasks
             Dim args As String() = Environment.GetCommandLineArgs()
             varUserFile = args(0) & ".UserSettings.xml"
+            'MsgBox("2" & vbCr & FirstInstance & vbCr & varUserFile)
             If My.Computer.FileSystem.FileExists(varUserFile) Then
                 varSC = SerializableData.Load(varUserFile, GetType(SettingsCollection))
             End If
         End If
+
+        'MsgBox("3" & vbCr & FirstInstance & vbCr & My.Computer.FileSystem.FileExists(varUserFile) & vbCr & varSC.Schedule.Count)
 
         'no Reminders remove task from scheduler and end
         If NoActiveReminders() = False Or varSC.Schedule.Count < 1 Then
@@ -263,6 +288,11 @@ Public Class FrmSchedule
             Dim timeZone As ITimeZone = New PZmanimTimeZone(TempTimeZone) 'WindowsTimeZone("Eastern Standard Time") '
             Dim location As New GeoLocation("", varSC.SchedulerLatitude, varSC.SchedulerLongitude, varSC.SchedulerElevation, timeZone)
             TempCZC = New ComplexZmanimCalendar(Now, location)
+            If varSC.UseOlderUsnoAlgorithm = False Then
+                TempCZC.AstronomicalCalculator = New NOAACalculator()
+            Else
+                TempCZC.AstronomicalCalculator = New ZmanimCalculator()
+            End If
             Dim Args() = {Now, location} ' for AddedGets
 
             If oSchedule.IsFunc = True Then
@@ -270,7 +300,7 @@ Public Class FrmSchedule
                     myzman = CDate(CallByName(varAddedGets, oSchedule.Time, CallType.Get, Args))
                     'Debug.Print(mytime)
                 Else
-                    myzman = CDate(CallByName(varCZC, oSchedule.Time, CallType.Get))
+                    myzman = CDate(CallByName(TempCZC, oSchedule.Time, CallType.Get))
                     'Debug.Print(mytime)
                 End If
             Else
@@ -278,7 +308,7 @@ Public Class FrmSchedule
             End If
         Catch ex As Exception
         End Try
-        'MsgBox("3 " & myzman)
+        'MsgBox("3 " & vbCr & oSchedule.Time & vbCr & myzman)
         'Debug.Print("3 " & myzman & vbCr & myzman.AddMinutes("-" & MinutesBefore))
 
         If TestRuning = False Then
@@ -514,6 +544,8 @@ Public Class FrmSchedule
         'Debug.Print("tbReminderNum.TextChanged")
         If tbReminderNum.Text = "" Then Exit Sub
         If varSC.Schedule.Count < 1 Then
+            TimechangedProgrammatic = True
+            dtpTime.Value = #1/2/2000# & " 12:00:00 pm"
             'not to loop
             If tbReminderNum.Text = 1 Then Exit Sub
             tbReminderNum.Text = 1
@@ -526,9 +558,13 @@ Public Class FrmSchedule
 
         'if number is more than total by 1 then make empty 
         If tbReminderNum.Text = (varSC.Schedule.Count + 1) Then
-            cbTime.Text = ""
+            TabControlTimeZman.SelectedTab = TabPageZman
+            cbZman.Text = ""
+            TimechangedProgrammatic = True
+            dtpTime.Value = #1/2/2000# & " 12:00:00 pm"
             tbMessage.Text = ""
-            tbMinutes.Text = ""
+            MinuteschangedProgrammatic = True
+            dtpMinutes.Value = #1/2/2000#
             tbSound.Text = ""
             cbIsActive.Checked = False
             cbNotToday.Checked = False
@@ -544,9 +580,21 @@ Public Class FrmSchedule
         End If
 
         'only get here if number is some were in list
-        cbTime.Text = varSC.Schedule(tbReminderNum.Text - 1).Time
+        If varSC.Schedule(tbReminderNum.Text - 1).IsFunc = True Then
+            cbZman.Text = varSC.Schedule(tbReminderNum.Text - 1).Time
+            TabControlTimeZman.SelectedTab = TabPageZman
+            TimechangedProgrammatic = True
+            dtpTime.Value = #1/2/2000# & " 12:00:00 pm"
+        Else
+            TimechangedProgrammatic = True
+            dtpTime.Value = #1/2/2000# & " " & varSC.Schedule(tbReminderNum.Text - 1).Time
+            'change tab after time is set so Parse_ZmanOrTime ahould be on time saved by user
+            TabControlTimeZman.SelectedTab = TabPageTime
+            cbZman.Text = ""
+        End If
         tbMessage.Text = varSC.Schedule(tbReminderNum.Text - 1).Message
-        tbMinutes.Text = varSC.Schedule(tbReminderNum.Text - 1).Minutes
+        MinuteschangedProgrammatic = True
+        dtpMinutes.Value = #1/2/2000#.AddMinutes(varSC.Schedule(tbReminderNum.Text - 1).Minutes)
         cbIsActive.Checked = varSC.Schedule(tbReminderNum.Text - 1).IsActive
         cbNotToday.Checked = varSC.Schedule(tbReminderNum.Text - 1).NotToday
         tbSound.Text = varSC.Schedule(tbReminderNum.Text - 1).Sound
@@ -600,12 +648,15 @@ Public Class FrmSchedule
     Private Sub cbIsActive_CheckedChanged(sender As Object, e As EventArgs) Handles cbIsActive.CheckedChanged
         Dim Response
         If cbIsActive.Checked = True Then
-            Dim valid = CheckValidTime(cbTime.Text, cbTime.SelectedIndex > -1)
+            'Dim valid = CheckValidTime(cbZman.Text, cbZman.SelectedIndex > -1)
+            Dim IsFunc As Boolean = CBool(TabControlTimeZman.SelectedTab.Name = "TabPageZman") 'true if tab is now TabPageZman
+            Dim valid = CheckValidTime(If(IsFunc = True, cbZman.Text, dtpTime.Value.ToLongTimeString), IsFunc)
             If valid = 1 Then
                 If varSC.Schedule.Count < tbReminderNum.Text Then
                     varSC.Schedule.Add(New aSchedule)
                 End If
                 varSC.Schedule(tbReminderNum.Text - 1).IsActive = cbIsActive.Checked
+                varSC.Save(varUserFile)
                 'ask to add task
                 If System.IO.File.Exists(Environment.GetEnvironmentVariable("systemroot") & "\System32\Tasks\MyZmanScheduler") = False Then
                     Response = msgMaker(If(varSC.HebrewMenus = True, ".מתזמן המשימות של ווינדוס לא מוגדר" & vbCr & "?האם ברצונך להוסיף את המשימה", "Windows task scheduler not set." & vbCr & "Do you want to add the task?"), If(varSC.HebrewMenus = True, MsgBoxStyle.YesNo + MsgBoxStyle.Question + MsgBoxStyle.MsgBoxRight, MsgBoxStyle.YesNo + MsgBoxStyle.Question))
@@ -625,7 +676,10 @@ Public Class FrmSchedule
             'remove
             rbtClear_Click()
         End If
-        If varSC.Schedule.Count >= tbReminderNum.Text Then varSC.Schedule(tbReminderNum.Text - 1).IsActive = cbIsActive.Checked
+        If varSC.Schedule.Count >= tbReminderNum.Text Then
+            varSC.Schedule(tbReminderNum.Text - 1).IsActive = cbIsActive.Checked
+            varSC.Save(varUserFile)
+        End If
     End Sub
     Function msgMaker(msgString As String, Optional BoxStyle As MsgBoxStyle = MsgBoxStyle.OkOnly, Optional CenteredStyle As String = "MouseCenter")
         Dim Response
@@ -638,22 +692,69 @@ Public Class FrmSchedule
         If varSC.Schedule.Count >= tbReminderNum.Text Then varSC.Schedule(tbReminderNum.Text - 1).NotToday = cbNotToday.Checked
         varSC.Save(varUserFile)
     End Sub
-    Private Sub cbTime_KeyPress(sender As Object, e As KeyPressEventArgs) Handles cbTime.KeyPress
-        If e.KeyChar = Chr(13) Then parse_cbTime()
+    'Private Sub cbzman_TextChanged(sender As Object, e As EventArgs) Handles cbZman.TextChanged
+    '    parse_cbTime()
+    'End Sub
+    Private Sub cbzman_DropDown(ByVal sender As Object, ByVal e As System.EventArgs) Handles cbZman.DropDown
+        SetAutoComplete(sender, False)
     End Sub
-    Private Sub cbTime_Leave(sender As Object, e As EventArgs) Handles cbTime.Leave
-        parse_cbTime()
+    Private Sub Cbzman_DropDownclosed(ByVal sender As Object, ByVal e As System.EventArgs) Handles cbZman.DropDownClosed
+        SetAutoComplete(sender, True)
+        If sender.SelectedIndex > -1 Then Parse_ZmanOrTime(True)
     End Sub
-    Private Sub parse_cbTime()
-        Dim Response
-        Dim valid = CheckValidTime(cbTime.Text, cbTime.SelectedIndex > -1)
+    Private Sub Cbzman_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbZman.SelectedIndexChanged
+        Parse_ZmanOrTime(True)
+    End Sub
+    Private Sub cbZman_Leave(sender As Object, e As EventArgs) Handles cbZman.Leave
+        'check if user typed in not a valid zman name
+        Dim valid = CheckValidTime(cbZman.Text, True)
+        If valid <> 1 Then cbZman.Text = ""
+    End Sub
+    Private Sub TabControlTimeZman_Selected(sender As Object, e As TabControlEventArgs) Handles TabControlTimeZman.Selected
+        If CBool(TabControlTimeZman.SelectedTab.Name = "TabPageZman") = True Then 'true if tab is now TabPageZman
+            If cbZman.Text <> "" Then Parse_ZmanOrTime(True)
+        Else
+            Parse_ZmanOrTime(False)
+        End If
+    End Sub
+    Private Sub dtpTime_ValueChanged(sender As Object, e As EventArgs) Handles dtpTime.ValueChanged
+        If TimechangedProgrammatic = False Then
+            Parse_ZmanOrTime(False)
+        Else
+            TimechangedProgrammatic = False
+        End If
+    End Sub
+    Private Sub dtpMinutes_ValueChanged(sender As Object, e As EventArgs) Handles dtpMinutes.ValueChanged
+        If MinuteschangedProgrammatic = False Then
+            Dim IsFunc As Boolean = CBool(TabControlTimeZman.SelectedTab.Name = "TabPageZman") 'true if tab is now TabPageZman
+            Dim valid = CheckValidTime(If(IsFunc = True, cbZman.Text, dtpTime.Value.ToLongTimeString), IsFunc)
+            If valid = 1 Then
+                If varSC.Schedule.Count < tbReminderNum.Text Then
+                    varSC.Schedule.Add(New aSchedule)
+                End If
+                varSC.Schedule(tbReminderNum.Text - 1).Minutes = dtpMinutes.Value.TimeOfDay.TotalMinutes
+                varSC.Save(varUserFile)
+            End If
+        Else
+            MinuteschangedProgrammatic = False
+        End If
+    End Sub
+    Private Function Parse_ZmanOrTime(IsFunc As Boolean)
+        Dim Response, valid
+        'Dim valid = CheckValidTime(cbZman.Text, cbZman.SelectedIndex > -1)
+        If IsFunc = True Then
+            valid = CheckValidTime(cbZman.Text, True)
+        Else
+            valid = CheckValidTime(dtpTime.Value.ToLongTimeString, False)
+        End If
         If valid = 1 Then
             If varSC.Schedule.Count < tbReminderNum.Text Then
                 varSC.Schedule.Add(New aSchedule)
             End If
-            varSC.Schedule(tbReminderNum.Text - 1).Time = cbTime.Text
-            varSC.Schedule(tbReminderNum.Text - 1).IsFunc = cbTime.SelectedIndex > -1 'true if Selected soometing from dropdown
-            Exit Sub
+            varSC.Schedule(tbReminderNum.Text - 1).Time = If(IsFunc = True, cbZman.Text, dtpTime.Value.ToLongTimeString)
+            varSC.Schedule(tbReminderNum.Text - 1).IsFunc = IsFunc
+            varSC.Save(varUserFile)
+            Return valid
         ElseIf valid = 2 Then
             Response = msgMaker(If(varSC.HebrewMenus = True, ".אינו שעה תקף" & vbCr & "?האם ברצונך לנקות תזכורת זו", "Not a valid time." & vbCr & "Do you want to clear this Reminder?"), If(varSC.HebrewMenus = True, MsgBoxStyle.YesNo + MsgBoxStyle.Question + MsgBoxStyle.MsgBoxRight, MsgBoxStyle.YesNo + MsgBoxStyle.Question))
         ElseIf valid = 3 Then
@@ -661,34 +762,24 @@ Public Class FrmSchedule
         ElseIf valid = 4 Then
             Response = msgMaker(If(varSC.HebrewMenus = True, ".בעיה להשיג את הזמן הזה" & vbCr & "?האם ברצונך לנקות תזכורת זו", "Problem getting this zman." & vbCr & "Do you want to clear this Reminder?"), If(varSC.HebrewMenus = True, MsgBoxStyle.YesNo + MsgBoxStyle.Question + MsgBoxStyle.MsgBoxRight, MsgBoxStyle.YesNo + MsgBoxStyle.Question))
         End If
-        cbTime.Text = ""
-        If varSC.Schedule.Count >= tbReminderNum.Text Then varSC.Schedule(tbReminderNum.Text - 1).Time = cbTime.Text
+        cbZman.Text = ""
+        If varSC.Schedule.Count >= tbReminderNum.Text Then varSC.Schedule(tbReminderNum.Text - 1).Time = cbZman.Text
 
-        If Response = vbNo Then Exit Sub
+        If Response = vbNo Then Return valid
         'remove
         rbtClear_Click()
-    End Sub
+        Return valid
+    End Function
     Private Sub tbMessage_TextChanged(sender As Object, e As EventArgs) Handles tbMessage.TextChanged
-        Dim valid = CheckValidTime(cbTime.Text, cbTime.SelectedIndex > -1)
+        Dim IsFunc As Boolean = CBool(TabControlTimeZman.SelectedTab.Name = "TabPageZman") 'true if tab is now TabPageZman
+        Dim valid = CheckValidTime(If(IsFunc = True, cbZman.Text, dtpTime.Value.ToLongTimeString), IsFunc)
         If valid = 1 Then
             If varSC.Schedule.Count < tbReminderNum.Text Then
                 varSC.Schedule.Add(New aSchedule)
             End If
             varSC.Schedule(tbReminderNum.Text - 1).Message = tbMessage.Text
+            varSC.Save(varUserFile)
         End If
-    End Sub
-
-    Private Sub tbMinutes_TextChanged(sender As Object, e As EventArgs) Handles tbMinutes.TextChanged
-        Dim valid = CheckValidTime(cbTime.Text, cbTime.SelectedIndex > -1)
-        If valid = 1 Then
-            If varSC.Schedule.Count < tbReminderNum.Text Then
-                varSC.Schedule.Add(New aSchedule)
-            End If
-            varSC.Schedule(tbReminderNum.Text - 1).Minutes = tbMinutes.Text
-        End If
-    End Sub
-    Private Sub tbMinutes_KeyPress(sender As Object, e As KeyPressEventArgs) Handles tbMinutes.KeyPress
-        If Not Char.IsNumber(e.KeyChar) AndAlso Not Char.IsControl(e.KeyChar) Then e.KeyChar = ""
     End Sub
     Private Sub btFileDialog_Click(sender As Object, e As EventArgs) Handles btFileDialog.Click
         Dim My_FileDialog As New OpenFileDialog()
@@ -721,7 +812,8 @@ Public Class FrmSchedule
             tbSound.Text = ""
             If varSC.Schedule.Count >= tbReminderNum.Text Then varSC.Schedule(tbReminderNum.Text - 1).Sound = ""
         Else
-            Dim valid = CheckValidTime(cbTime.Text, cbTime.SelectedIndex > -1)
+            Dim IsFunc As Boolean = CBool(TabControlTimeZman.SelectedTab.Name = "TabPageZman") 'true if tab is now TabPageZman
+            Dim valid = CheckValidTime(If(IsFunc = True, cbZman.Text, dtpTime.Value.ToLongTimeString), IsFunc)
             If valid = 1 Then
                 If varSC.Schedule.Count < tbReminderNum.Text Then
                     varSC.Schedule.Add(New aSchedule)
@@ -732,8 +824,7 @@ Public Class FrmSchedule
     End Sub
     Private Sub btTest_Click(sender As Object, e As EventArgs) Handles btTest.Click
         'test time with msg
-        parse_cbTime()
-        Dim valid = CheckValidTime(cbTime.Text, cbTime.SelectedIndex > -1)
+        Dim valid = Parse_ZmanOrTime(CBool(TabControlTimeZman.SelectedTab.Name = "TabPageZman")) 'true if tab is now TabPageZman
         If valid <> 1 Then Exit Sub
 
         cbNotToday.Checked = CheckSchedule(varSC.Schedule(tbReminderNum.Text - 1), True)
@@ -751,9 +842,10 @@ Public Class FrmSchedule
         End If
         cbIsActive.Checked = False
         cbNotToday.Checked = False
-        cbTime.Text = ""
+        cbZman.Text = ""
+        TabControlTimeZman.SelectedTab = TabPageZman
         tbMessage.Text = ""
-        tbMinutes.Text = ""
+        dtpMinutes.Value = #1/2/2000#
         tbSound.Text = ""
     End Sub
 
@@ -807,7 +899,25 @@ Public Class FrmSchedule
     Private Sub btOpenScheduler_Click(sender As Object, e As EventArgs) Handles btOpenScheduler.Click
         Process.Start("taskschd.msc")
     End Sub
-
+    Private Sub GroupBox2_Paint(sender As Object, e As PaintEventArgs) Handles GroupBox2.Paint
+        Using borderPen As Pen = New Pen(Color.LightGray)
+            e.Graphics.DrawRectangle(borderPen, New Rectangle(tbMessage.Location.X - 1, tbMessage.Location.Y - 1, tbMessage.Width + 1, tbMessage.Height + 1))
+            e.Graphics.DrawRectangle(borderPen, New Rectangle(tbSound.Location.X - 1, tbSound.Location.Y - 1, tbSound.Width + 1, tbSound.Height + 1))
+            e.Graphics.DrawRectangle(borderPen, New Rectangle(tbReminderTotal.Location.X - 1, tbReminderTotal.Location.Y - 1, tbReminderTotal.Width + 1, tbReminderTotal.Height + 1))
+            e.Graphics.DrawRectangle(borderPen, New Rectangle(tbReminderNum.Location.X - 1, tbReminderNum.Location.Y - 1, tbReminderNum.Width + 1, tbReminderNum.Height + 1))
+            e.Graphics.DrawRectangle(borderPen, New Rectangle(PanelOnTimeBefor.Location.X - 1, PanelOnTimeBefor.Location.Y - 1, PanelOnTimeBefor.Width + 1, PanelOnTimeBefor.Height + 1))
+            e.Graphics.DrawRectangle(borderPen, New Rectangle(cbLocationList.Location.X - 1, cbLocationList.Location.Y - 1, cbLocationList.Width + 1, cbLocationList.Height + 1))
+        End Using
+    End Sub
+    'Private Sub tabControl1_DrawItem(ByVal sender As Object, ByVal e As DrawItemEventArgs) Handles TabControlTimeZman.DrawItem
+    '    '    Dim page As TabPage = TabControl1.TabPages(e.Index)
+    '    '    Dim col As Color = Color.AliceBlue
+    '    '    e.Graphics.FillRectangle(New SolidBrush(col), e.Bounds)
+    '    '    Dim paddedBounds As Rectangle = e.Bounds
+    '    '    Dim yOffset As Integer = If((e.State = DrawItemState.Selected), -2, 1)
+    '    '    paddedBounds.Offset(1, yOffset)
+    '    '    TextRenderer.DrawText(e.Graphics, page.Text, Font, paddedBounds, page.ForeColor)
+    'End Sub
 
 End Class
 

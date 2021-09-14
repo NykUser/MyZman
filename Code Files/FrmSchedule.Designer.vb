@@ -24,13 +24,15 @@ Partial Class FrmSchedule
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FrmSchedule))
-        Me.cbTime = New System.Windows.Forms.ComboBox()
         Me.LabelMinutes = New System.Windows.Forms.Label()
-        Me.tbMinutes = New System.Windows.Forms.TextBox()
         Me.cbIsActive = New System.Windows.Forms.CheckBox()
         Me.tbMessage = New System.Windows.Forms.TextBox()
-        Me.LabelTimeOrZman = New System.Windows.Forms.Label()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
+        Me.TabControlTimeZman = New System.Windows.Forms.TabControl()
+        Me.TabPageZman = New System.Windows.Forms.TabPage()
+        Me.cbZman = New System.Windows.Forms.ComboBox()
+        Me.TabPageTime = New System.Windows.Forms.TabPage()
+        Me.dtpTime = New System.Windows.Forms.DateTimePicker()
         Me.LabelDivider1 = New System.Windows.Forms.Label()
         Me.cbLocationList = New System.Windows.Forms.ComboBox()
         Me.LabelLocation = New System.Windows.Forms.Label()
@@ -45,7 +47,6 @@ Partial Class FrmSchedule
         Me.tbSound = New System.Windows.Forms.TextBox()
         Me.tbReminderTotal = New System.Windows.Forms.TextBox()
         Me.LabelMessage = New System.Windows.Forms.Label()
-        Me.rbtClear = New zman.WindowsFormsApplication1.RoundButton()
         Me.tbReminderNum = New System.Windows.Forms.TextBox()
         Me.btNext = New System.Windows.Forms.Button()
         Me.LabelFrom = New System.Windows.Forms.Label()
@@ -53,6 +54,8 @@ Partial Class FrmSchedule
         Me.btPrevious = New System.Windows.Forms.Button()
         Me.btFrist = New System.Windows.Forms.Button()
         Me.cbNotToday = New System.Windows.Forms.CheckBox()
+        Me.PanelOnTimeBefor = New System.Windows.Forms.Panel()
+        Me.dtpMinutes = New System.Windows.Forms.DateTimePicker()
         Me.Butclose = New System.Windows.Forms.Button()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.tblatitude = New System.Windows.Forms.TextBox()
@@ -66,40 +69,25 @@ Partial Class FrmSchedule
         Me.LabelLongitude = New System.Windows.Forms.Label()
         Me.cbTimeZone = New System.Windows.Forms.ComboBox()
         Me.LabelLatitude = New System.Windows.Forms.Label()
+        Me.rbtClear = New zman.WindowsFormsApplication1.RoundButton()
         Me.GroupBox2.SuspendLayout()
+        Me.TabControlTimeZman.SuspendLayout()
+        Me.TabPageZman.SuspendLayout()
+        Me.TabPageTime.SuspendLayout()
         CType(Me.pbTasksON, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.PanelOnTimeBefor.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.SuspendLayout()
-        '
-        'cbTime
-        '
-        Me.cbTime.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest
-        Me.cbTime.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems
-        Me.cbTime.DropDownWidth = 185
-        Me.cbTime.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
-        Me.cbTime.FormattingEnabled = True
-        Me.cbTime.Location = New System.Drawing.Point(18, 165)
-        Me.cbTime.Name = "cbTime"
-        Me.cbTime.Size = New System.Drawing.Size(183, 24)
-        Me.cbTime.TabIndex = 11
         '
         'LabelMinutes
         '
         Me.LabelMinutes.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
         Me.LabelMinutes.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.LabelMinutes.Location = New System.Drawing.Point(18, 288)
+        Me.LabelMinutes.Location = New System.Drawing.Point(18, 285)
         Me.LabelMinutes.Name = "LabelMinutes"
         Me.LabelMinutes.Size = New System.Drawing.Size(86, 14)
         Me.LabelMinutes.TabIndex = 1
-        Me.LabelMinutes.Text = "Minutes Before"
-        '
-        'tbMinutes
-        '
-        Me.tbMinutes.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
-        Me.tbMinutes.Location = New System.Drawing.Point(18, 303)
-        Me.tbMinutes.Name = "tbMinutes"
-        Me.tbMinutes.Size = New System.Drawing.Size(83, 22)
-        Me.tbMinutes.TabIndex = 15
+        Me.LabelMinutes.Text = "Remind Before"
         '
         'cbIsActive
         '
@@ -115,24 +103,17 @@ Partial Class FrmSchedule
         '
         'tbMessage
         '
-        Me.tbMessage.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
-        Me.tbMessage.Location = New System.Drawing.Point(18, 211)
+        Me.tbMessage.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.tbMessage.Font = New System.Drawing.Font("Arial", 9.75!)
+        Me.tbMessage.Location = New System.Drawing.Point(18, 208)
+        Me.tbMessage.Multiline = True
         Me.tbMessage.Name = "tbMessage"
         Me.tbMessage.Size = New System.Drawing.Size(184, 22)
         Me.tbMessage.TabIndex = 12
         '
-        'LabelTimeOrZman
-        '
-        Me.LabelTimeOrZman.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
-        Me.LabelTimeOrZman.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.LabelTimeOrZman.Location = New System.Drawing.Point(18, 149)
-        Me.LabelTimeOrZman.Name = "LabelTimeOrZman"
-        Me.LabelTimeOrZman.Size = New System.Drawing.Size(187, 14)
-        Me.LabelTimeOrZman.TabIndex = 32
-        Me.LabelTimeOrZman.Text = "Time or Zman"
-        '
         'GroupBox2
         '
+        Me.GroupBox2.Controls.Add(Me.TabControlTimeZman)
         Me.GroupBox2.Controls.Add(Me.LabelDivider1)
         Me.GroupBox2.Controls.Add(Me.cbLocationList)
         Me.GroupBox2.Controls.Add(Me.LabelLocation)
@@ -150,30 +131,86 @@ Partial Class FrmSchedule
         Me.GroupBox2.Controls.Add(Me.rbtClear)
         Me.GroupBox2.Controls.Add(Me.tbReminderNum)
         Me.GroupBox2.Controls.Add(Me.btNext)
-        Me.GroupBox2.Controls.Add(Me.cbTime)
-        Me.GroupBox2.Controls.Add(Me.tbMinutes)
         Me.GroupBox2.Controls.Add(Me.LabelMinutes)
         Me.GroupBox2.Controls.Add(Me.LabelFrom)
         Me.GroupBox2.Controls.Add(Me.btLast)
         Me.GroupBox2.Controls.Add(Me.btPrevious)
-        Me.GroupBox2.Controls.Add(Me.LabelTimeOrZman)
         Me.GroupBox2.Controls.Add(Me.btFrist)
         Me.GroupBox2.Controls.Add(Me.cbIsActive)
         Me.GroupBox2.Controls.Add(Me.cbNotToday)
         Me.GroupBox2.Controls.Add(Me.tbMessage)
+        Me.GroupBox2.Controls.Add(Me.PanelOnTimeBefor)
         Me.GroupBox2.Font = New System.Drawing.Font("David", 12.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
         Me.GroupBox2.ForeColor = System.Drawing.Color.DodgerBlue
         Me.GroupBox2.Location = New System.Drawing.Point(14, 17)
         Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Size = New System.Drawing.Size(217, 397)
+        Me.GroupBox2.Size = New System.Drawing.Size(217, 395)
         Me.GroupBox2.TabIndex = 2
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Task Scheduler       "
         '
+        'TabControlTimeZman
+        '
+        Me.TabControlTimeZman.Controls.Add(Me.TabPageZman)
+        Me.TabControlTimeZman.Controls.Add(Me.TabPageTime)
+        Me.TabControlTimeZman.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!)
+        Me.TabControlTimeZman.Location = New System.Drawing.Point(16, 143)
+        Me.TabControlTimeZman.Name = "TabControlTimeZman"
+        Me.TabControlTimeZman.Padding = New System.Drawing.Point(0, 0)
+        Me.TabControlTimeZman.SelectedIndex = 0
+        Me.TabControlTimeZman.Size = New System.Drawing.Size(186, 47)
+        Me.TabControlTimeZman.TabIndex = 84
+        '
+        'TabPageZman
+        '
+        Me.TabPageZman.BackColor = System.Drawing.Color.White
+        Me.TabPageZman.Controls.Add(Me.cbZman)
+        Me.TabPageZman.Location = New System.Drawing.Point(4, 22)
+        Me.TabPageZman.Name = "TabPageZman"
+        Me.TabPageZman.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPageZman.Size = New System.Drawing.Size(178, 21)
+        Me.TabPageZman.TabIndex = 1
+        Me.TabPageZman.Text = "Zman"
+        '
+        'cbZman
+        '
+        Me.cbZman.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend
+        Me.cbZman.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems
+        Me.cbZman.DropDownWidth = 185
+        Me.cbZman.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.cbZman.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
+        Me.cbZman.FormattingEnabled = True
+        Me.cbZman.Location = New System.Drawing.Point(-2, -2)
+        Me.cbZman.Name = "cbZman"
+        Me.cbZman.Size = New System.Drawing.Size(180, 24)
+        Me.cbZman.TabIndex = 74
+        '
+        'TabPageTime
+        '
+        Me.TabPageTime.BackColor = System.Drawing.Color.White
+        Me.TabPageTime.Controls.Add(Me.dtpTime)
+        Me.TabPageTime.Location = New System.Drawing.Point(4, 22)
+        Me.TabPageTime.Name = "TabPageTime"
+        Me.TabPageTime.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPageTime.Size = New System.Drawing.Size(178, 21)
+        Me.TabPageTime.TabIndex = 0
+        Me.TabPageTime.Text = "Time"
+        '
+        'dtpTime
+        '
+        Me.dtpTime.CustomFormat = " hh:mm:ss  tt"
+        Me.dtpTime.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.dtpTime.Format = System.Windows.Forms.DateTimePickerFormat.Custom
+        Me.dtpTime.Location = New System.Drawing.Point(-2, -1)
+        Me.dtpTime.Name = "dtpTime"
+        Me.dtpTime.ShowUpDown = True
+        Me.dtpTime.Size = New System.Drawing.Size(182, 21)
+        Me.dtpTime.TabIndex = 74
+        '
         'LabelDivider1
         '
         Me.LabelDivider1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-        Me.LabelDivider1.Location = New System.Drawing.Point(106, 346)
+        Me.LabelDivider1.Location = New System.Drawing.Point(106, 343)
         Me.LabelDivider1.Name = "LabelDivider1"
         Me.LabelDivider1.Size = New System.Drawing.Size(96, 2)
         Me.LabelDivider1.TabIndex = 70
@@ -184,9 +221,10 @@ Partial Class FrmSchedule
         Me.cbLocationList.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend
         Me.cbLocationList.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems
         Me.cbLocationList.DropDownWidth = 105
+        Me.cbLocationList.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.cbLocationList.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
         Me.cbLocationList.FormattingEnabled = True
-        Me.cbLocationList.Location = New System.Drawing.Point(18, 360)
+        Me.cbLocationList.Location = New System.Drawing.Point(18, 357)
         Me.cbLocationList.Name = "cbLocationList"
         Me.cbLocationList.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.cbLocationList.Size = New System.Drawing.Size(184, 24)
@@ -196,7 +234,7 @@ Partial Class FrmSchedule
         '
         Me.LabelLocation.AutoSize = True
         Me.LabelLocation.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
-        Me.LabelLocation.Location = New System.Drawing.Point(15, 335)
+        Me.LabelLocation.Location = New System.Drawing.Point(15, 332)
         Me.LabelLocation.Name = "LabelLocation"
         Me.LabelLocation.Size = New System.Drawing.Size(89, 15)
         Me.LabelLocation.TabIndex = 69
@@ -206,7 +244,7 @@ Partial Class FrmSchedule
         '
         Me.btOpenScheduler.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
         Me.btOpenScheduler.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.btOpenScheduler.Location = New System.Drawing.Point(110, 23)
+        Me.btOpenScheduler.Location = New System.Drawing.Point(110, 27)
         Me.btOpenScheduler.Name = "btOpenScheduler"
         Me.btOpenScheduler.Size = New System.Drawing.Size(92, 23)
         Me.btOpenScheduler.TabIndex = 68
@@ -227,7 +265,7 @@ Partial Class FrmSchedule
         '
         Me.btToggleTaskScheduler.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
         Me.btToggleTaskScheduler.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.btToggleTaskScheduler.Location = New System.Drawing.Point(13, 23)
+        Me.btToggleTaskScheduler.Location = New System.Drawing.Point(13, 27)
         Me.btToggleTaskScheduler.Name = "btToggleTaskScheduler"
         Me.btToggleTaskScheduler.Size = New System.Drawing.Size(92, 23)
         Me.btToggleTaskScheduler.TabIndex = 66
@@ -258,7 +296,7 @@ Partial Class FrmSchedule
         Me.btFileDialog.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btFileDialog.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
         Me.btFileDialog.Image = CType(resources.GetObject("btFileDialog.Image"), System.Drawing.Image)
-        Me.btFileDialog.Location = New System.Drawing.Point(174, 239)
+        Me.btFileDialog.Location = New System.Drawing.Point(174, 236)
         Me.btFileDialog.Name = "btFileDialog"
         Me.btFileDialog.Size = New System.Drawing.Size(28, 16)
         Me.btFileDialog.TabIndex = 14
@@ -269,7 +307,7 @@ Partial Class FrmSchedule
         '
         Me.LabelSound.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
         Me.LabelSound.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.LabelSound.Location = New System.Drawing.Point(18, 242)
+        Me.LabelSound.Location = New System.Drawing.Point(18, 239)
         Me.LabelSound.Name = "LabelSound"
         Me.LabelSound.Size = New System.Drawing.Size(187, 14)
         Me.LabelSound.TabIndex = 63
@@ -279,7 +317,7 @@ Partial Class FrmSchedule
         '
         Me.btTest.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
         Me.btTest.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.btTest.Location = New System.Drawing.Point(118, 303)
+        Me.btTest.Location = New System.Drawing.Point(118, 300)
         Me.btTest.Name = "btTest"
         Me.btTest.Size = New System.Drawing.Size(84, 22)
         Me.btTest.TabIndex = 16
@@ -288,16 +326,20 @@ Partial Class FrmSchedule
         '
         'tbSound
         '
+        Me.tbSound.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.tbSound.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
-        Me.tbSound.Location = New System.Drawing.Point(18, 257)
+        Me.tbSound.Location = New System.Drawing.Point(18, 254)
+        Me.tbSound.Multiline = True
         Me.tbSound.Name = "tbSound"
         Me.tbSound.Size = New System.Drawing.Size(184, 22)
         Me.tbSound.TabIndex = 13
         '
         'tbReminderTotal
         '
+        Me.tbReminderTotal.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.tbReminderTotal.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
-        Me.tbReminderTotal.Location = New System.Drawing.Point(126, 81)
+        Me.tbReminderTotal.Location = New System.Drawing.Point(129, 81)
+        Me.tbReminderTotal.Multiline = True
         Me.tbReminderTotal.Name = "tbReminderTotal"
         Me.tbReminderTotal.Size = New System.Drawing.Size(35, 22)
         Me.tbReminderTotal.TabIndex = 4
@@ -306,28 +348,18 @@ Partial Class FrmSchedule
         '
         Me.LabelMessage.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
         Me.LabelMessage.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.LabelMessage.Location = New System.Drawing.Point(18, 196)
+        Me.LabelMessage.Location = New System.Drawing.Point(18, 193)
         Me.LabelMessage.Name = "LabelMessage"
         Me.LabelMessage.Size = New System.Drawing.Size(187, 14)
         Me.LabelMessage.TabIndex = 61
         Me.LabelMessage.Text = "Reminder Message"
         '
-        'rbtClear
-        '
-        Me.rbtClear.FlatAppearance.BorderSize = 0
-        Me.rbtClear.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.rbtClear.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
-        Me.rbtClear.Image = Global.zman.My.Resources.Resources.broombrushclearsweep22
-        Me.rbtClear.Location = New System.Drawing.Point(176, 119)
-        Me.rbtClear.Name = "rbtClear"
-        Me.rbtClear.Size = New System.Drawing.Size(26, 23)
-        Me.rbtClear.TabIndex = 9
-        Me.rbtClear.UseVisualStyleBackColor = True
-        '
         'tbReminderNum
         '
+        Me.tbReminderNum.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.tbReminderNum.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
         Me.tbReminderNum.Location = New System.Drawing.Point(55, 81)
+        Me.tbReminderNum.Multiline = True
         Me.tbReminderNum.Name = "tbReminderNum"
         Me.tbReminderNum.Size = New System.Drawing.Size(35, 22)
         Me.tbReminderNum.TabIndex = 3
@@ -399,6 +431,25 @@ Partial Class FrmSchedule
         Me.cbNotToday.TabIndex = 8
         Me.cbNotToday.Text = "Not Today"
         Me.cbNotToday.UseVisualStyleBackColor = True
+        '
+        'PanelOnTimeBefor
+        '
+        Me.PanelOnTimeBefor.Controls.Add(Me.dtpMinutes)
+        Me.PanelOnTimeBefor.Location = New System.Drawing.Point(18, 302)
+        Me.PanelOnTimeBefor.Name = "PanelOnTimeBefor"
+        Me.PanelOnTimeBefor.Size = New System.Drawing.Size(87, 19)
+        Me.PanelOnTimeBefor.TabIndex = 86
+        '
+        'dtpMinutes
+        '
+        Me.dtpMinutes.CustomFormat = "HH:mm"
+        Me.dtpMinutes.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!)
+        Me.dtpMinutes.Format = System.Windows.Forms.DateTimePickerFormat.Custom
+        Me.dtpMinutes.Location = New System.Drawing.Point(-1, -1)
+        Me.dtpMinutes.Name = "dtpMinutes"
+        Me.dtpMinutes.ShowUpDown = True
+        Me.dtpMinutes.Size = New System.Drawing.Size(89, 21)
+        Me.dtpMinutes.TabIndex = 85
         '
         'Butclose
         '
@@ -532,6 +583,18 @@ Partial Class FrmSchedule
         Me.LabelLatitude.TabIndex = 47
         Me.LabelLatitude.Text = "Latitude"
         '
+        'rbtClear
+        '
+        Me.rbtClear.FlatAppearance.BorderSize = 0
+        Me.rbtClear.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.rbtClear.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
+        Me.rbtClear.Image = Global.zman.My.Resources.Resources.broombrushclearsweep22
+        Me.rbtClear.Location = New System.Drawing.Point(176, 119)
+        Me.rbtClear.Name = "rbtClear"
+        Me.rbtClear.Size = New System.Drawing.Size(26, 23)
+        Me.rbtClear.TabIndex = 9
+        Me.rbtClear.UseVisualStyleBackColor = True
+        '
         'FrmSchedule
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -551,18 +614,19 @@ Partial Class FrmSchedule
         Me.Text = "Schedule"
         Me.GroupBox2.ResumeLayout(False)
         Me.GroupBox2.PerformLayout()
+        Me.TabControlTimeZman.ResumeLayout(False)
+        Me.TabPageZman.ResumeLayout(False)
+        Me.TabPageTime.ResumeLayout(False)
         CType(Me.pbTasksON, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.PanelOnTimeBefor.ResumeLayout(False)
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
-    Friend WithEvents cbTime As System.Windows.Forms.ComboBox
     Friend WithEvents LabelMinutes As System.Windows.Forms.Label
-    Friend WithEvents tbMinutes As System.Windows.Forms.TextBox
     Friend WithEvents cbIsActive As System.Windows.Forms.CheckBox
     Friend WithEvents tbMessage As System.Windows.Forms.TextBox
-    Friend WithEvents LabelTimeOrZman As System.Windows.Forms.Label
     Friend WithEvents GroupBox2 As System.Windows.Forms.GroupBox
     Friend WithEvents Butclose As System.Windows.Forms.Button
     Friend WithEvents cbNotToday As System.Windows.Forms.CheckBox
@@ -599,4 +663,11 @@ Partial Class FrmSchedule
     Friend WithEvents Labeloffset As Label
     Friend WithEvents LabelDivider1 As Label
     Friend WithEvents LabelLocation As Label
+    Friend WithEvents TabControlTimeZman As TabControl
+    Friend WithEvents TabPageTime As TabPage
+    Friend WithEvents TabPageZman As TabPage
+    Friend WithEvents dtpTime As DateTimePicker
+    Friend WithEvents cbZman As ComboBox
+    Friend WithEvents dtpMinutes As DateTimePicker
+    Friend WithEvents PanelOnTimeBefor As Panel
 End Class

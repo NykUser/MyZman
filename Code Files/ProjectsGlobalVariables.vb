@@ -8,7 +8,6 @@ Module ProjectsGlobalVariables
     Public Property varCZC As ComplexZmanimCalendar
     Public Property varEngPlaceList As LocationCollection = New LocationCollection 'As New List(Of aLocation)
     Public Property varHebPlaceList As LocationCollection = New LocationCollection 'As New List(Of aLocation)
-
     Public Property varZmanimFunc As New List(Of String)
     Public Property varFinishedLoading As Boolean = False
     Public Property varZmanTimeZone As TimeZoneInfo
