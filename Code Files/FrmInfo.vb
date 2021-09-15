@@ -1266,10 +1266,6 @@ Public Class Frminfo
         btHideLocationInfo.Image = My.Resources.Gray_Down_16
         btHideLocationInfo.Location = New System.Drawing.Point(btHideLocationInfo.Location.X, btHideLocationInfo.Location.Y + 5)
     End Sub
-
-    Private Sub CbTimeZone_SelectedIndexChanged(sender As Object, e As EventArgs) Handles CbTimeZone.SelectedIndexChanged
-
-    End Sub
 End Class
 
 

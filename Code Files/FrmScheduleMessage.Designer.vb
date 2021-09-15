@@ -22,6 +22,7 @@ Partial Class FrmScheduleMessage
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FrmScheduleMessage))
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.btYes = New System.Windows.Forms.Button()
@@ -31,6 +32,7 @@ Partial Class FrmScheduleMessage
         Me.LabelMessage = New System.Windows.Forms.Label()
         Me.LabelRemindAgain = New System.Windows.Forms.Label()
         Me.LabelTime = New System.Windows.Forms.Label()
+        Me.TimerTimeOut = New System.Windows.Forms.Timer(Me.components)
         Me.Panel1.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -115,6 +117,10 @@ Partial Class FrmScheduleMessage
         Me.LabelTime.TabIndex = 5
         Me.LabelTime.Text = "Time"
         '
+        'TimerTimeOut
+        '
+        Me.TimerTimeOut.Interval = 30000
+        '
         'FrmScheduleMessage
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -149,4 +155,5 @@ Partial Class FrmScheduleMessage
     Friend WithEvents LabelMessage As Label
     Friend WithEvents LabelRemindAgain As Label
     Friend WithEvents LabelTime As Label
+    Friend WithEvents TimerTimeOut As Windows.Forms.Timer
 End Class

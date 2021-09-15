@@ -1,6 +1,8 @@
 ﻿
 Public Class FrmScheduleMessage
     Private Sub FrmScheduleMessage_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        TimerTimeOut.Enabled = True
+
         btNo.Font = MemoryFonts.GetFont(1, 9, FontStyle.Regular)
         btYes.Font = MemoryFonts.GetFont(1, 9, FontStyle.Regular)
 
@@ -48,6 +50,9 @@ Public Class FrmScheduleMessage
     End Sub
 
     Private Sub btNo_Click(sender As Object, e As EventArgs) Handles btNo.Click
+        Me.Close()
+    End Sub
+    Private Sub TimerTimeOut_Tick(sender As Object, e As EventArgs) Handles TimerTimeOut.Tick
         Me.Close()
     End Sub
 End Class
