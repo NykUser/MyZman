@@ -61,9 +61,11 @@ Due to atmospheric conditions (pressure, humidity and other conditions), calcula
 **While I did my best to get accurate results, please double check before relying on these zmanim for halacha lemaaseh.**
 
 # Screenshots
-![1](https://user-images.githubusercontent.com/83419922/133931625-7ec6740d-26ca-4e83-8e13-aa1f56ac7ad9.jpg)![4](https://user-images.githubusercontent.com/83419922/133931635-e984a8fb-b459-48a1-8b05-254bccdd5726.jpg)![5](https://user-images.githubusercontent.com/83419922/133931637-45f74564-99cc-499b-b564-e81419eedccb.jpg)
+![1](https://user-images.githubusercontent.com/83419922/133931625-7ec6740d-26ca-4e83-8e13-aa1f56ac7ad9.jpg)![2](https://user-images.githubusercontent.com/83419922/133931628-f65d92b9-24f2-4bd2-b518-7533c6251026.jpg)![3](https://user-images.githubusercontent.com/83419922/133931629-bde7c41f-f03e-4f6f-b043-da3e5d3a7977.jpg)
 
-![2](https://user-images.githubusercontent.com/83419922/133931628-f65d92b9-24f2-4bd2-b518-7533c6251026.jpg)![3](https://user-images.githubusercontent.com/83419922/133931629-bde7c41f-f03e-4f6f-b043-da3e5d3a7977.jpg)
+![4](https://user-images.githubusercontent.com/83419922/133931635-e984a8fb-b459-48a1-8b05-254bccdd5726.jpg)![5](https://user-images.githubusercontent.com/83419922/133931637-45f74564-99cc-499b-b564-e81419eedccb.jpg)
+
+
 
 
 
