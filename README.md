@@ -20,7 +20,7 @@ Most of the locations are missing elevation info.
 * When a location is selected the zmanim automatically updates according to the location’s values.
 * The Time shown on the program’s title bar is the current system time converted to the time zone selected in the time zone dropdown box.
 * The user can also manually enter an Latitude & Longitude with time zone info, and the zmanim will automatically update to the changed location.
-* Changes can be saved, locations added or removed, the default startup locations set, via the three-dot menu (kebab menu).
+* Changes can be saved, locations added or removed, the default startup location set, via the three-dot menu (kebab menu).
 * All Changes are saved to the user settings file (MyZman.exe.UserSettings.xml, in the same folder as the .exe), and not to the default locations list.
 * In addition, the is an option to retrieve the user’s current location, this relies on windows GeoCoordinateWatcher, accuracy depends on several factors, and hence the results should be checked.
 ### Zmanim
@@ -61,8 +61,12 @@ Due to atmospheric conditions (pressure, humidity and other conditions), calcula
 **While I did my best to get accurate results, please double check before relying on these zmanim for halacha lemaaseh.**
 
 # Screenshots
-![1](https://user-images.githubusercontent.com/83419922/132996519-dfe17ccb-0d8f-4d7a-86bc-27033ee65ad7.jpg)
-![2](https://user-images.githubusercontent.com/83419922/129582744-d270cc55-60b1-4867-a61c-532982cedd1a.jpg)
+![1](https://user-images.githubusercontent.com/83419922/133931625-7ec6740d-26ca-4e83-8e13-aa1f56ac7ad9.jpg)
+![2](https://user-images.githubusercontent.com/83419922/133931628-f65d92b9-24f2-4bd2-b518-7533c6251026.jpg)![3](https://user-images.githubusercontent.com/83419922/133931629-bde7c41f-f03e-4f6f-b043-da3e5d3a7977.jpg)
+![4](https://user-images.githubusercontent.com/83419922/133931635-e984a8fb-b459-48a1-8b05-254bccdd5726.jpg)![5](https://user-images.githubusercontent.com/83419922/133931637-45f74564-99cc-499b-b564-e81419eedccb.jpg)
+
+
+
 
 # Notable points about the Programs Code
 * The NET port is part of the solution, as an C# project called Zmanim, it compiles itself into a Dll into MyZman\Resources\.
