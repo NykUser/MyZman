@@ -1266,6 +1266,10 @@ Public Class Frminfo
         btHideLocationInfo.Image = My.Resources.Gray_Down_16
         btHideLocationInfo.Location = New System.Drawing.Point(btHideLocationInfo.Location.X, btHideLocationInfo.Location.Y + 5)
     End Sub
+
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+        varZmanimFunc.ForEach(Sub(x) Debug.Print(x))
+    End Sub
 End Class
 
 

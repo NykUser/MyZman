@@ -2514,6 +2514,9 @@
             A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
             </returns>
         </member>
+        <member name="F:Zmanim.ComplexZmanimCalendar.ZENITH_19_DEGREES">
+            Below are Methods added to kosherjava and not yet ported to NET            
+        </member>
         <member name="T:Zmanim.Extensions.DateExtensions">
             <summary>
             DateTime extensions.

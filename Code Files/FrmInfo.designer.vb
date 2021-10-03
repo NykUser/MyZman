@@ -103,6 +103,7 @@ Partial Class Frminfo
         Me.ColumnZman = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.ColumnTime = New System.Windows.Forms.DataGridViewComboBoxColumn()
         Me.LabelDisclaimer = New System.Windows.Forms.Label()
+        Me.Button1 = New System.Windows.Forms.Button()
         Me.LocationContextMenu.SuspendLayout()
         Me.StatusStrip1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
@@ -692,6 +693,7 @@ Partial Class Frminfo
         'GroupBox1
         '
         Me.GroupBox1.Anchor = System.Windows.Forms.AnchorStyles.Top
+        Me.GroupBox1.Controls.Add(Me.Button1)
         Me.GroupBox1.Controls.Add(Me.rtbParsha)
         Me.GroupBox1.Controls.Add(Me.rbtTodayRefresh)
         Me.GroupBox1.Controls.Add(Me.PanelOndpEngdate)
@@ -809,6 +811,15 @@ Partial Class Frminfo
         Me.LabelDisclaimer.Text = "Don't"
         Me.LabelDisclaimer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
+        'Button1
+        '
+        Me.Button1.Location = New System.Drawing.Point(28, 80)
+        Me.Button1.Name = "Button1"
+        Me.Button1.Size = New System.Drawing.Size(75, 23)
+        Me.Button1.TabIndex = 12
+        Me.Button1.Text = "Button1"
+        Me.Button1.UseVisualStyleBackColor = True
+        '
         'Frminfo
         '
         Me.AllowDrop = True
@@ -924,4 +935,5 @@ Partial Class Frminfo
     Friend WithEvents ColumnTime As DataGridViewComboBoxColumn
     Friend WithEvents btHideLocationInfo As Button
     Friend WithEvents mDisplayDafYomi As ToolStripMenuItem
+    Friend WithEvents Button1 As Button
 End Class
