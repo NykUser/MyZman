@@ -78,7 +78,6 @@ Partial Class Frminfo
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
         Me.btHideLocationInfo = New System.Windows.Forms.Button()
         Me.PanelOnCbTimeZone = New System.Windows.Forms.Panel()
-        Me.rbtLocationContexOpen = New zman.WindowsFormsApplication1.RoundButton()
         Me.LabelTimeZone = New System.Windows.Forms.Label()
         Me.LabelCountry = New System.Windows.Forms.Label()
         Me.ZmanimContextMenuHelper = New System.Windows.Forms.ContextMenuStrip(Me.components)
@@ -94,15 +93,17 @@ Partial Class Frminfo
         Me.dpEngdate = New System.Windows.Forms.DateTimePicker()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.rtbParsha = New System.Windows.Forms.RichTextBox()
-        Me.rbtTodayRefresh = New zman.WindowsFormsApplication1.RoundButton()
         Me.PanelOndpEngdate = New System.Windows.Forms.Panel()
         Me.TimerTransparency = New System.Windows.Forms.Timer(Me.components)
         Me.TimerZmanimAfterChange = New System.Windows.Forms.Timer(Me.components)
         Me.DataGridView1 = New System.Windows.Forms.DataGridView()
-        Me.ColumnNum = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.LabelDisclaimer = New System.Windows.Forms.Label()
+        Me.rbtTodayRefresh = New zman.WindowsFormsApplication1.RoundButton()
+        Me.rbtLocationContexOpen = New zman.WindowsFormsApplication1.RoundButton()
+        Me.columNum = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.ColumnFuncNum = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.ColumnZman = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.ColumnTime = New System.Windows.Forms.DataGridViewComboBoxColumn()
-        Me.LabelDisclaimer = New System.Windows.Forms.Label()
         Me.LocationContextMenu.SuspendLayout()
         Me.StatusStrip1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
@@ -203,9 +204,9 @@ Partial Class Frminfo
         Me.Butexit.FlatAppearance.BorderColor = System.Drawing.SystemColors.Info
         Me.Butexit.FlatAppearance.MouseDownBackColor = System.Drawing.SystemColors.Info
         Me.Butexit.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.Info
-        Me.Butexit.Location = New System.Drawing.Point(93, 538)
+        Me.Butexit.Location = New System.Drawing.Point(279, -4)
         Me.Butexit.Name = "Butexit"
-        Me.Butexit.Size = New System.Drawing.Size(10, 10)
+        Me.Butexit.Size = New System.Drawing.Size(1, 1)
         Me.Butexit.TabIndex = 8
         Me.Butexit.Text = "&exit"
         Me.Butexit.UseVisualStyleBackColor = False
@@ -574,19 +575,6 @@ Partial Class Frminfo
         Me.PanelOnCbTimeZone.Size = New System.Drawing.Size(183, 17)
         Me.PanelOnCbTimeZone.TabIndex = 29
         '
-        'rbtLocationContexOpen
-        '
-        Me.rbtLocationContexOpen.Anchor = System.Windows.Forms.AnchorStyles.Top
-        Me.rbtLocationContexOpen.FlatAppearance.BorderSize = 0
-        Me.rbtLocationContexOpen.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.rbtLocationContexOpen.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
-        Me.rbtLocationContexOpen.Image = Global.zman.My.Resources.Resources.three_dots_icon_gray
-        Me.rbtLocationContexOpen.Location = New System.Drawing.Point(241, 20)
-        Me.rbtLocationContexOpen.Name = "rbtLocationContexOpen"
-        Me.rbtLocationContexOpen.Size = New System.Drawing.Size(17, 28)
-        Me.rbtLocationContexOpen.TabIndex = 8
-        Me.rbtLocationContexOpen.UseVisualStyleBackColor = True
-        '
         'LabelTimeZone
         '
         Me.LabelTimeZone.Anchor = System.Windows.Forms.AnchorStyles.Top
@@ -720,18 +708,6 @@ Partial Class Frminfo
         Me.rtbParsha.TabIndex = 11
         Me.rtbParsha.Text = ""
         '
-        'rbtTodayRefresh
-        '
-        Me.rbtTodayRefresh.FlatAppearance.BorderSize = 0
-        Me.rbtTodayRefresh.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.rbtTodayRefresh.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
-        Me.rbtTodayRefresh.Image = Global.zman.My.Resources.Resources.Undo_16x
-        Me.rbtTodayRefresh.Location = New System.Drawing.Point(239, 23)
-        Me.rbtTodayRefresh.Name = "rbtTodayRefresh"
-        Me.rbtTodayRefresh.Size = New System.Drawing.Size(26, 23)
-        Me.rbtTodayRefresh.TabIndex = 3
-        Me.rbtTodayRefresh.UseVisualStyleBackColor = True
-        '
         'PanelOndpEngdate
         '
         Me.PanelOndpEngdate.Controls.Add(Me.dpEngdate)
@@ -759,7 +735,7 @@ Partial Class Frminfo
         Me.DataGridView1.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.DataGridView1.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None
         Me.DataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.DataGridView1.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.ColumnNum, Me.ColumnZman, Me.ColumnTime})
+        Me.DataGridView1.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.columNum, Me.ColumnFuncNum, Me.ColumnZman, Me.ColumnTime})
         Me.DataGridView1.ContextMenuStrip = Me.ZmanimContextMenuHelper
         Me.DataGridView1.Location = New System.Drawing.Point(11, 300)
         Me.DataGridView1.Name = "DataGridView1"
@@ -774,13 +750,54 @@ Partial Class Frminfo
         Me.DataGridView1.Size = New System.Drawing.Size(265, 529)
         Me.DataGridView1.TabIndex = 3
         '
-        'ColumnNum
+        'LabelDisclaimer
         '
-        Me.ColumnNum.HeaderText = "#"
-        Me.ColumnNum.Name = "ColumnNum"
-        Me.ColumnNum.ReadOnly = True
-        Me.ColumnNum.Visible = False
-        Me.ColumnNum.Width = 30
+        Me.LabelDisclaimer.Anchor = System.Windows.Forms.AnchorStyles.Top
+        Me.LabelDisclaimer.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
+        Me.LabelDisclaimer.ForeColor = System.Drawing.Color.Black
+        Me.LabelDisclaimer.Location = New System.Drawing.Point(11, 275)
+        Me.LabelDisclaimer.Name = "LabelDisclaimer"
+        Me.LabelDisclaimer.Size = New System.Drawing.Size(266, 22)
+        Me.LabelDisclaimer.TabIndex = 28
+        Me.LabelDisclaimer.Text = "Don't"
+        Me.LabelDisclaimer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'rbtTodayRefresh
+        '
+        Me.rbtTodayRefresh.FlatAppearance.BorderSize = 0
+        Me.rbtTodayRefresh.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.rbtTodayRefresh.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
+        Me.rbtTodayRefresh.Image = Global.zman.My.Resources.Resources.Undo_16x
+        Me.rbtTodayRefresh.Location = New System.Drawing.Point(239, 23)
+        Me.rbtTodayRefresh.Name = "rbtTodayRefresh"
+        Me.rbtTodayRefresh.Size = New System.Drawing.Size(26, 23)
+        Me.rbtTodayRefresh.TabIndex = 3
+        Me.rbtTodayRefresh.UseVisualStyleBackColor = True
+        '
+        'rbtLocationContexOpen
+        '
+        Me.rbtLocationContexOpen.Anchor = System.Windows.Forms.AnchorStyles.Top
+        Me.rbtLocationContexOpen.FlatAppearance.BorderSize = 0
+        Me.rbtLocationContexOpen.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.rbtLocationContexOpen.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
+        Me.rbtLocationContexOpen.Image = Global.zman.My.Resources.Resources.three_dots_icon_gray
+        Me.rbtLocationContexOpen.Location = New System.Drawing.Point(241, 20)
+        Me.rbtLocationContexOpen.Name = "rbtLocationContexOpen"
+        Me.rbtLocationContexOpen.Size = New System.Drawing.Size(17, 28)
+        Me.rbtLocationContexOpen.TabIndex = 8
+        Me.rbtLocationContexOpen.UseVisualStyleBackColor = True
+        '
+        'columNum
+        '
+        Me.columNum.HeaderText = "columNum"
+        Me.columNum.Name = "columNum"
+        Me.columNum.Visible = False
+        '
+        'ColumnFuncNum
+        '
+        Me.ColumnFuncNum.HeaderText = "ColumnFuncNum"
+        Me.ColumnFuncNum.Name = "ColumnFuncNum"
+        Me.ColumnFuncNum.Visible = False
         '
         'ColumnZman
         '
@@ -797,18 +814,6 @@ Partial Class Frminfo
         Me.ColumnTime.Name = "ColumnTime"
         Me.ColumnTime.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
         '
-        'LabelDisclaimer
-        '
-        Me.LabelDisclaimer.Anchor = System.Windows.Forms.AnchorStyles.Top
-        Me.LabelDisclaimer.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
-        Me.LabelDisclaimer.ForeColor = System.Drawing.Color.Black
-        Me.LabelDisclaimer.Location = New System.Drawing.Point(11, 275)
-        Me.LabelDisclaimer.Name = "LabelDisclaimer"
-        Me.LabelDisclaimer.Size = New System.Drawing.Size(266, 22)
-        Me.LabelDisclaimer.TabIndex = 28
-        Me.LabelDisclaimer.Text = "Don't"
-        Me.LabelDisclaimer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
         'Frminfo
         '
         Me.AllowDrop = True
@@ -818,12 +823,12 @@ Partial Class Frminfo
         Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(248, Byte), Integer), CType(CType(242, Byte), Integer), CType(CType(248, Byte), Integer))
         Me.CancelButton = Me.Butexit
         Me.ClientSize = New System.Drawing.Size(289, 859)
-        Me.Controls.Add(Me.DataGridView1)
-        Me.Controls.Add(Me.GroupBox2)
         Me.Controls.Add(Me.StatusStrip1)
         Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.Butexit)
         Me.Controls.Add(Me.LabelDisclaimer)
+        Me.Controls.Add(Me.GroupBox2)
+        Me.Controls.Add(Me.DataGridView1)
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
         Me.MaximumSize = New System.Drawing.Size(485, 1400)
@@ -919,9 +924,10 @@ Partial Class Frminfo
     Friend WithEvents PanelOndpEngdate As Panel
     Friend WithEvents PanelOnCbTimeZone As Panel
     Friend WithEvents rtbParsha As RichTextBox
-    Friend WithEvents ColumnNum As DataGridViewTextBoxColumn
-    Friend WithEvents ColumnZman As DataGridViewTextBoxColumn
-    Friend WithEvents ColumnTime As DataGridViewComboBoxColumn
     Friend WithEvents btHideLocationInfo As Button
     Friend WithEvents mDisplayDafYomi As ToolStripMenuItem
+    Friend WithEvents columNum As DataGridViewTextBoxColumn
+    Friend WithEvents ColumnFuncNum As DataGridViewTextBoxColumn
+    Friend WithEvents ColumnZman As DataGridViewTextBoxColumn
+    Friend WithEvents ColumnTime As DataGridViewComboBoxColumn
 End Class

@@ -9,6 +9,8 @@ Module ProjectsGlobalVariables
     Public Property varEngPlaceList As LocationCollection = New LocationCollection 'As New List(Of aLocation)
     Public Property varHebPlaceList As LocationCollection = New LocationCollection 'As New List(Of aLocation)
     Public Property varZmanimFunc As New List(Of String)
+    Public Property varZmanimFuncList As New List(Of aZmanimFunc)
+    Public Property varDescriptionBalloonTip As CustomBalloonTip
     Public Property varFinishedLoading As Boolean = False
     Public Property varZmanTimeZone As TimeZoneInfo
     Public Property varAddedGets As New AddedGets

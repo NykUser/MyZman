@@ -1,9 +1,9 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class FrmDifference
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -20,7 +20,7 @@ Partial Class FrmDifference
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FrmDifference))
         Me.btAddTimeZoneId = New System.Windows.Forms.Button()
@@ -91,24 +91,32 @@ Partial Class FrmDifference
         '
         Me.CbTimeA.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend
         Me.CbTimeA.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems
+        Me.CbTimeA.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
+        Me.CbTimeA.DropDownHeight = 400
         Me.CbTimeA.DropDownWidth = 220
         Me.CbTimeA.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
         Me.CbTimeA.FormattingEnabled = True
+        Me.CbTimeA.IntegralHeight = False
         Me.CbTimeA.Location = New System.Drawing.Point(6, 24)
+        Me.CbTimeA.MaxDropDownItems = 5
         Me.CbTimeA.Name = "CbTimeA"
-        Me.CbTimeA.Size = New System.Drawing.Size(224, 24)
+        Me.CbTimeA.Size = New System.Drawing.Size(224, 23)
         Me.CbTimeA.TabIndex = 68
         '
         'CbTimeB
         '
         Me.CbTimeB.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend
         Me.CbTimeB.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems
+        Me.CbTimeB.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
+        Me.CbTimeB.DropDownHeight = 400
         Me.CbTimeB.DropDownWidth = 220
         Me.CbTimeB.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
         Me.CbTimeB.FormattingEnabled = True
+        Me.CbTimeB.IntegralHeight = False
         Me.CbTimeB.Location = New System.Drawing.Point(6, 23)
+        Me.CbTimeB.MaxDropDownItems = 5
         Me.CbTimeB.Name = "CbTimeB"
-        Me.CbTimeB.Size = New System.Drawing.Size(224, 24)
+        Me.CbTimeB.Size = New System.Drawing.Size(224, 23)
         Me.CbTimeB.TabIndex = 69
         '
         'tbTimeA

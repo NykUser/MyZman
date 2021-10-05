@@ -18,9 +18,12 @@ End Class
 Public Class aZmanimFunc
     Inherits SerializableData
     Public Property HebName As String
+    Public Property HebDescription As String
     Public Property EngName As String
+    Public Property EngDescription As String
     Public Property ObjectName As String
     Public Property FunctionName As String
+    Public Property Num As Integer
 
     Public Sub New()
 
@@ -28,9 +31,12 @@ Public Class aZmanimFunc
 
     Public Sub New(ByVal oZmanimFunc As aZmanimFunc)
         Me.HebName = oZmanimFunc.HebName
-        Me.HebName = oZmanimFunc.EngName
+        Me.HebDescription = oZmanimFunc.HebDescription
+        Me.EngName = oZmanimFunc.EngName
+        Me.EngDescription = oZmanimFunc.EngDescription
         Me.ObjectName = oZmanimFunc.ObjectName
         Me.FunctionName = oZmanimFunc.FunctionName
+        Me.Num = oZmanimFunc.Num
     End Sub
 
 End Class

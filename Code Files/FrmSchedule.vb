@@ -27,9 +27,15 @@ Public Class FrmSchedule
 
         MinuteschangedProgrammatic = True
         dtpMinutes.Value = #1/2/2000#
+        MinuteschangedProgrammatic = False
 
+        'varZmanimFunc.ForEach(Sub(x) cbZman.Items.Add(x))
 
-        If Frminfo.mHebrewMenus.Checked = True Then
+        If varSC.HebrewMenus = True Then
+            'add ChrW(&H200F) & " " for () at end of name
+            'varZmanimFuncList.ForEach(Sub(x) cbZman.Items.Add(x.HebName & ChrW(&H200F) & " "))
+            varZmanimFuncList.Where(Function(x) Not x.FunctionName.Contains("ShaahZmanis")).ToList().ForEach(Sub(x) cbZman.Items.Add(x.HebName & ChrW(&H200F) & " "))
+
             'for layout changes for RightToLeft
             Dim saveReminderNum, saveReminderTotal
             saveReminderNum = tbReminderNum.Location
@@ -72,7 +78,7 @@ Public Class FrmSchedule
             tbElevation.RightToLeft = 0
             tblatitude.RightToLeft = 0
             tblongitude.RightToLeft = 0
-            cbZman.RightToLeft = 0
+            cbZman.RightToLeft = 1
             tbSound.RightToLeft = 0
             LabelLatitude.RightToLeft = 1
             LabelLongitude.RightToLeft = 1
@@ -114,6 +120,9 @@ Public Class FrmSchedule
             TabPageZman.Text = "זמן"
 
         Else
+            'varZmanimFuncList.ForEach(Sub(x) cbZman.Items.Add(x.EngName))
+            varZmanimFuncList.Where(Function(x) Not x.FunctionName.Contains("ShaahZmanis")).ToList().ForEach(Sub(x) cbZman.Items.Add(x.EngName & ChrW(&H200F) & " "))
+
             GroupBox1.Text = "Location info"
             GroupBox1.Text = "Reminders"
             GroupBox1.RightToLeft = 0
@@ -183,14 +192,6 @@ Public Class FrmSchedule
         Else
             FrmSchedule_change_place(Frminfo.cbLocationList.SelectedIndex)
         End If
-
-
-        varZmanimFunc.ForEach(Sub(x) cbZman.Items.Add(x))
-        'remove the last 4 that are AddedGets
-        'For i = 1 To 4
-        '    cbTime.Items.RemoveAt(cbTime.Items.Count - 1)
-        'Next
-
 
         tbReminderNum.Text = 1
         tbReminderTotal.Text = varSC.Schedule.Count
@@ -308,8 +309,14 @@ Public Class FrmSchedule
         'Debug.Print("3 " & myzman & vbCr & myzman.AddMinutes("-" & MinutesBefore))
 
         If TestRuning = False Then
-            'leave if not in time - and reset for next day
-            If Now < myzman.AddMinutes("-" & MinutesBefore) Or Now > myzman Then Return False
+            'befor time - reset for next day
+            If Now < myzman.AddMinutes("-" & MinutesBefore) Then Return False
+
+            'after time today check for next day
+            If Now > myzman Then
+                myzman = myzman.AddDays(1)
+                If Now < myzman.AddMinutes("-" & MinutesBefore) Then Return False
+            End If
         End If
 
         If myzman = Nothing Then Return False
@@ -561,6 +568,7 @@ Public Class FrmSchedule
             tbMessage.Text = ""
             MinuteschangedProgrammatic = True
             dtpMinutes.Value = #1/2/2000#
+            MinuteschangedProgrammatic = False
             tbSound.Text = ""
             cbIsActive.Checked = False
             cbNotToday.Checked = False
@@ -577,7 +585,12 @@ Public Class FrmSchedule
 
         'only get here if number is some were in list
         If varSC.Schedule(tbReminderNum.Text - 1).IsFunc = True Then
-            cbZman.Text = varSC.Schedule(tbReminderNum.Text - 1).Time
+            If varSC.HebrewMenus = False Then
+                cbZman.Text = varZmanimFuncList.Where(Function(x) x.FunctionName = varSC.Schedule(tbReminderNum.Text - 1).Time).FirstOrDefault.EngName
+            Else
+                cbZman.Text = varZmanimFuncList.Where(Function(x) x.FunctionName = varSC.Schedule(tbReminderNum.Text - 1).Time).FirstOrDefault.HebName
+            End If
+            'varSC.Schedule(tbReminderNum.Text - 1).Time
             TabControlTimeZman.SelectedTab = TabPageZman
             TimechangedProgrammatic = True
             dtpTime.Value = #1/2/2000# & " 12:00:00 pm"
@@ -591,6 +604,7 @@ Public Class FrmSchedule
         tbMessage.Text = varSC.Schedule(tbReminderNum.Text - 1).Message
         MinuteschangedProgrammatic = True
         dtpMinutes.Value = #1/2/2000#.AddMinutes(varSC.Schedule(tbReminderNum.Text - 1).Minutes)
+        MinuteschangedProgrammatic = False
         cbIsActive.Checked = varSC.Schedule(tbReminderNum.Text - 1).IsActive
         cbNotToday.Checked = varSC.Schedule(tbReminderNum.Text - 1).NotToday
         tbSound.Text = varSC.Schedule(tbReminderNum.Text - 1).Sound
@@ -608,12 +622,12 @@ Public Class FrmSchedule
                 Dim location As New GeoLocation("", tblatitude.Text, tblongitude.Text, 0, timeZone)
                 TempCZC = New ComplexZmanimCalendar(Now, location)
                 Dim Args() = {Now, location} ' for AddedGets
-                If InStr(StringIn, "ZmanGet") Then
-                    mytime = CDate(CallByName(varAddedGets, StringIn, CallType.Get, Args))
-                    'Debug.Print(mytime)
+                Dim ZmanInfo = ZmanFromName(StringIn)
+                If ZmanInfo.ObjectName = "varCZC" Then
+                    'If varZmanimFuncList.Item(cbZman.SelectedIndex).ObjectName = "varCZC" Then
+                    mytime = CDate(CallByName(TempCZC, ZmanInfo.FunctionName, CallType.Get))
                 Else
-                    mytime = CDate(CallByName(TempCZC, StringIn, CallType.Get))
-                    'Debug.Print(mytime)
+                    mytime = CDate(CallByName(varAddedGets, ZmanInfo.FunctionName, CallType.Get, Args))
                 End If
             Catch
                 Return 4
@@ -747,7 +761,8 @@ Public Class FrmSchedule
             If varSC.Schedule.Count < tbReminderNum.Text Then
                 varSC.Schedule.Add(New aSchedule)
             End If
-            varSC.Schedule(tbReminderNum.Text - 1).Time = If(IsFunc = True, cbZman.Text, dtpTime.Value.ToLongTimeString)
+            varSC.Schedule(tbReminderNum.Text - 1).Time = If(IsFunc = True, ZmanFromName(cbZman.Text).FunctionName, dtpTime.Value.ToLongTimeString)
+            'varSC.Schedule(tbReminderNum.Text - 1).Time = If(IsFunc = True, varZmanimFuncList.Item(cbZman.SelectedIndex).FunctionName, dtpTime.Value.ToLongTimeString)
             varSC.Schedule(tbReminderNum.Text - 1).IsFunc = IsFunc
             varSC.Save(varUserFile)
             Return valid
@@ -759,7 +774,7 @@ Public Class FrmSchedule
             Response = msgMaker(If(varSC.HebrewMenus = True, ".בעיה להשיג את הזמן הזה" & vbCr & "?האם ברצונך לנקות תזכורת זו", "Problem getting this zman." & vbCr & "Do you want to clear this Reminder?"), If(varSC.HebrewMenus = True, MsgBoxStyle.YesNo + MsgBoxStyle.Question + MsgBoxStyle.MsgBoxRight, MsgBoxStyle.YesNo + MsgBoxStyle.Question))
         End If
         cbZman.Text = ""
-        If varSC.Schedule.Count >= tbReminderNum.Text Then varSC.Schedule(tbReminderNum.Text - 1).Time = cbZman.Text
+        If varSC.Schedule.Count >= tbReminderNum.Text Then varSC.Schedule(tbReminderNum.Text - 1).Time = ""
 
         If Response = vbNo Then Return valid
         'remove
@@ -905,17 +920,22 @@ Public Class FrmSchedule
             e.Graphics.DrawRectangle(borderPen, New Rectangle(cbLocationList.Location.X - 1, cbLocationList.Location.Y - 1, cbLocationList.Width + 1, cbLocationList.Height + 1))
         End Using
     End Sub
-    'Private Sub tabControl1_DrawItem(ByVal sender As Object, ByVal e As DrawItemEventArgs) Handles TabControlTimeZman.DrawItem
-    '    '    Dim page As TabPage = TabControl1.TabPages(e.Index)
-    '    '    Dim col As Color = Color.AliceBlue
-    '    '    e.Graphics.FillRectangle(New SolidBrush(col), e.Bounds)
-    '    '    Dim paddedBounds As Rectangle = e.Bounds
-    '    '    Dim yOffset As Integer = If((e.State = DrawItemState.Selected), -2, 1)
-    '    '    paddedBounds.Offset(1, yOffset)
-    '    '    TextRenderer.DrawText(e.Graphics, page.Text, Font, paddedBounds, page.ForeColor)
-    'End Sub
-
+    Private Sub cbZman_DrawItem(sender As Object, e As DrawItemEventArgs) Handles cbZman.DrawItem
+        'for zmanim dropdown lists to make right to left and BalloonTip
+        'set DrawMode to OwnerDrawFixed
+        Dropdowns_DrawItem(sender, e)
+    End Sub
 End Class
+
+'Private Sub tabControl1_DrawItem(ByVal sender As Object, ByVal e As DrawItemEventArgs) Handles TabControlTimeZman.DrawItem
+'    '    Dim page As TabPage = TabControl1.TabPages(e.Index)
+'    '    Dim col As Color = Color.AliceBlue
+'    '    e.Graphics.FillRectangle(New SolidBrush(col), e.Bounds)
+'    '    Dim paddedBounds As Rectangle = e.Bounds
+'    '    Dim yOffset As Integer = If((e.State = DrawItemState.Selected), -2, 1)
+'    '    paddedBounds.Offset(1, yOffset)
+'    '    TextRenderer.DrawText(e.Graphics, page.Text, Font, paddedBounds, page.ForeColor)
+'End Sub
 
 ''draw dots
 'Imports System.Drawing.Drawing2D

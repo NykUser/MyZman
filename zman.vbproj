@@ -138,6 +138,7 @@
     <Compile Include="Code Files\AddedGets.vb" />
     <Compile Include="Code Files\ApplicationEvents.vb" />
     <Compile Include="Code Files\Centered_MessageBox.vb" />
+    <Compile Include="Code Files\CustomBalloonTip.vb" />
     <Compile Include="Code Files\FrmExport.Designer.vb">
       <DependentUpon>FrmExport.vb</DependentUpon>
     </Compile>
@@ -203,9 +204,11 @@
   <ItemGroup>
     <EmbeddedResource Include="Code Files\FrmExport.resx">
       <DependentUpon>FrmExport.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Code Files\FrmDifference.resx">
       <DependentUpon>FrmDifference.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Code Files\FrmInfo.resx">
       <DependentUpon>FrmInfo.vb</DependentUpon>

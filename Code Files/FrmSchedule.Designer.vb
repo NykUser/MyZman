@@ -176,13 +176,16 @@ Partial Class FrmSchedule
         '
         Me.cbZman.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend
         Me.cbZman.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems
-        Me.cbZman.DropDownWidth = 185
+        Me.cbZman.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
+        Me.cbZman.DropDownHeight = 400
+        Me.cbZman.DropDownWidth = 180
         Me.cbZman.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.cbZman.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
         Me.cbZman.FormattingEnabled = True
+        Me.cbZman.IntegralHeight = False
         Me.cbZman.Location = New System.Drawing.Point(-2, -2)
         Me.cbZman.Name = "cbZman"
-        Me.cbZman.Size = New System.Drawing.Size(180, 24)
+        Me.cbZman.Size = New System.Drawing.Size(180, 23)
         Me.cbZman.TabIndex = 74
         '
         'TabPageTime

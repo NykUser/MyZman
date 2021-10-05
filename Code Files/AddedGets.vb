@@ -57,6 +57,71 @@
             Return Nothing
         End Try
     End Function
+    Public Function ZmanGetCandleLighting15(DateIn As Date, LocationIn As GeoLocation)
+        TempCZC = New ComplexZmanimCalendar(DateIn, LocationIn)
+        If varSC.UseOlderUsnoAlgorithm = False Then
+            TempCZC.AstronomicalCalculator = New NOAACalculator()
+        Else
+            TempCZC.AstronomicalCalculator = New ZmanimCalculator()
+        End If
+        Try
+            Return CDate(TempCZC.GetSunset.ToString).AddMinutes(-15) ' .ToLongTimeString
+        Catch ex As Exception
+            Return Nothing
+        End Try
+    End Function
+    Public Function ZmanGetCandleLighting22(DateIn As Date, LocationIn As GeoLocation)
+        TempCZC = New ComplexZmanimCalendar(DateIn, LocationIn)
+        If varSC.UseOlderUsnoAlgorithm = False Then
+            TempCZC.AstronomicalCalculator = New NOAACalculator()
+        Else
+            TempCZC.AstronomicalCalculator = New ZmanimCalculator()
+        End If
+        Try
+            Return CDate(TempCZC.GetSunset.ToString).AddMinutes(-22) ' .ToLongTimeString
+        Catch ex As Exception
+            Return Nothing
+        End Try
+    End Function
+    Public Function ZmanGetCandleLighting25(DateIn As Date, LocationIn As GeoLocation)
+        TempCZC = New ComplexZmanimCalendar(DateIn, LocationIn)
+        If varSC.UseOlderUsnoAlgorithm = False Then
+            TempCZC.AstronomicalCalculator = New NOAACalculator()
+        Else
+            TempCZC.AstronomicalCalculator = New ZmanimCalculator()
+        End If
+        Try
+            Return CDate(TempCZC.GetSunset.ToString).AddMinutes(-25) ' .ToLongTimeString
+        Catch ex As Exception
+            Return Nothing
+        End Try
+    End Function
+    Public Function ZmanGetCandleLighting30(DateIn As Date, LocationIn As GeoLocation)
+        TempCZC = New ComplexZmanimCalendar(DateIn, LocationIn)
+        If varSC.UseOlderUsnoAlgorithm = False Then
+            TempCZC.AstronomicalCalculator = New NOAACalculator()
+        Else
+            TempCZC.AstronomicalCalculator = New ZmanimCalculator()
+        End If
+        Try
+            Return CDate(TempCZC.GetSunset.ToString).AddMinutes(-30) ' .ToLongTimeString
+        Catch ex As Exception
+            Return Nothing
+        End Try
+    End Function
+    Public Function ZmanGetCandleLighting40(DateIn As Date, LocationIn As GeoLocation)
+        TempCZC = New ComplexZmanimCalendar(DateIn, LocationIn)
+        If varSC.UseOlderUsnoAlgorithm = False Then
+            TempCZC.AstronomicalCalculator = New NOAACalculator()
+        Else
+            TempCZC.AstronomicalCalculator = New ZmanimCalculator()
+        End If
+        Try
+            Return CDate(TempCZC.GetSunset.ToString).AddMinutes(-40) ' .ToLongTimeString
+        Catch ex As Exception
+            Return Nothing
+        End Try
+    End Function
     Public Function ZmanGetParsha(ByVal DateIn As Date, inIsrael As Boolean, Optional EngNames As Boolean = False) As String
         'move to sab - needed for week of R"H 
         If DateIn.DayOfWeek <> 6 Then DateIn = DateIn.AddDays(Add_till_sab(DateIn.DayOfWeek))

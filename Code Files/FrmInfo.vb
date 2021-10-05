@@ -52,6 +52,15 @@ Public Class Frminfo
         'Debug.Print(Me.Size.ToString)
         varSC.SizeH = Me.Height
         varSC.SizeW = Me.Width
+
+        'make sure DataGridView1.Size is good - dock itself had isue when DataGridView1 was covered
+        If varSC.HideLocationBox = True Then
+            DataGridView1.Size = New System.Drawing.Size(DataGridView1.Size.Width, Me.Height - 293)
+        Else
+            DataGridView1.Size = New System.Drawing.Size(DataGridView1.Size.Width, Me.Height - 369)
+        End If
+
+
     End Sub
     Private Sub Frminfo_Move(sender As Object, e As EventArgs) Handles Me.Move
         varSC.LocationY = Location.Y
@@ -140,21 +149,21 @@ Public Class Frminfo
         Dim myzman, DataGridZman As Date
         Dim myTimeSpan As TimeSpan
 
-        If DataGridView1(2, num).Value = "" Then Exit Sub
+        If DataGridView1(3, num).Value = "" Then Exit Sub
 
         Dim Counter As Integer = 0
         If varSC.ColorZman = True Then
             For Each Row In DataGridView1.Rows
                 Counter += 1
                 'checking for empty string
-                If Row.cells(2).Value = "" Then Exit For
+                If Row.cells(3).Value = "" Then Exit For
                 'skiping ShaahZmanis
                 If InStr(varSC.Zmanim.Item(Counter - 1).FunctionName, "ShaahZmanis") Then Exit For
-                DataGridZman = Row.cells(2).Value.Replace(ChrW(&H200E), "")
+                DataGridZman = Row.cells(3).Value.Replace(ChrW(&H200E), "")
                 myTimeSpan = DataGridZman.TimeOfDay - TimeZoneInfo.ConvertTime(Now(), varZmanTimeZone).TimeOfDay 'DateAndTime.TimeOfDay
                 Try
-                    If myTimeSpan.TotalMilliseconds < 0 Then Row.cells(2).Style.ForeColor = Color.Red '"עבר"
-                    If myTimeSpan.TotalMilliseconds > 0 Then Row.cells(2).Style.ForeColor = Color.Green '"נשאר"
+                    If myTimeSpan.TotalMilliseconds < 0 Then Row.cells(3).Style.ForeColor = Color.Red '"עבר"
+                    If myTimeSpan.TotalMilliseconds > 0 Then Row.cells(3).Style.ForeColor = Color.Green '"נשאר"
                 Catch ex As Exception
                 End Try
             Next
@@ -162,7 +171,7 @@ Public Class Frminfo
 
         If varSC.ShowTimesOnStatusBar = False Then Exit Sub
         'Remove RTL ChrW(&H200E) if the is 
-        myzman = DataGridView1(2, num).Value.Replace(ChrW(&H200E), "")
+        myzman = DataGridView1(3, num).Value.Replace(ChrW(&H200E), "")
         myTimeSpan = myzman.TimeOfDay - TimeZoneInfo.ConvertTime(Now(), varZmanTimeZone).TimeOfDay
 
         If myTimeSpan.TotalMilliseconds > 0 Then
@@ -814,7 +823,7 @@ Public Class Frminfo
     Private Sub DataGridView1_DoubleClick(sender As Object, e As EventArgs) Handles DataGridView1.DoubleClick
         DataGridView1.BeginEdit(True)
         'ChangeKeybord
-        If DataGridView1.CurrentCell.ColumnIndex = 1 Then
+        If DataGridView1.CurrentCell.ColumnIndex = 2 Then
             If varSC.ChangeKeybordLayout = False Then Exit Sub
             Try
                 varSavedInputLanguage = InputLanguage.CurrentInputLanguage
@@ -827,6 +836,13 @@ Public Class Frminfo
             Catch ex As Exception
             End Try
         End If
+
+        'If DataGridView1.CurrentCell.ColumnIndex = 3 Then
+        '    If DataGridView1.IsCurrentCellInEditMode = True Then
+        '        DirectCast(DataGridView1.EditingControl, DataGridViewComboBoxEditingControl).DroppedDown = True
+        '    End If
+        'End If
+
     End Sub
     Private Sub DataGridView1_Leave(sender As Object, e As EventArgs) Handles DataGridView1.Leave
         If varSC.ChangeKeybordLayout = False Then Exit Sub
@@ -847,52 +863,80 @@ Public Class Frminfo
 
         TimerStatusLabel.Enabled = False
         'change to black
-        DataGridView1.Rows(e.RowIndex).Cells(2).Style.ForeColor = Color.Black
+        DataGridView1.Rows(e.RowIndex).Cells(3).Style.ForeColor = Color.Black
 
         'is ComboBox column
-        If e.ColumnIndex = 2 Then
+        If e.ColumnIndex = 3 Then
             'fill drop down with zmanim
             Dim myCombo As DataGridViewComboBoxCell
             myCombo = DataGridView1.Rows(e.RowIndex).Cells(e.ColumnIndex)
             myCombo.Items.Clear()
-            For Each Z In varZmanimFunc
-                myCombo.Items.Add(Z)
-            Next
-            'set to zman func
-            If varSC.Zmanim.Count > e.RowIndex Then myCombo.Value = varSC.Zmanim(e.RowIndex).FunctionName
+
+            'For Each Z In varZmanimFunc
+            '    myCombo.Items.Add(Z)
+            'Next
+            ''set to zman func
+            'If varSC.Zmanim.Count > e.RowIndex Then myCombo.Value = varSC.Zmanim(e.RowIndex).FunctionName
+
+            If varSC.HebrewMenus = True Then
+                varZmanimFuncList.ForEach(Sub(x) myCombo.Items.Add(x.HebName)) '& ChrW(&H200F) & " "
+            Else
+                varZmanimFuncList.ForEach(Sub(x) myCombo.Items.Add(x.EngName))
+            End If
+            If DataGridView1.Rows(e.RowIndex).Cells(1).Value > 0 Then myCombo.Value = myCombo.Items(CInt(DataGridView1.Rows(e.RowIndex).Cells(1).Value) - 1)
         End If
     End Sub
     Private Sub DataGridView1_EditingControlShowing(sender As Object, e As DataGridViewEditingControlShowingEventArgs) Handles DataGridView1.EditingControlShowing
+        Debug.Print("EditingControlShowing")
         If varFinishedLoading = False Then Exit Sub
         'set RightToLeft and DropDownClosed handler
 
-        If DataGridView1.CurrentCell.ColumnIndex = 2 Then
+        If DataGridView1.CurrentCell.ColumnIndex = 3 Then
             'looks like the is an isue when seting e.Control.RightToLeft will bug it not to fire a second time on DropDownClosed  'RemoveHandler did not help
             'seeting it back in DropDown and CellEndEdit via varDataGridCombo looks like it takes care of it - sending the DataGridViewEditingControlShowingEventArgs and changing that way did not work
             'anything done with  e.Control makes trouble even this varDataGridComboNewValue = e.Control.Text
             varDataGridCombo = CType(e.Control, ComboBox)
-            varDataGridCombo.RightToLeft = 0
+            If varSC.HebrewMenus = False Then varDataGridCombo.RightToLeft = 0
             RemoveHandler varDataGridCombo.DropDownClosed, AddressOf Me.DataGridView1_Combox_DropDownClosed
             AddHandler varDataGridCombo.DropDownClosed, AddressOf Me.DataGridView1_Combox_DropDownClosed
+
+            'this will set DrawItem for dropdown
+            varDataGridCombo.DrawMode = DrawMode.OwnerDrawFixed
+            RemoveHandler varDataGridCombo.DrawItem, AddressOf Me.DataGridView1_Combox_DrawItem
+            AddHandler varDataGridCombo.DrawItem, AddressOf Me.DataGridView1_Combox_DrawItem
         End If
 
         'DataGridView1.CellValueChanged doesn't fire until you click somewhere else inside the DataGridView
         'CurrentCellDirtyStateChanged and CurrentCellChanged also don't fire as needed
         'see Note https://docs.microsoft.com/en-us/dotnet/api/system.windows.forms.datagridview.editingcontrolshowing?view=net-5.0
     End Sub
+    Private Sub DataGridView1_Combox_DrawItem(sender As Object, e As DrawItemEventArgs)
+        'for zmanim dropdown lists to make right to left and BalloonTip
+        Try
+            Dropdowns_DrawItem(sender, e, varDataGridCombo.DropDownWidth - varDataGridCombo.Width)
+        Catch ex As Exception
+            Dropdowns_DrawItem(sender, e)
+        End Try
+
+    End Sub
+
     Public Sub DataGridView1_Combox_DropDownClosed(sender As Object, e As EventArgs)
         If varFinishedLoading = False Then Exit Sub
         'Debug.Print("This is DropDownClosed")
         'this will not fire as needed if changes to varDataGridCombo are not set back as befor
-        varDataGridCombo.RightToLeft = 1
+        If varDataGridCombo.RightToLeft = 0 Then varDataGridCombo.RightToLeft = 1
+        varDataGridCombo.DrawMode = DrawMode.Normal
 
-        'change varSc and call change zman - CurrentCell.value dose not have the updated value yet - use the Control's text
-        varSC.Zmanim(DataGridView1(0, DataGridView1.CurrentCell.RowIndex).Value - 1).FunctionName = varDataGridCombo.Text
-        If InStr(varDataGridCombo.Text, "ZmanGet") Then
-            varSC.Zmanim(DataGridView1(0, DataGridView1.CurrentCell.RowIndex).Value - 1).ObjectName = "varAddedGets"
-        Else
-            varSC.Zmanim(DataGridView1(0, DataGridView1.CurrentCell.RowIndex).Value - 1).ObjectName = "varCZC"
-        End If
+        'change varSS and call change zman - CurrentCell.value dose not have the updated value yet - use the Control's text
+        varSC.Zmanim(DataGridView1(0, DataGridView1.CurrentCell.RowIndex).Value - 1).FunctionName = ZmanFromName(varDataGridCombo.Text).FunctionName
+        varSC.Zmanim(DataGridView1(0, DataGridView1.CurrentCell.RowIndex).Value - 1).ObjectName = ZmanFromName(varDataGridCombo.Text).ObjectName
+        'varSC.Zmanim(DataGridView1(0, DataGridView1.CurrentCell.RowIndex).Value - 1).FunctionName = varDataGridCombo.Text
+        'If InStr(varDataGridCombo.Text, "ZmanGet") Then
+        '    varSC.Zmanim(DataGridView1(0, DataGridView1.CurrentCell.RowIndex).Value - 1).ObjectName = "varAddedGets"
+        'Else
+        '    varSC.Zmanim(DataGridView1(0, DataGridView1.CurrentCell.RowIndex).Value - 1).ObjectName = "varCZC"
+        'End If
+
         Place_orDate_changed()
         'DataGridView1.EndEdit()
     End Sub
@@ -902,16 +946,16 @@ Public Class Frminfo
         'Debug.Print("This is CellEndEdit")
         'Debug.Print(varSC.Zmanim(DataGridView1.CurrentCell.RowIndex).FunctionName)
 
-        Debug.Print(DataGridView1(0, DataGridView1.CurrentCell.RowIndex).Value)
+        'Debug.Print(DataGridView1(0, DataGridView1.CurrentCell.RowIndex).Value)
 
         'for zman name
-        If DataGridView1.CurrentCell.ColumnIndex = 1 Then
+        If DataGridView1.CurrentCell.ColumnIndex = 2 Then
             'use # column in case it was sorted
             varSC.Zmanim(DataGridView1(0, DataGridView1.CurrentCell.RowIndex).Value - 1).DisplayName = DataGridView1.CurrentCell.Value
         End If
 
         'for Combox when drop down was not used, no change was made just reload zmanim
-        If DataGridView1.CurrentCell.ColumnIndex = 2 Then
+        If DataGridView1.CurrentCell.ColumnIndex = 3 Then
             varDataGridCombo.RightToLeft = 1
             'cant call this here 'Place_orDate_changed() - will use a timer
             TimerZmanimAfterChange.Enabled = True
@@ -987,8 +1031,8 @@ Public Class Frminfo
         change_zman()
     End Sub
     Private Sub DataGridView1_ColumnWidthChanged(sender As Object, e As DataGridViewColumnEventArgs) Handles DataGridView1.ColumnWidthChanged
-        If e.Column.Index = 1 Then varSC.DataGridCol1W = e.Column.Width
-        If e.Column.Index = 2 Then varSC.DataGridCol2W = e.Column.Width
+        If e.Column.Index = 2 Then varSC.DataGridCol1W = e.Column.Width
+        If e.Column.Index = 3 Then varSC.DataGridCol2W = e.Column.Width
     End Sub
     Private Sub DataGridView1_Paint(sender As Object, e As PaintEventArgs) Handles DataGridView1.Paint
         Using borderPen As Pen = New Pen(Color.LightGray)
@@ -1089,7 +1133,7 @@ Public Class Frminfo
                 ToolTip1.SetToolTip(tbElevation, "הזן את גובה המיקום")
                 ToolTip1.SetToolTip(CbTimeZone, "בחר אזור זמן")
                 For i = 0 To DataGridView1.Rows.Count - 1
-                    DataGridView1(1, i).ToolTipText = "לחץ פעמיים לעריכה" & vbCr & "גרור ושחרר לסידור מחדש" & vbCr & "קליק ימני לאפשרויות נוספות"
+                    DataGridView1(2, i).ToolTipText = "לחץ פעמיים לעריכה" & vbCr & "גרור ושחרר לסידור מחדש" & vbCr & "קליק ימני לאפשרויות נוספות"
                 Next
                 If varSC.HideLocationBox = True Then
                     ToolTip1.SetToolTip(btHideLocationInfo, "הרחב פרטי מיקום")
@@ -1189,7 +1233,7 @@ Public Class Frminfo
                 ToolTip1.SetToolTip(CbTimeZone, "Select Time Zone")
                 'DataGridView ToolTip's
                 For i = 0 To DataGridView1.Rows.Count - 1
-                    DataGridView1(1, i).ToolTipText = "Double Click to Edit" & vbCr & "Drag and Drop to Rearrange" & vbCr & "Right Click for More Options"
+                    DataGridView1(2, i).ToolTipText = "Double Click to Edit" & vbCr & "Drag and Drop to Rearrange" & vbCr & "Right Click for More Options"
                 Next
                 If varSC.HideLocationBox = True Then
                     ToolTip1.SetToolTip(btHideLocationInfo, "More Location Details")
@@ -1265,10 +1309,6 @@ Public Class Frminfo
 
         btHideLocationInfo.Image = My.Resources.Gray_Down_16
         btHideLocationInfo.Location = New System.Drawing.Point(btHideLocationInfo.Location.X, btHideLocationInfo.Location.Y + 5)
-    End Sub
-
-    Private Sub Button1_Click(sender As Object, e As EventArgs)
-        varZmanimFunc.ForEach(Sub(x) Debug.Print(x))
     End Sub
 End Class
 

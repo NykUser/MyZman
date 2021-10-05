@@ -1,5 +1,4 @@
 ﻿Public Class FrmDifference
-
     Private Sub FormDifference_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Me.Location = New System.Drawing.Point(Frminfo.Location.X + ((Frminfo.Width - Me.Width) / 2), Frminfo.Bounds.Bottom - (Me.Height + 45))
 
@@ -12,11 +11,12 @@
         tbTimeB.Font = MemoryFonts.GetFont(0, 10, FontStyle.Regular)
         CBMday.Font = MemoryFonts.GetFont(0, 8.75, FontStyle.Regular)
 
+        CbTimeA.Items.Clear()
+        CbTimeB.Items.Clear()
+
         If varSC.HebrewMenus = True Then
             GroupBox1.RightToLeft = 1
             GroupBox2.RightToLeft = 1
-            CbTimeA.RightToLeft = 0
-            CbTimeB.RightToLeft = 0
             tbTimeA.RightToLeft = 0
             tbTimeB.RightToLeft = 0
             tbTimeR.RightToLeft = 0
@@ -26,30 +26,35 @@
             LabelDifference.Font = MemoryFonts.GetFont(0, 8.75, FontStyle.Regular)
             LabelDifference.Text = "הבדל"
             LabelDifference.RightToLeft = 1
-
+            For Each ZmanFunc As aZmanimFunc In varZmanimFuncList
+                'add ChrW(&H200F) & " " for () at end of name
+                CbTimeA.Items.Add(ZmanFunc.HebName & ChrW(&H200F) & " ")
+                CbTimeB.Items.Add(ZmanFunc.HebName & ChrW(&H200F) & " ")
+            Next
         Else
             GroupBox1.RightToLeft = 0
             GroupBox2.RightToLeft = 0
+            CbTimeA.RightToLeft = 0
+            CbTimeB.RightToLeft = 0
             GroupBox1.Text = "Zman 1"
             GroupBox2.Text = "Zman 2"
             LabelDifference.Text = "Difference"
             LabelDifference.Font = MemoryFonts.GetFont(0, 7.75, FontStyle.Regular)
+            For Each ZmanFunc As aZmanimFunc In varZmanimFuncList
+                CbTimeA.Items.Add(ZmanFunc.EngName)
+                CbTimeB.Items.Add(ZmanFunc.EngName)
+            Next
         End If
 
-        'for Compare Zmanim dropboxlists 
-        CbTimeA.Items.Clear()
-        CbTimeB.Items.Clear()
-        For Each s As String In varZmanimFunc
-            CbTimeA.Items.Add(s)
-            CbTimeB.Items.Add(s)
-        Next
     End Sub
     Private Sub CbTimeA_DropDown(ByVal sender As Object, ByVal e As System.EventArgs) Handles CbTimeA.DropDown, CbTimeB.DropDown
         SetAutoComplete(sender, False)
     End Sub
     Private Sub CbTimeA_DropDownclosed(ByVal sender As Object, ByVal e As System.EventArgs) Handles CbTimeA.DropDownClosed, CbTimeB.DropDownClosed
+        Dim comboBox1 As ComboBox = CType(sender, ComboBox)
         SetAutoComplete(sender, True)
         If sender.SelectedIndex > -1 Then run_difference()
+        'ToolTipDescription.Hide(comboBox1)
     End Sub
     Private Sub CbTimeA_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CbTimeA.SelectedIndexChanged
         run_difference()
@@ -66,6 +71,12 @@
         Else
             sender.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.None 'false
         End If
+    End Sub
+
+    Private Sub CbTimeA_DrawItem(sender As Object, e As DrawItemEventArgs) Handles CbTimeA.DrawItem, CbTimeB.DrawItem
+        'for zmanim dropdown lists to make right to left and BalloonTip
+        'set DrawMode to OwnerDrawFixed
+        Dropdowns_DrawItem(sender, e)
     End Sub
 
     'hidden button's
@@ -191,8 +202,8 @@
 
         Debug.Print("Time elapsed: {0}", MyStopwatch.Elapsed)
     End Sub
-
     Private Sub Butexit_Click(sender As Object, e As EventArgs) Handles Butexit.Click
         Me.Close()
     End Sub
+
 End Class
