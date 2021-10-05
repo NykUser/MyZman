@@ -365,7 +365,13 @@ Module FunctionsModule
                     CType(DVItems(DVItems.Count - 1).Cells(2), DataGridViewTextBoxCell).ToolTipText = "Double Click to Edit" & vbCr & "Drag and Drop to Rearrange" & vbCr & "Right Click for More Options"
                 End If
             End If
-            CType(DVItems(DVItems.Count - 1).Cells(3), DataGridViewComboBoxCell).ToolTipText = Z.FunctionName
+            'CType(DVItems(DVItems.Count - 1).Cells(3), DataGridViewComboBoxCell).ToolTipText = Z.FunctionName
+            If varSC.HebrewMenus = False Then
+                CType(DVItems(DVItems.Count - 1).Cells(3), DataGridViewComboBoxCell).ToolTipText = varZmanimFuncList.Where(Function(x) x.FunctionName = Z.FunctionName).FirstOrDefault.EngName
+            Else
+                CType(DVItems(DVItems.Count - 1).Cells(3), DataGridViewComboBoxCell).ToolTipText = varZmanimFuncList.Where(Function(x) x.FunctionName = Z.FunctionName).FirstOrDefault.HebName
+            End If
+
         Next
 
         Frminfo.DataGridView1.Rows.Clear()
