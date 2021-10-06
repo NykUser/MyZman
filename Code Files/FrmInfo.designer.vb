@@ -78,6 +78,7 @@ Partial Class Frminfo
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
         Me.btHideLocationInfo = New System.Windows.Forms.Button()
         Me.PanelOnCbTimeZone = New System.Windows.Forms.Panel()
+        Me.rbtLocationContexOpen = New zman.WindowsFormsApplication1.RoundButton()
         Me.LabelTimeZone = New System.Windows.Forms.Label()
         Me.LabelCountry = New System.Windows.Forms.Label()
         Me.ZmanimContextMenuHelper = New System.Windows.Forms.ContextMenuStrip(Me.components)
@@ -93,17 +94,16 @@ Partial Class Frminfo
         Me.dpEngdate = New System.Windows.Forms.DateTimePicker()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.rtbParsha = New System.Windows.Forms.RichTextBox()
+        Me.rbtTodayRefresh = New zman.WindowsFormsApplication1.RoundButton()
         Me.PanelOndpEngdate = New System.Windows.Forms.Panel()
         Me.TimerTransparency = New System.Windows.Forms.Timer(Me.components)
         Me.TimerZmanimAfterChange = New System.Windows.Forms.Timer(Me.components)
         Me.DataGridView1 = New System.Windows.Forms.DataGridView()
-        Me.LabelDisclaimer = New System.Windows.Forms.Label()
-        Me.rbtTodayRefresh = New zman.WindowsFormsApplication1.RoundButton()
-        Me.rbtLocationContexOpen = New zman.WindowsFormsApplication1.RoundButton()
         Me.columNum = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.ColumnFuncNum = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.ColumnZman = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.ColumnTime = New System.Windows.Forms.DataGridViewComboBoxColumn()
+        Me.LabelDisclaimer = New System.Windows.Forms.Label()
         Me.LocationContextMenu.SuspendLayout()
         Me.StatusStrip1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
@@ -311,9 +311,9 @@ Partial Class Frminfo
         '
         Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripDropDownButton1, Me.StatusLabel, Me.ToolStripProgressBar1})
         Me.StatusStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow
-        Me.StatusStrip1.Location = New System.Drawing.Point(0, 838)
+        Me.StatusStrip1.Location = New System.Drawing.Point(0, 837)
         Me.StatusStrip1.Name = "StatusStrip1"
-        Me.StatusStrip1.Size = New System.Drawing.Size(289, 21)
+        Me.StatusStrip1.Size = New System.Drawing.Size(289, 22)
         Me.StatusStrip1.TabIndex = 27
         Me.StatusStrip1.Text = "StatusStrip1"
         '
@@ -332,7 +332,7 @@ Partial Class Frminfo
         '
         Me.SettingsToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mHebrewMenus, Me.mIsraeliYomTov, Me.m24HourFormatTime, Me.mShowTimesOnStatusBar, Me.mAskWhenChanging, Me.mBackUpWhenChanging, Me.mStayOnTopToolStripMenuItem, Me.mChangeKeybordLayout, Me.mShowTooltips, Me.mDisplayDafYomi, Me.ToolStripSeparator3, Me.mResetSettings})
         Me.SettingsToolStripMenuItem.Name = "SettingsToolStripMenuItem"
-        Me.SettingsToolStripMenuItem.Size = New System.Drawing.Size(149, 22)
+        Me.SettingsToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
         Me.SettingsToolStripMenuItem.Text = "Settings"
         '
         'mHebrewMenus
@@ -421,29 +421,29 @@ Partial Class Frminfo
         '
         Me.mExport.Image = Global.zman.My.Resources.Resources.export_more_icon
         Me.mExport.Name = "mExport"
-        Me.mExport.Size = New System.Drawing.Size(149, 22)
+        Me.mExport.Size = New System.Drawing.Size(180, 22)
         Me.mExport.Text = "Export"
         '
         'mOpenCompare
         '
         Me.mOpenCompare.Image = Global.zman.My.Resources.Resources.CompareFiles_16x
         Me.mOpenCompare.Name = "mOpenCompare"
-        Me.mOpenCompare.Size = New System.Drawing.Size(149, 22)
+        Me.mOpenCompare.Size = New System.Drawing.Size(180, 22)
         Me.mOpenCompare.Text = "Compare"
         '
         'mOpenSchedule
         '
         Me.mOpenSchedule.Image = Global.zman.My.Resources.Resources.BlueAlarmBell
         Me.mOpenSchedule.Name = "mOpenSchedule"
-        Me.mOpenSchedule.Size = New System.Drawing.Size(149, 22)
+        Me.mOpenSchedule.Size = New System.Drawing.Size(180, 22)
         Me.mOpenSchedule.Text = "Scheduler"
         '
         'mInfoHelp
         '
         Me.mInfoHelp.Image = Global.zman.My.Resources.Resources.Info_16x
         Me.mInfoHelp.Name = "mInfoHelp"
-        Me.mInfoHelp.Size = New System.Drawing.Size(149, 22)
-        Me.mInfoHelp.Text = "Info and Help"
+        Me.mInfoHelp.Size = New System.Drawing.Size(180, 22)
+        Me.mInfoHelp.Text = "Online Info"
         '
         'StatusLabel
         '
@@ -574,6 +574,19 @@ Partial Class Frminfo
         Me.PanelOnCbTimeZone.Name = "PanelOnCbTimeZone"
         Me.PanelOnCbTimeZone.Size = New System.Drawing.Size(183, 17)
         Me.PanelOnCbTimeZone.TabIndex = 29
+        '
+        'rbtLocationContexOpen
+        '
+        Me.rbtLocationContexOpen.Anchor = System.Windows.Forms.AnchorStyles.Top
+        Me.rbtLocationContexOpen.FlatAppearance.BorderSize = 0
+        Me.rbtLocationContexOpen.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.rbtLocationContexOpen.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
+        Me.rbtLocationContexOpen.Image = Global.zman.My.Resources.Resources.three_dots_icon_gray
+        Me.rbtLocationContexOpen.Location = New System.Drawing.Point(241, 20)
+        Me.rbtLocationContexOpen.Name = "rbtLocationContexOpen"
+        Me.rbtLocationContexOpen.Size = New System.Drawing.Size(17, 28)
+        Me.rbtLocationContexOpen.TabIndex = 8
+        Me.rbtLocationContexOpen.UseVisualStyleBackColor = True
         '
         'LabelTimeZone
         '
@@ -708,6 +721,18 @@ Partial Class Frminfo
         Me.rtbParsha.TabIndex = 11
         Me.rtbParsha.Text = ""
         '
+        'rbtTodayRefresh
+        '
+        Me.rbtTodayRefresh.FlatAppearance.BorderSize = 0
+        Me.rbtTodayRefresh.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.rbtTodayRefresh.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
+        Me.rbtTodayRefresh.Image = Global.zman.My.Resources.Resources.Undo_16x
+        Me.rbtTodayRefresh.Location = New System.Drawing.Point(239, 23)
+        Me.rbtTodayRefresh.Name = "rbtTodayRefresh"
+        Me.rbtTodayRefresh.Size = New System.Drawing.Size(26, 23)
+        Me.rbtTodayRefresh.TabIndex = 3
+        Me.rbtTodayRefresh.UseVisualStyleBackColor = True
+        '
         'PanelOndpEngdate
         '
         Me.PanelOndpEngdate.Controls.Add(Me.dpEngdate)
@@ -750,43 +775,6 @@ Partial Class Frminfo
         Me.DataGridView1.Size = New System.Drawing.Size(265, 529)
         Me.DataGridView1.TabIndex = 3
         '
-        'LabelDisclaimer
-        '
-        Me.LabelDisclaimer.Anchor = System.Windows.Forms.AnchorStyles.Top
-        Me.LabelDisclaimer.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
-        Me.LabelDisclaimer.ForeColor = System.Drawing.Color.Black
-        Me.LabelDisclaimer.Location = New System.Drawing.Point(11, 275)
-        Me.LabelDisclaimer.Name = "LabelDisclaimer"
-        Me.LabelDisclaimer.Size = New System.Drawing.Size(266, 22)
-        Me.LabelDisclaimer.TabIndex = 28
-        Me.LabelDisclaimer.Text = "Don't"
-        Me.LabelDisclaimer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
-        'rbtTodayRefresh
-        '
-        Me.rbtTodayRefresh.FlatAppearance.BorderSize = 0
-        Me.rbtTodayRefresh.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.rbtTodayRefresh.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
-        Me.rbtTodayRefresh.Image = Global.zman.My.Resources.Resources.Undo_16x
-        Me.rbtTodayRefresh.Location = New System.Drawing.Point(239, 23)
-        Me.rbtTodayRefresh.Name = "rbtTodayRefresh"
-        Me.rbtTodayRefresh.Size = New System.Drawing.Size(26, 23)
-        Me.rbtTodayRefresh.TabIndex = 3
-        Me.rbtTodayRefresh.UseVisualStyleBackColor = True
-        '
-        'rbtLocationContexOpen
-        '
-        Me.rbtLocationContexOpen.Anchor = System.Windows.Forms.AnchorStyles.Top
-        Me.rbtLocationContexOpen.FlatAppearance.BorderSize = 0
-        Me.rbtLocationContexOpen.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.rbtLocationContexOpen.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
-        Me.rbtLocationContexOpen.Image = Global.zman.My.Resources.Resources.three_dots_icon_gray
-        Me.rbtLocationContexOpen.Location = New System.Drawing.Point(241, 20)
-        Me.rbtLocationContexOpen.Name = "rbtLocationContexOpen"
-        Me.rbtLocationContexOpen.Size = New System.Drawing.Size(17, 28)
-        Me.rbtLocationContexOpen.TabIndex = 8
-        Me.rbtLocationContexOpen.UseVisualStyleBackColor = True
-        '
         'columNum
         '
         Me.columNum.HeaderText = "columNum"
@@ -813,6 +801,18 @@ Partial Class Frminfo
         Me.ColumnTime.HeaderText = "בשעה"
         Me.ColumnTime.Name = "ColumnTime"
         Me.ColumnTime.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
+        '
+        'LabelDisclaimer
+        '
+        Me.LabelDisclaimer.Anchor = System.Windows.Forms.AnchorStyles.Top
+        Me.LabelDisclaimer.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
+        Me.LabelDisclaimer.ForeColor = System.Drawing.Color.Black
+        Me.LabelDisclaimer.Location = New System.Drawing.Point(11, 275)
+        Me.LabelDisclaimer.Name = "LabelDisclaimer"
+        Me.LabelDisclaimer.Size = New System.Drawing.Size(266, 22)
+        Me.LabelDisclaimer.TabIndex = 28
+        Me.LabelDisclaimer.Text = "Don't"
+        Me.LabelDisclaimer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'Frminfo
         '

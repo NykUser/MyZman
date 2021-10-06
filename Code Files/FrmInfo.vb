@@ -1113,7 +1113,7 @@ Public Class Frminfo
             GroupBox1.Text = "תאריכים"
             mHebrewMenus.Text = "תפריטים בעברית"
             ToolStripDropDownButton1.Text = "כלים"
-            mInfoHelp.Text = "מידע ועזרה"
+            mInfoHelp.Text = "מידע מקוון" ' "מידע ועזרה"
             LabelCountry.Text = "מדינה"
             LabelOffSet.Text = "קיזוז זמן"
             LabelLatitude.Text = "קו רוחב"
@@ -1206,7 +1206,7 @@ Public Class Frminfo
             mHebrewMenus.Text = "Hebrew Menus"
             mHideLocationInfo.Text = "Hide Location Info"
             ToolStripDropDownButton1.Text = "Tools"
-            mInfoHelp.Text = "Info and Help"
+            mInfoHelp.Text = "Online Info"
             LabelCountry.RightToLeft = 0
             LabelOffSet.RightToLeft = 0
             LabelLatitude.RightToLeft = 0
