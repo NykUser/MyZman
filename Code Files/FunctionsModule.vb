@@ -540,7 +540,7 @@ Module FunctionsModule
 
         Hebdate = DateIn.ToString("dd MMM yyy", varHculture)
         Holiday = HDF.FormatYomTov(DateIn, False) & If(HDF.FormatOmer(DateIn) = Nothing, "", " " & HDF.FormatOmer(DateIn))
-        If varSC.IsraeliYomTov = True Then Holiday = HDF.FormatYomTov(DateIn, True) & " " & HDF.FormatOmer(DateIn)
+        If varSC.IsraeliYomTov = True Then Holiday = HDF.FormatYomTov(DateIn, True) & If(HDF.FormatOmer(DateIn) = Nothing, "", " " & HDF.FormatOmer(DateIn))
         Hebday = HDF.FormatDayOfWeek(DateIn)
 
         Try

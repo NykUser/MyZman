@@ -478,8 +478,8 @@ Public Class Frminfo
         LoadSettingsandVariables()
         Me.Size = New System.Drawing.Size(305, 818)
         DataGridView1.Size = New System.Drawing.Size(265, 529)
-        DataGridView1.Columns(1).Width = 160
-        DataGridView1.Columns(2).Width = 100
+        DataGridView1.Columns(2).Width = 160
+        DataGridView1.Columns(3).Width = 100
         Me.CenterToScreen()
         Me.Show()
 
