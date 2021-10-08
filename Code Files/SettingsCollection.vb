@@ -15,7 +15,7 @@
     Public Property Clock24Hour As Boolean = False
     Public Property ChangeKeybordLayout As Boolean = True
     Public Property AskWhenChanging As Boolean = True
-    Public Property BackUpWhenChanging As Boolean = True
+    Public Property BackUpWhenChanging As Boolean = False
     Public Property ShowTimesOnStatusBar As Boolean = True
     Public Property ShowTooltips As Boolean = True
     Public Property DisplayDafYomi As Boolean = True
@@ -39,14 +39,14 @@
     Public Property FirstRun As Boolean = True
 
     Private oZmanim As ZmanimCollection = New ZmanimCollection
-    Private oLocation As LocationCollection = New LocationCollection
+    Private oLocation As UserLocationCollection = New UserLocationCollection
     Private oSchedule As ScheduleCollection = New ScheduleCollection
     Public ReadOnly Property Zmanim As ZmanimCollection
         Get
             Return oZmanim
         End Get
     End Property
-    Public ReadOnly Property Location As LocationCollection
+    Public ReadOnly Property UserLocation As UserLocationCollection
         Get
             Return oLocation
         End Get
@@ -85,7 +85,7 @@ Partial Public Class SettingsCollection
         End Function
     End Class
 
-    Public Class LocationCollection
+    Public Class UserLocationCollection
         Implements IEnumerable(Of aLocation)
         Public Items As New List(Of aLocation)
 

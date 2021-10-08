@@ -13,7 +13,9 @@ Public Class Locations_List
             Dim count = .ReadInt32 - 1
             For I = 0 To count
                 Dim LI As New aLocation
-                LI.Country = .ReadString
+                LI.Num = .ReadString
+                LI.EngCountry = .ReadString
+                LI.HebCountry = .ReadString
                 LI.Elevation = .ReadDouble
                 LI.Latitude = .ReadDouble
                 LI.Longitude = .ReadDouble

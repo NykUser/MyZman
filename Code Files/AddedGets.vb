@@ -10,7 +10,7 @@
         End If
 
         Try
-            Return CDate(TempCZC.GetSunrise.ToString).AddMinutes(-50) ' .ToLongTimeString
+            Return CDate(TempCZC.GetSunrise.Value).AddMinutes(-50) ' .ToLongTimeString
         Catch ex As Exception
             Return Nothing
         End Try
@@ -25,7 +25,7 @@
         Try
             Dim mydate As Time
             'looks fine now - the was some kind of reason for adding time formats in the past
-            Return CDate(TempCZC.GetPlagHamincha(TempCZC.GetSunriseOffsetByDegrees(90 + 8.5), TempCZC.GetSunsetOffsetByDegrees(90 + 8.5))) '.ToString("H:mm:ss")
+            Return CDate(TempCZC.GetPlagHamincha(TempCZC.GetSunriseOffsetByDegrees(90 + 8.5), TempCZC.GetSunsetOffsetByDegrees(90 + 8.5)).Value) '.ToString("H:mm:ss")
         Catch ex As Exception
             Return Nothing
         End Try
@@ -38,7 +38,7 @@
             TempCZC.AstronomicalCalculator = New ZmanimCalculator()
         End If
         Try
-            Return CDate(TempCZC.GetSunsetOffsetByDegrees(90 + 8.5).ToString).AddMinutes(-13.5) ' ToLongTimeString
+            Return CDate(TempCZC.GetSunsetOffsetByDegrees(90 + 8.5).Value).AddMinutes(-13.5) ' ToLongTimeString
         Catch ex As Exception
             Return Nothing
         End Try
@@ -51,8 +51,8 @@
             TempCZC.AstronomicalCalculator = New ZmanimCalculator()
         End If
         Try
-            Dim myTimeSpan = CDate(TempCZC.GetTzaisGeonim8Point5Degrees().ToString) - CDate(TempCZC.GetSunset().ToString)
-            Return CDate(TempCZC.GetSunsetOffsetByDegrees(90 + 8.5).ToString).AddMilliseconds(-(myTimeSpan.TotalMilliseconds / 5.3333)) '.ToLongTimeString
+            Dim myTimeSpan = CDate(TempCZC.GetTzaisGeonim8Point5Degrees().Value) - CDate(TempCZC.GetSunset().Value)
+            Return CDate(TempCZC.GetSunsetOffsetByDegrees(90 + 8.5).Value).AddMilliseconds(-(myTimeSpan.TotalMilliseconds / 5.3333)) '.ToLongTimeString
         Catch ex As Exception
             Return Nothing
         End Try
@@ -65,7 +65,7 @@
             TempCZC.AstronomicalCalculator = New ZmanimCalculator()
         End If
         Try
-            Return CDate(TempCZC.GetSunset.ToString).AddMinutes(-15) ' .ToLongTimeString
+            Return CDate(TempCZC.GetSunset.Value).AddMinutes(-15) ' .ToLongTimeString
         Catch ex As Exception
             Return Nothing
         End Try
@@ -78,7 +78,7 @@
             TempCZC.AstronomicalCalculator = New ZmanimCalculator()
         End If
         Try
-            Return CDate(TempCZC.GetSunset.ToString).AddMinutes(-22) ' .ToLongTimeString
+            Return CDate(TempCZC.GetSunset.Value).AddMinutes(-22) ' .ToLongTimeString
         Catch ex As Exception
             Return Nothing
         End Try
@@ -91,7 +91,7 @@
             TempCZC.AstronomicalCalculator = New ZmanimCalculator()
         End If
         Try
-            Return CDate(TempCZC.GetSunset.ToString).AddMinutes(-25) ' .ToLongTimeString
+            Return CDate(TempCZC.GetSunset.Value).AddMinutes(-25) ' .ToLongTimeString
         Catch ex As Exception
             Return Nothing
         End Try
@@ -104,7 +104,7 @@
             TempCZC.AstronomicalCalculator = New ZmanimCalculator()
         End If
         Try
-            Return CDate(TempCZC.GetSunset.ToString).AddMinutes(-30) ' .ToLongTimeString
+            Return CDate(TempCZC.GetSunset.Value).AddMinutes(-30) ' .ToLongTimeString
         Catch ex As Exception
             Return Nothing
         End Try
@@ -117,7 +117,7 @@
             TempCZC.AstronomicalCalculator = New ZmanimCalculator()
         End If
         Try
-            Return CDate(TempCZC.GetSunset.ToString).AddMinutes(-40) ' .ToLongTimeString
+            Return CDate(TempCZC.GetSunset.Value).AddMinutes(-40) ' .ToLongTimeString
         Catch ex As Exception
             Return Nothing
         End Try

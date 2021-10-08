@@ -42,9 +42,11 @@ Public Class aZmanimFunc
 End Class
 Public Class aLocation
     Inherits SerializableData
+    Public Num As Integer
     Public EngName As String
     Public HebName As String
-    Public Country As String
+    Public EngCountry As String
+    Public HebCountry As String
     Public Longitude As Double
     Public Latitude As Double
     Public Elevation As Double
@@ -56,9 +58,11 @@ Public Class aLocation
     End Sub
 
     Public Sub New(ByVal oplace As aLocation) ' byval oplace as alocation
+        Me.Num = oplace.Num
         Me.EngName = oplace.EngName
         Me.HebName = oplace.HebName
-        Me.Country = oplace.Country
+        Me.EngCountry = oplace.EngCountry
+        Me.HebCountry = oplace.HebCountry
         Me.Longitude = oplace.Longitude
         Me.Latitude = oplace.Latitude
         Me.Elevation = oplace.Elevation

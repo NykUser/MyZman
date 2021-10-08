@@ -21,8 +21,8 @@ Module FunctionsModule
             Frminfo.DataGridView1.Size = New System.Drawing.Size(Frminfo.DataGridView1.Size.Width, varSC.DataGridSizeH)
         End If
 
-        If varSC.DataGridCol1W > -1 Then Frminfo.DataGridView1.Columns(1).Width = varSC.DataGridCol1W
-        If varSC.DataGridCol2W > -1 Then Frminfo.DataGridView1.Columns(2).Width = varSC.DataGridCol2W
+        If varSC.DataGridCol1W > -1 Then Frminfo.DataGridView1.Columns("ZmanDisplayName").Width = varSC.DataGridCol1W
+        If varSC.DataGridCol2W > -1 Then Frminfo.DataGridView1.Columns("ZmanTime").Width = varSC.DataGridCol2W
 
         Frminfo.mColorZmanMenuItem.Checked = varSC.ColorZman
         Frminfo.mStayOnTopToolStripMenuItem.Checked = varSC.StayOnTop
@@ -54,24 +54,69 @@ Module FunctionsModule
             varSC.LastSelectedIndex = varSC.DefaultSelectedindex
         End If
 
-
         'TimerLocationsLoad will load PlaceList into dropdownbox, it calls LoadPlaceLists()
+
+        'LoadPlaceListsNew()
+        LoadPlaceLists()
+
 
         If varSC.Zmanim.Items.Count < 1 Then
             UseDefultzmnaim()
         End If
 
         varZmanimFuncList = GetListOfZmanimFunctions()
-        Load_Zmanim_Func()
-
         varSC.FirstRun = False
+    End Sub
+    Public Sub testingnow()
+        'Dim MyStopwatch As New Stopwatch
+        'MyStopwatch.Start()
+        'MyStopwatch.Restart()
+        'Debug.Print("Time elapsed: {0}", MyStopwatch.Elapsed)
+
+        'varSC = SerializableData.Load(varUserFile, GetType(SettingsCollection))
+
+        'highest num
+        'Debug.Print(varSC.UserLocation.Max(Function(x) x.Num))
+        'out this in a if or try as it will have Exception if the is noting more then 99999
+        Debug.Print(varSC.UserLocation.Where(Function(x) x.Num > 99999).Max(Function(x) x.Num))
+        Debug.Print(varSC.UserLocation.Where(Function(x) x.Num < 99999).Max(Function(x) x.Num))
+    End Sub
+    Public Sub LoadPlaceListsNew()
+        varLocationList = GetListOfLocations()
+        For Each UserLocation In varSC.UserLocation
+            'change info into varLocationList and user added Locations
+            Try
+                'If UserLocation.Num > 0 And UserLocation.Num < 100000 Then CopyUserLocationToList(UserLocation)
+                'If UserLocation.Num > 99999 Then varLocationList.Add(UserLocation)
+                'removeat and add looks faster 
+                If UserLocation.Num > 0 And UserLocation.Num < 100000 Then
+                    Dim index = varLocationList.FindIndex(Function(i) i.Num = UserLocation.Num)
+                    If index >= 0 Then varLocationList.RemoveAt(index)
+                End If
+                varLocationList.Add(UserLocation)
+            Catch ex As Exception
+            End Try
+        Next
+
+        If varSC.PlaceListInHebrew = False Then
+            Frminfo.cbLocationList.RightToLeft = 0
+            For Each LI As aLocation In varLocationList.OrderBy(Function(temp) temp.EngName)
+                Frminfo.cbLocationList.Items.Add(LI.EngName & If(LI.HebName <> "", " | " & LI.HebName, ""))
+            Next
+        Else
+            Frminfo.cbLocationList.RightToLeft = 1
+            For Each LI As aLocation In varLocationList.OrderBy(Function(temp) temp.HebName)
+                Frminfo.cbLocationList.Items.Add(If(LI.HebName <> "", LI.HebName & " | " & LI.EngName, LI.EngName))
+            Next
+        End If
+
     End Sub
     Public Sub LoadPlaceLists()
         'load into memory sorted eng & heb list
         'varEngPlaceList = Locations_List.AllLocations 'AllLocations gets it in eng order
 
         'user list empty 
-        If varSC.Location.Count < 1 Then
+        If varSC.UserLocation.Count < 1 Then
             If My.Computer.FileSystem.FileExists(varLocationsFile) = False Then
                 Using New Centered_MessageBox(Frminfo, "ParentCenter")
                     If varSC.HebrewMenus = True Then
@@ -85,10 +130,10 @@ Module FunctionsModule
             UseDefultLocationsFile()
         End If
 
-        For Each Li As aLocation In varSC.Location.OrderBy(Function(temp) temp.EngName)
+        For Each Li As aLocation In varSC.UserLocation.OrderBy(Function(temp) temp.EngName)
             varEngPlaceList.Add(New aLocation(Li))
         Next
-        For Each Li As aLocation In varSC.Location.OrderBy(Function(temp) temp.HebName)
+        For Each Li As aLocation In varSC.UserLocation.OrderBy(Function(temp) temp.HebName)
             varHebPlaceList.Add(New aLocation(Li))
         Next
 
@@ -110,7 +155,7 @@ Module FunctionsModule
         Dim TempPlaceList As LocationCollection
         TempPlaceList = SerializableData.Load(varLocationsFile, GetType(LocationCollection))
         For Each Li As aLocation In TempPlaceList.OrderBy(Function(temp) temp.EngName)
-            varSC.Location.Add(New aLocation(Li))
+            varSC.UserLocation.Add(New aLocation(Li))
         Next
         varSC.Save(varUserFile)
     End Sub
@@ -160,33 +205,6 @@ Module FunctionsModule
         varFinishedLoading = True
         Place_orDate_changed()
     End Sub
-    Public Sub Load_Zmanim_Func()
-        varZmanTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time")
-        Dim timeZone As ITimeZone = New PZmanimTimeZone(varZmanTimeZone) 'WindowsTimeZone("Eastern Standard Time") '
-        Dim location As New GeoLocation("", 35, 31, 0, timeZone)
-        varCZC = New ComplexZmanimCalendar(Now, location)
-
-        Dim assembly As Reflection.Assembly = Reflection.Assembly.GetAssembly(GetType(Zmanim.ComplexZmanimCalendar))
-        For Each t As Type In assembly.GetTypes()
-            If t.ToString() = "Zmanim.ComplexZmanimCalendar" Then
-                For Each m In t.GetMembers.OrderBy(Function(temp) temp.Name)
-                    If Check_valid_zman(m.Name, True) = True Then
-                        varZmanimFunc.Add(New String(m.Name))
-                    Else
-                        'to add ShaahZmanis
-                        If InStr(m.Name, "ShaahZmanis") Then varZmanimFunc.Add(New String(m.Name))
-                    End If
-                Next
-            End If
-        Next
-        'add AddedGets
-        varZmanimFunc.Add("ZmanGetMisheyakir50")
-        varZmanimFunc.Add("ZmanGetPlagHamincha8Point5Degrees")
-        varZmanimFunc.Add("ZmanGetBeinHashmases8Point5Degrees13Min")
-        varZmanimFunc.Add("ZmanGetBeinHashmases8Point5Degrees5Point3")
-        varZmanimFunc.Add("ZmanGetCandleLighting40")
-        'varZmanimFunc.ForEach(Sub(x) Debug.Print(x))
-    End Sub
     Public Function Check_valid_zman(ByVal s As String, ByVal checkIsDate As Boolean)
         If varZmanTimeZone Is Nothing Then
             Return False
@@ -202,7 +220,7 @@ Module FunctionsModule
         End Try
     End Function
     Sub change_place(ByVal num As Integer)
-        If varSC.Location.Count < 1 Then Exit Sub
+        If varSC.UserLocation.Count < 1 Then Exit Sub
         Dim SelectedPlace As Object
         'if num is not valid with .Items - can happen when loading on start
         Try
@@ -220,7 +238,7 @@ Module FunctionsModule
         Frminfo.tblatitude.Text = SelectedPlace.Latitude
         Frminfo.tblongitude.Text = SelectedPlace.Longitude
         Frminfo.tbzone.Text = SelectedPlace.TimeOffset
-        Frminfo.tbcountry.Text = SelectedPlace.Country
+        Frminfo.tbcountry.Text = SelectedPlace.EngCountry
         Frminfo.tbElevation.Text = SelectedPlace.Elevation
 
         'varSC.LastSelectedIndex = num
@@ -297,11 +315,15 @@ Module FunctionsModule
         End If
 
         change_zman()
-        'this is for the hidden drop down lists
-        run_difference()
+
     End Sub
     Sub change_zman()
-        'DataGridViewComboBoxCell needs items for it to be able to be set to its value - not like ComboBox
+        'DataGridViewRow cell reference info
+        '.Cells(0) = row number in order
+        '.Cells(1) = number of zman in varZmanimFuncList
+        '.Cells(2) = zmnaim user DisplayName
+        '.Cells(3) = Zmanim  ComboBoxCell
+
 
         If varSC.Zmanim.Count < 1 Then Exit Sub
         If varFinishedLoading = False Then Exit Sub
@@ -309,28 +331,32 @@ Module FunctionsModule
         varFinishedLoading = False
 
         Dim mySelectedRow As Integer = 0
-        'If Frminfo.DataGridView1.SelectedRows.Count > 0 Then mySelectedRow = Frminfo.DataGridView1.SelectedRows(0).Index
         'use what DataGridView1.RowEnter saved - good also for delete
         If varDataGridNumRow > 0 Then mySelectedRow = varDataGridNumRow
+        'If Frminfo.DataGridView1.SelectedRows.Count > 0 Then mySelectedRow = Frminfo.DataGridView1.SelectedRows(0).Index
 
         Frminfo.TimerStatusLabel.Enabled = False
+
         Dim DVItems As New List(Of DataGridViewRow)
         Dim timeFormat As String = "h:mm:ss tt"
         If varSC.Clock24Hour = True Then timeFormat = "H:mm:ss"
         Dim MyZman As Date
         Dim MyTimeSpan As TimeSpan
+        'varEculture.DateTimeFormat.Calendar = varGC
+        'Dim Args() = {Frminfo.dpEngdate.Value.ToString("d", varEculture), varGeoLocation} ' for AddedGets
         Dim Args() = {Frminfo.dpEngdate.Value, varGeoLocation} ' for AddedGets
-
-        Dim ZmanListNum As Integer
+        Dim ZmanFuncListNum As Integer = 1
         Dim i As Integer = 0
+
         For Each Z In varSC.Zmanim
             i += 1
             DVItems.Add(New DataGridViewRow())
             Try
-                ZmanListNum = varZmanimFuncList.Where(Function(x) x.FunctionName = Z.FunctionName).FirstOrDefault.Num
+                ZmanFuncListNum = varZmanimFuncList.Where(Function(x) x.FunctionName = Z.FunctionName).FirstOrDefault.Num
             Catch ex As Exception
+                ZmanFuncListNum = 1
             End Try
-            DVItems(DVItems.Count - 1).CreateCells(Frminfo.DataGridView1, i, ZmanListNum, Z.DisplayName)
+            DVItems(DVItems.Count - 1).CreateCells(Frminfo.DataGridView1, i, ZmanFuncListNum, Z.DisplayName)
             If InStr(Z.FunctionName, "ShaahZmanis") > 0 Then
                 Try
                     MyZman = #12:00:00 AM#.AddMilliseconds(CallByName(varCZC, Z.FunctionName, CallType.Get))
@@ -351,11 +377,10 @@ Module FunctionsModule
                 End Try
                 'Color setings - are now done in TimerStatusLabel
             End If
-            'add func name to ColumnFunc
-
             'set to not be bold
             DVItems(DVItems.Count - 1).DefaultCellStyle.Font = New Font(Frminfo.DataGridView1.Font, FontStyle.Regular)
             'selcet value for ComboBoxCell
+            'DataGridViewComboBoxCell needs items for it to be able to be set to its value - not like ComboBox
             CType(DVItems(DVItems.Count - 1).Cells(3), DataGridViewComboBoxCell).Value = CType(DVItems(DVItems.Count - 1).Cells(3), DataGridViewComboBoxCell).Items(0)
             'set ToolTip's
             If varSC.ShowTooltips = True Then
@@ -377,12 +402,15 @@ Module FunctionsModule
         Frminfo.DataGridView1.Rows.Clear()
         Frminfo.DataGridView1.Rows.AddRange(DVItems.ToArray)
         Try
-            Frminfo.DataGridView1.CurrentCell = Frminfo.DataGridView1(3, mySelectedRow)
+            Frminfo.DataGridView1.CurrentCell = Frminfo.DataGridView1("ZmanTime", mySelectedRow)
         Catch ex As Exception
         End Try
 
         Frminfo.TimerStatusLabel.Enabled = True
         varFinishedLoading = True
+
+        'this is for FormDifference
+        run_difference()
 
         'using listview
         'Dim LVItems As New List(Of ListViewItem)
@@ -441,23 +469,15 @@ Module FunctionsModule
         'If FrmDifference.tbTimeA.Text <> "" And FrmDifference.tbTimeB.Text <> "" Then
         If FrmDifference.CbTimeA.SelectedIndex > -1 And FrmDifference.CbTimeB.SelectedIndex > -1 Then
             Try
-                If FrmDifference.CBMday.Checked = True Then
-                    myTimeSpan = CDate(FrmDifference.tbTimeB.Text) - CDate(FrmDifference.tbTimeA.Text).AddDays(-1)
-                Else
-                    myTimeSpan = CDate(FrmDifference.tbTimeB.Text) - CDate(FrmDifference.tbTimeA.Text)
-                End If
+                myTimeSpan = CDate(FrmDifference.tbTimeB.Text) - CDate(FrmDifference.tbTimeA.Text)
+                'If FrmDifference.CBMday.Checked = True Then myTimeSpan = CDate(FrmDifference.tbTimeB.Text) - CDate(FrmDifference.tbTimeA.Text).AddDays(-1)
+
                 'tbTimeR.Text = #12:00:00 AM#.AddMilliseconds(myTimeSpan.TotalMilliseconds / 12).ToString("hh:mm:ss")
                 'tbTimeR.Text = myTimeSpan.TotalHours & ":" & myTimeSpan.TotalMinutes & ":" & myTimeSpan.TotalSeconds
                 FrmDifference.tbTimeR.Text = myTimeSpan.ToString
             Catch ex As Exception
             End Try
         End If
-
-        'If InStr(FrmDifference.CbTimeA.Text, "ZmanGet") Then
-        '    FrmDifference.tbTimeA.Text = CDate(CallByName(varAddedGets, FrmDifference.CbTimeA.Text, CallType.Get, Args))
-        'Else
-        '    FrmDifference.tbTimeA.Text = CDate(CallByName(varCZC, FrmDifference.CbTimeA.Text, CallType.Get))
-        'End If
     End Sub
     Sub parse_hebdate()
         If varFinishedLoading = False Then Exit Sub
@@ -571,7 +591,7 @@ A:
         SelectedPlace.Latitude = Frminfo.tblatitude.Text
         SelectedPlace.Longitude = Frminfo.tblongitude.Text
         SelectedPlace.TimeOffset = Frminfo.tbzone.Text
-        SelectedPlace.Country = Frminfo.tbcountry.Text
+        SelectedPlace.EngCountry = Frminfo.tbcountry.Text
         SelectedPlace.Elevation = Frminfo.tbElevation.Text
 
         'Get ID from DisplayName
@@ -767,7 +787,7 @@ A:
             New aZmanimFunc With {.Num = "37", .EngName = "Sof Zman Shma sunrise-sunset (Gra)", .FunctionName = "GetSofZmanShmaGRA", .HebName = "סו''ז שמע נץ-שקיעה (גר''א)", .HebDescription = "זמן קריאת שמע האחרונה (בבוקר) על פי הגר''א כשהיום מתחיל בזריחה ומסתיים בשקיעה.", .EngDescription = "Latest zman krias shema (time to recite shema in the morning) according to the Gra with the day starting at sunrise and ending at sunset.", .ObjectName = "varCZC"},
             New aZmanimFunc With {.Num = "38", .EngName = "Sof Zman Shma 3 Hours Before Chatzos", .FunctionName = "GetSofZmanShma3HoursBeforeChatzos", .HebName = "סו''ז שמע 3 שעות לפני חצות", .HebDescription = "זמן קריאת שמע האחרונה (בבוקר) מחושבת כ -3 שעות (רגילות ולא זמנית) לפני חצות.", .EngDescription = "Latest zman krias shema (time to recite shema in the morning) calculated as 3 hours (regular and not zmaniyos) before chatzos.", .ObjectName = "varCZC"},
             New aZmanimFunc With {.Num = "39", .EngName = "Sof Zman Shma 3 Hours Befor Average Chatzos", .FunctionName = "GetSofZmanShmaFixedLocal", .HebName = "סו''ז שמע 3 שעות לפני חצות ממוצע", .HebDescription = "זמן קריאת שמע האחרונה (בבוקר) מחושבת כשלוש שעות לפני חצות ממוצע מקומי.", .EngDescription = "Latest zman krias shema (time to recite shema in the morning) calculated as 3 hours before fixed local chatzos.", .ObjectName = "varCZC"},
-            New aZmanimFunc With {.Num = "40", .EngName = "Sof Zman Shma Baal Hatanya", .FunctionName = "GetSofZmanShmaBaalHatanya", .HebName = "סו''ז תפילה לדעת בעל התניא", .HebDescription = "סו''ז תפילה לדעת בעל התניא המחושב לפי נץ ושקיעה אמתי (ראה עוד אצל נץ החמה לדעת בעל התניא)", .EngDescription = "Sof Zman Shma according to the Baal Hatanya based on true sunrise to sunset (see Sunrise Baal Hatanya)", .ObjectName = "varCZC"},
+            New aZmanimFunc With {.Num = "40", .EngName = "Sof Zman Shma Baal Hatanya", .FunctionName = "GetSofZmanShmaBaalHatanya", .HebName = "סו''ז שמע לדעת בעל התניא", .HebDescription = "סו''ז שמע לדעת בעל התניא המחושב לפי נץ ושקיעה מותאם (ראה עוד אצל נץ החמה לדעת בעל התניא)", .EngDescription = "Sof Zman Shma according to the Baal Hatanya based on adjusted sunrise to sunset (see Sunrise Baal Hatanya)", .ObjectName = "varCZC"},
             New aZmanimFunc With {.Num = "41", .EngName = "Sof Zman Shma Ateret Torah", .FunctionName = "GetSofZmanShmaAteretTorah", .HebName = "סו''ז שמע עטרת תורה", .HebDescription = "זמן האחרון לקריאת שמע (בבוקר) מבוסס על חישוב חכם יוסף הררי-רפול של ישיבת עטרת תורה, שהיום מתחיל 1/10 מהיום לפני הזריחה ומחושב בדרך כלל כמסתיים 40 דקות אחרי השקיעה.", .EngDescription = "Latest zman krias shema (time to recite shema in the morning) based on the calculation of chacham yosef harari-raful of yeshivat ateret torah, that the day starts 1/10th of the day before sunrise and is usually calculated as ending 40 minutes after sunset.", .ObjectName = "varCZC"},
             New aZmanimFunc With {.Num = "42", .EngName = "Sof Zman Tfila Alos-Tzais 19.8 Degrees", .FunctionName = "GetSofZmanTfilaMGA19Point8Degrees", .HebName = "סו''ז תפילה עלות-צאת 19.8 מעלות", .HebDescription = "זמן תפילה האחרון (תפילת שחרית) להמגן אברהם (מג''א) המבוסס על עלות 19.8 מעלות לפני הזריחה.", .EngDescription = "Latest zman tfila (time to recite the morning prayers) according to the opinion of the magen avraham based on alos being 19.8° before sunrise.", .ObjectName = "varCZC"},
             New aZmanimFunc With {.Num = "43", .EngName = "Sof Zman Tfila Alos-Tzais 18 Degrees", .FunctionName = "GetSofZmanTfilaMGA18Degrees", .HebName = "סו''ז תפילה עלות-צאת 18 מעלות", .HebDescription = "זמן תפילה האחרון (תפילת שחרית) להמגן אברהם (מג''א) המבוסס על עלות 18 מעלות לפני הזריחה.", .EngDescription = "Latest zman tfila (time to recite the morning prayers) according to the opinion of the magen avraham based on alos being 18° before sunrise.", .ObjectName = "varCZC"},
@@ -782,22 +802,22 @@ A:
             New aZmanimFunc With {.Num = "52", .EngName = "Sof Zman Tfila sunrise-sunset (Gra)", .FunctionName = "GetSofZmanTfilaGRA", .HebName = "סו''ז תפילה נץ-שקיעה (גר''א)", .HebDescription = "זמן תפילה האחרון (שחרית) על פי הגר''א כשהיום מתחיל בזריחה ומסתיים בשקיעה.", .EngDescription = "Latest zman tfila (time to recite the morning prayers) according to the Gra with the day starting at sunrise and ending at sunset.", .ObjectName = "varCZC"},
             New aZmanimFunc With {.Num = "53", .EngName = "Sof Zman Tfila 2 Hours Before Chatzos", .FunctionName = "GetSofZmanTfila2HoursBeforeChatzos", .HebName = "סו''ז תפילה 2 שעות לפני חצות", .HebDescription = "זמן תפילה האחרון (שחרית) מחושב כשעתיים לפני חצות ממוצע מקומי.", .EngDescription = "Latest zman tfila (time to recite the morning prayers) calculated as 2 hours before chatzos.", .ObjectName = "varCZC"},
             New aZmanimFunc With {.Num = "54", .EngName = "Sof Zman Tfila 2 Hours Before Average Chatzos", .FunctionName = "GetSofZmanTfilaFixedLocal", .HebName = "סו''ז תפילה 2 שעות לפני חצות ממוצע", .HebDescription = "זמן התפילה האחרונה (שחרית) מחושבת כשעתיים לפני חצות ממיץוע מקומי.", .EngDescription = "Latest zman tfila (time to recite the morning prayers) calculated as 2 hours before fixed local chatzos.", .ObjectName = "varCZC"},
-            New aZmanimFunc With {.Num = "55", .EngName = "Sof Zman Tfila Baal Hatanya", .FunctionName = "GetSofZmanTfilaBaalHatanya", .HebName = "סו''ז שמע לדעת בעל התניא", .HebDescription = "סו''ז שמע לדעת בעל התניא המחושב לפי נץ ושקיעה אמתי (ראה עוד אצל נץ החמה לדעת בעל התניא)", .EngDescription = "Sof Zman Tfila according to the Baal Hatanya based on true sunrise to sunset (see Sunrise Baal Hatanya)", .ObjectName = "varCZC"},
-            New aZmanimFunc With {.Num = "56", .EngName = "Mincha Gedola Ateret Torah", .FunctionName = "GetMinchaGedolaAteretTorah", .HebName = "מנחה גדולה עטרת תורה", .HebDescription = "מנחה גדולה מבוסס על חישוב החכם יוסף הררי-רפול של ישיבת עטרת תורה, שהיום מתחיל 1/10 מהיום לפני הזריחה ומחושב בדרך כלל כמסתיים 40 דקות לאחר השקיעה.", .EngDescription = "Mincha gedola based on the calculation of chacham yosef harari-raful of yeshivat ateret torah, that the day starts 1/10th of the day before sunrise and is usually calculated as ending 40 minutes after sunset.", .ObjectName = "varCZC"},
-            New aZmanimFunc With {.Num = "57", .EngName = "Sof Zman Tfilah Ateret Torah", .FunctionName = "GetSofZmanTfilahAteretTorah", .HebName = "סו''ז תפילה עטרת תורה", .HebDescription = "זמן תפילה האחרון (תפילת שחרית) מבוסס על חישוב חכם יוסף הררי-רפול מישיבת עטרת תורה, שהיום מתחיל 1/10 מהיום לפני הזריחה ובדרך כלל מחושב כמסתיים 40 דקות לאחר השקיעה.", .EngDescription = "Latest zman tfila (time to recite the morning prayers) based on the calculation of chacham yosef harari-raful of yeshivat ateret torah, that the day starts 1/10th of the day before sunrise and is usually calculated as ending 40 minutes after sunset.", .ObjectName = "varCZC"},
-            New aZmanimFunc With {.Num = "58", .EngName = "Chatzos", .FunctionName = "GetChatzos", .HebName = "חצות היום", .HebDescription = "חצות היום (צהריים) מחושב כמחצית הדרך בין הזריחה לשקיעה.", .EngDescription = "Chatzos (midday) calculated as halfway between sunrise and sunset.", .ObjectName = "varCZC"},
-            New aZmanimFunc With {.Num = "59", .EngName = "Chatzos Local Mean (average)", .FunctionName = "GetFixedLocalChatzos", .HebName = "חצות ממוצע מקומי", .HebDescription = "זמן מקומי לחצות ממוצע. שעה זו היא צהריים וחצות (12:00) מותאמת משעה רגילה כדי להתחשב בקו הרוחב המקומי", .EngDescription = "Local time for fixed chatzos. This time is noon and midnight (12:00) adjusted from standard time to account for the local latitude", .ObjectName = "varCZC"},
-            New aZmanimFunc With {.Num = "60", .EngName = "Mincha Gedola sunrise-sunset (Gra)", .FunctionName = "GetMinchaGedola", .HebName = "מנחה גדולה נץ-שקיעה (גר''א)", .HebDescription = "מנחה גדולה על פי הגר''א כשהיום מתחיל בזריחה ומסתיים בשקיעה.", .EngDescription = "Mincha gedola according to the Gra with the day starting at sunrise and ending at sunset.", .ObjectName = ""},
-            New aZmanimFunc With {.Num = "61", .EngName = "Mincha Gedola 30 Minutes", .FunctionName = "GetMinchaGedola30Minutes", .HebName = "מנחה גדולה 30 דקות", .HebDescription = "מנחה גדולה מחושב כ -30 דקות לאחר חצות ולא 1/2 משעה זמנית.", .EngDescription = "Mincha gedola calculated as 30 minutes after chatzos and not 1/2 of a shaah zmanis after chatzos.", .ObjectName = "varCZC"},
-            New aZmanimFunc With {.Num = "62", .EngName = "Mincha Gedola Greater Than 30 Minutes", .FunctionName = "GetMinchaGedolaGreaterThan30", .HebName = "מנחה גדולה גדול מ-30 דקות", .HebDescription = "בחורף כשחצי שעה זמנית פחות מ -30 דקות נחשב 30 דקות אחרי חצות, ובשאר הפעמים נחשב מנחה גדולה לפי שעה זמנית נץ-שקיעה (גר''א).", .EngDescription = "In the winter when 1/2 of a shaah zmanis is less than 30 minutes Mincha Gedola 30 Minutes will be returned, otherwise Mincha Gedola sunrise-sunset (Gra) will be returned.", .ObjectName = "varCZC"},
-            New aZmanimFunc With {.Num = "63", .EngName = "Mincha Gedola 72 Minutes (MGA)", .FunctionName = "GetMinchaGedola72Minutes", .HebName = "מנחה גדולה עלות-צאת 72 דקות (מג''א)", .HebDescription = "מנחה גדולה על פי מג''א כשהיום מתחיל 72 דקות לפני הזריחה ומסתיים 72 דקות אחרי השקיעה.", .EngDescription = "Mincha gedola according to the magen avraham with the day starting 72 minutes before sunrise and ending 72 minutes after sunset.", .ObjectName = "varCZC"},
-            New aZmanimFunc With {.Num = "64", .EngName = "Mincha Gedola 16.1 Degrees", .FunctionName = "GetMinchaGedola16Point1Degrees", .HebName = "מנחה גדולה עלות-צאת 16.1 מעלות", .HebDescription = "מנחה גדולה לפי מג''א כשהיום מתחיל ומסתיים 16.1 מעלות מתחת לאופק.", .EngDescription = "Mincha gedola according to the magen avraham with the day starting and ending 16.1° below the horizon.", .ObjectName = "varCZC"},
-            New aZmanimFunc With {.Num = "65", .EngName = "Mincha Gedola Baal Hatanya", .FunctionName = "GetMinchaGedolaBaalHatanya", .HebName = "מנחה גדולה לדעת בעל התניא", .HebDescription = "מנחה גדולה לדעת בעל התניא המחושב לפי נץ ושקיעה אמתי (ראה עוד אצל נץ החמה לדעת בעל התניא)", .EngDescription = "Mincha gedola according to the Baal Hatanya based on true sunrise to sunset (see Sunrise Baal Hatanya)", .ObjectName = "varCZC"},
-            New aZmanimFunc With {.Num = "66", .EngName = "Mincha Gedola Baal Hatanya Greater Than 30", .FunctionName = "GetMinchaGedolaBaalHatanyaGreaterThan30", .HebName = "מנחה גדולה גדול מ-30 דקות לדעת בעל התניא", .HebDescription = "בחורף כשחצי שעה זמנית פחות מ -30 דקות נחשב 30 דקות אחרי חצות, ובשאר זמנים נחשב מנחה גדולה לפי בעל התניא.", .EngDescription = "In the winter when 1/2 of a shaah zmanis is less than 30 minutes Mincha Gedola 30 Minutes will be returned, otherwise Baal Hatanya's Mincha Gedola will be returned.", .ObjectName = "varCZC"},
+            New aZmanimFunc With {.Num = "55", .EngName = "Sof Zman Tfila Baal Hatanya", .FunctionName = "GetSofZmanTfilaBaalHatanya", .HebName = "סו''ז תפילה לדעת בעל התניא", .HebDescription = "זמן התפילה האחרונה לדעת בעל התניא המחושב לפי נץ ושקיעה מותאם (ראה עוד אצל נץ החמה לדעת בעל התניא)", .EngDescription = "Sof Zman Tfila according to the Baal Hatanya based on adjusted sunrise to sunset (see Sunrise Baal Hatanya)", .ObjectName = "varCZC"},
+            New aZmanimFunc With {.Num = "56", .EngName = "Sof Zman Tfilah Ateret Torah", .FunctionName = "GetSofZmanTfilahAteretTorah", .HebName = "סו''ז תפילה עטרת תורה", .HebDescription = "זמן תפילה האחרון (תפילת שחרית) מבוסס על חישוב חכם יוסף הררי-רפול מישיבת עטרת תורה, שהיום מתחיל 1/10 מהיום לפני הזריחה ובדרך כלל מחושב כמסתיים 40 דקות לאחר השקיעה.", .EngDescription = "Latest zman tfila (time to recite the morning prayers) based on the calculation of chacham yosef harari-raful of yeshivat ateret torah, that the day starts 1/10th of the day before sunrise and is usually calculated as ending 40 minutes after sunset.", .ObjectName = "varCZC"},
+            New aZmanimFunc With {.Num = "57", .EngName = "Chatzos", .FunctionName = "GetChatzos", .HebName = "חצות היום", .HebDescription = "חצות היום (צהריים) מחושב כמחצית הדרך בין הזריחה לשקיעה.", .EngDescription = "Chatzos (midday) calculated as halfway between sunrise and sunset.", .ObjectName = "varCZC"},
+            New aZmanimFunc With {.Num = "58", .EngName = "Chatzos Local Mean (average)", .FunctionName = "GetFixedLocalChatzos", .HebName = "חצות ממוצע מקומי", .HebDescription = "זמן מקומי לחצות ממוצע. שעה זו היא צהריים וחצות (12:00) מותאמת משעה רגילה כדי להתחשב בקו הרוחב המקומי", .EngDescription = "Local time for fixed chatzos. This time is noon and midnight (12:00) adjusted from standard time to account for the local latitude", .ObjectName = "varCZC"},
+            New aZmanimFunc With {.Num = "59", .EngName = "Mincha Gedola sunrise-sunset (Gra)", .FunctionName = "GetMinchaGedola", .HebName = "מנחה גדולה נץ-שקיעה (גר''א)", .HebDescription = "מנחה גדולה על פי הגר''א כשהיום מתחיל בזריחה ומסתיים בשקיעה.", .EngDescription = "Mincha gedola according to the Gra with the day starting at sunrise and ending at sunset.", .ObjectName = ""},
+            New aZmanimFunc With {.Num = "60", .EngName = "Mincha Gedola 30 Minutes", .FunctionName = "GetMinchaGedola30Minutes", .HebName = "מנחה גדולה 30 דקות", .HebDescription = "מנחה גדולה מחושב כ -30 דקות לאחר חצות ולא 1/2 משעה זמנית.", .EngDescription = "Mincha gedola calculated as 30 minutes after chatzos and not 1/2 of a shaah zmanis after chatzos.", .ObjectName = "varCZC"},
+            New aZmanimFunc With {.Num = "61", .EngName = "Mincha Gedola Greater Than 30 Minutes", .FunctionName = "GetMinchaGedolaGreaterThan30", .HebName = "מנחה גדולה גדול מ-30 דקות", .HebDescription = "בחורף כשחצי שעה זמנית פחות מ -30 דקות נחשב 30 דקות אחרי חצות, ובשאר הפעמים נחשב מנחה גדולה לפי שעה זמנית נץ-שקיעה (גר''א).", .EngDescription = "In the winter when 1/2 of a shaah zmanis is less than 30 minutes Mincha Gedola 30 Minutes will be returned, otherwise Mincha Gedola sunrise-sunset (Gra) will be returned.", .ObjectName = "varCZC"},
+            New aZmanimFunc With {.Num = "62", .EngName = "Mincha Gedola 72 Minutes (MGA)", .FunctionName = "GetMinchaGedola72Minutes", .HebName = "מנחה גדולה עלות-צאת 72 דקות (מג''א)", .HebDescription = "מנחה גדולה על פי מג''א כשהיום מתחיל 72 דקות לפני הזריחה ומסתיים 72 דקות אחרי השקיעה.", .EngDescription = "Mincha gedola according to the magen avraham with the day starting 72 minutes before sunrise and ending 72 minutes after sunset.", .ObjectName = "varCZC"},
+            New aZmanimFunc With {.Num = "63", .EngName = "Mincha Gedola 16.1 Degrees", .FunctionName = "GetMinchaGedola16Point1Degrees", .HebName = "מנחה גדולה עלות-צאת 16.1 מעלות", .HebDescription = "מנחה גדולה לפי מג''א כשהיום מתחיל ומסתיים 16.1 מעלות מתחת לאופק.", .EngDescription = "Mincha gedola according to the magen avraham with the day starting and ending 16.1° below the horizon.", .ObjectName = "varCZC"},
+            New aZmanimFunc With {.Num = "64", .EngName = "Mincha Gedola Baal Hatanya", .FunctionName = "GetMinchaGedolaBaalHatanya", .HebName = "מנחה גדולה לדעת בעל התניא", .HebDescription = "מנחה גדולה לדעת בעל התניא המחושב לפי נץ ושקיעה מותאם (ראה עוד אצל נץ החמה לדעת בעל התניא)", .EngDescription = "Mincha gedola according to the Baal Hatanya based on adjusted sunrise to sunset (see Sunrise Baal Hatanya)", .ObjectName = "varCZC"},
+            New aZmanimFunc With {.Num = "65", .EngName = "Mincha Gedola Baal Hatanya Greater Than 30", .FunctionName = "GetMinchaGedolaBaalHatanyaGreaterThan30", .HebName = "מנחה גדולה גדול מ-30 דקות לדעת בעל התניא", .HebDescription = "בחורף כשחצי שעה זמנית פחות מ -30 דקות נחשב 30 דקות אחרי חצות, ובשאר זמנים נחשב מנחה גדולה לפי בעל התניא.", .EngDescription = "In the winter when 1/2 of a shaah zmanis is less than 30 minutes Mincha Gedola 30 Minutes will be returned, otherwise Baal Hatanya's Mincha Gedola will be returned.", .ObjectName = "varCZC"},
+            New aZmanimFunc With {.Num = "66", .EngName = "Mincha Gedola Ateret Torah", .FunctionName = "GetMinchaGedolaAteretTorah", .HebName = "מנחה גדולה עטרת תורה", .HebDescription = "מנחה גדולה מבוסס על חישוב החכם יוסף הררי-רפול של ישיבת עטרת תורה, שהיום מתחיל 1/10 מהיום לפני הזריחה ומחושב בדרך כלל כמסתיים 40 דקות לאחר השקיעה.", .EngDescription = "Mincha gedola based on the calculation of chacham yosef harari-raful of yeshivat ateret torah, that the day starts 1/10th of the day before sunrise and is usually calculated as ending 40 minutes after sunset.", .ObjectName = "varCZC"},
             New aZmanimFunc With {.Num = "67", .EngName = "Mincha Ketana sunrise-sunset (Gra)", .FunctionName = "GetMinchaKetana", .HebName = "מנחה קטנה נץ-שקיעה (גר''א)", .HebDescription = "מנחה קטנה על פי הגר''א כשהיום מתחיל בזריחה ומסתיים בשקיעה.", .EngDescription = "Mincha ketana according to the Gra with the day starting at sunrise and ending at sunset.", .ObjectName = ""},
             New aZmanimFunc With {.Num = "68", .EngName = "Mincha Ketana 72 Minutes", .FunctionName = "GetMinchaKetana72Minutes", .HebName = "מנחה קטנה עלות-צאת 72 דקות (מג''א)", .HebDescription = "מנחה קטנה על פי מג''א כשהיום מתחיל 72 דקות לפני הזריחה ומסתיים 72 דקות אחרי השקיעה.", .EngDescription = "Mincha ketana according to the magen avraham with the day starting 72 minutes before sunrise and ending 72 minutes after sunset.", .ObjectName = "varCZC"},
             New aZmanimFunc With {.Num = "69", .EngName = "Mincha Ketana 16.1 Degrees", .FunctionName = "GetMinchaKetana16Point1Degrees", .HebName = "מנחה קטנה 16.1 מעלות", .HebDescription = "מנחה קטנה על פי מג''א כשהיום מתחיל ומסתיים 16.1 מעלות מתחת לאופק.", .EngDescription = "Mincha ketana according to the magen avraham with the day starting and ending 16.1° below the horizon.", .ObjectName = "varCZC"},
-            New aZmanimFunc With {.Num = "70", .EngName = "Mincha Ketana Baal Hatanya", .FunctionName = "GetMinchaKetanaBaalHatanya", .HebName = "מנחה קטנה לדעת בעל התניא", .HebDescription = "מנחה קטנה לדעת בעל התניא על פי נץ ושקיעה אמתי (ראה עוד אצל נץ החמה לבעל התניא)", .EngDescription = "Mincha ketana according to the Baal Hatanya based on true sunrise to sunset (see Sunrise Baal Hatanya)", .ObjectName = "varCZC"},
+            New aZmanimFunc With {.Num = "70", .EngName = "Mincha Ketana Baal Hatanya", .FunctionName = "GetMinchaKetanaBaalHatanya", .HebName = "מנחה קטנה לדעת בעל התניא", .HebDescription = "מנחה קטנה לדעת בעל התניא על פי נץ ושקיעה מותאם (ראה עוד אצל נץ החמה לבעל התניא)", .EngDescription = "Mincha ketana according to the Baal Hatanya based on adjusted sunrise to sunset (see Sunrise Baal Hatanya)", .ObjectName = "varCZC"},
             New aZmanimFunc With {.Num = "71", .EngName = "Mincha Ketana Ateret Torah", .FunctionName = "GetMinchaKetanaAteretTorah", .HebName = "מנחה קטנה עטרת תורה", .HebDescription = "מנחה קטנה המבוססת על חישוב חכם יוסף הררי-רפול של ישיבת עטרת תורה, שהיום מתחיל 1/10 מהיום לפני הזריחה ומחושב בדרך כלל כמסתיים 40 דקות לאחר השקיעה.", .EngDescription = "Mincha ketana based on the calculation of chacham yosef harari-raful of yeshivat ateret torah, that the day starts 1/10th of the day before sunrise and is usually calculated as ending 40 minutes after sunset.", .ObjectName = "varCZC"},
             New aZmanimFunc With {.Num = "72", .EngName = "Plag Hamincha 26 Degrees", .FunctionName = "GetPlagHamincha26Degrees", .HebName = "פלג המנחה 26 מעלות", .HebDescription = "פלג המנחה מבוססת על הדעה שהיום מתחיל ב-26° ומסתיים ב-26°.", .EngDescription = "Plag hamincha based on the opinion that the day starts at alos 26° and ends at tzais 26°.", .ObjectName = "varCZC"},
             New aZmanimFunc With {.Num = "73", .EngName = "Plag Hamincha 19.8 Degrees", .FunctionName = "GetPlagHamincha19Point8Degrees", .HebName = "פלג המנחה 19.8 מעלות", .HebDescription = "פלג המנחה מבוססת על הדעה שהיום מתחיל ב-19.8° ומסתיים ב-19.8°.", .EngDescription = "Plag hamincha based on the opinion that the day starts at alos 19.8° and ends at tzais 19.8°.", .ObjectName = "varCZC"},
@@ -816,7 +836,7 @@ A:
             New aZmanimFunc With {.Num = "86", .EngName = "Plag Hamincha 72 Minutes Zmanis", .FunctionName = "GetPlagHamincha72MinutesZmanis", .HebName = "פלג המנחה 72 דקות זמנית", .HebDescription = "פלג המנחה לפי מג''א כשהיום מתחיל 72 דקות זמניות לפני הזריחה ומסתיים 72 דקות זמניות לאחר השקיעה.", .EngDescription = "Plag hamincha according to the magen avraham with the day starting 72 minutes zmanis before sunrise and ending 72 minutes zmanis after sunset.", .ObjectName = "varCZC"},
             New aZmanimFunc With {.Num = "87", .EngName = "Plag Hamincha 60 Minutes", .FunctionName = "GetPlagHamincha60Minutes", .HebName = "פלג המנחה 60 דקות", .HebDescription = "פלג המנחה לפי מג''א כשהיום מתחיל 60 דקות לפני הזריחה ומסתיים 60 דקות אחרי השקיעה.", .EngDescription = "Plag hamincha according to the magen avraham with the day starting 60 minutes before sunrise and ending 60 minutes after sunset.", .ObjectName = "varCZC"},
             New aZmanimFunc With {.Num = "88", .EngName = "Plag Hamincha sunrise-sunset (Gra)", .FunctionName = "GetPlagHamincha", .HebName = "פלג המנחה נץ-שקיעה (גר''א)", .HebDescription = "פלג המנחה על פי הגר''א כשהיום מתחיל בזריחה ומסתיים בשקיעה.", .EngDescription = "Plag Hamincha according to the Gra with the day starting at sunrise and ending at sunset.", .ObjectName = "varCZC"},
-            New aZmanimFunc With {.Num = "89", .EngName = "Plag Hamincha Baal Hatanya", .FunctionName = "GetPlagHaminchaBaalHatanya", .HebName = "פלג המנחה לדעת בעל התניא", .HebDescription = "פלג המנחה לדעת בעל התניא המחושב לפי נץ ושקיעה אמתי (ראה עוד אצל נץ החמה לדעת בעל התניא)", .EngDescription = "Plag Hamincha according to the Baal Hatanya based on true sunrise to sunset (see Sunrise Baal Hatanya)", .ObjectName = "varCZC"},
+            New aZmanimFunc With {.Num = "89", .EngName = "Plag Hamincha Baal Hatanya", .FunctionName = "GetPlagHaminchaBaalHatanya", .HebName = "פלג המנחה לדעת בעל התניא", .HebDescription = "פלג המנחה לדעת בעל התניא המחושב לפי נץ ושקיעה מותאם (ראה עוד אצל נץ החמה לדעת בעל התניא)", .EngDescription = "Plag Hamincha according to the Baal Hatanya based on adjusted sunrise to sunset (see Sunrise Baal Hatanya)", .ObjectName = "varCZC"},
             New aZmanimFunc With {.Num = "90", .EngName = "Plag Hamincha Ateret Torah", .FunctionName = "GetPlagHaminchaAteretTorah", .HebName = "פלג המנחה עטרת תורה", .HebDescription = "פלג המנחה מבוססת על חישוב החכם יוסף הררי-רפול של ישיבת עטרת תורה, שהיום מתחיל 1/10 מהיום לפני הזריחה ומחושב בדרך כלל כמסתיים 40 דקות לאחר השקיעה.", .EngDescription = "Plag hamincha based on the calculation of chacham yosef harari-raful of yeshivat ateret torah, that the day starts 1/10th of the day before sunrise and is usually calculated as ending 40 minutes after sunset.", .ObjectName = "varCZC"},
             New aZmanimFunc With {.Num = "91", .EngName = "Bain Hasmashos Yereim 3.05 Degrees", .FunctionName = "GetBainHasmashosYereim3Point05Degrees", .HebName = "בין השמשות יראים 3.05 מעלות", .HebDescription = "תחילת בין השמשות לדעת היראים (רבי אליעזר ממיץ) מחושב כשהשמש 3.05 מעלות מעל האופק ביום השוויון בירושלים, שהיא 18 דקות (או 3/4 מתוך מיל בת 24 דקות) לפני השקיעה. והבין השמשות מתחיל ב -3/4 מיל לפני השקיעה והלילה בשקיעה.", .EngDescription = "beginning of bain hashmashos (twilight) according to the Yereim (Rabbi Eliezer of Metz) calculated as the sun's position 3.05° above the horizon during the equinox in Yerushalayim, its position 18 minutes or 3/4 of an 24 minute Mil before sunset. According to the Yereim, bain hashmashos starts 3/4 of a Mil before sunset and tzais or nightfall starts at sunset", .ObjectName = "varCZC"},
             New aZmanimFunc With {.Num = "92", .EngName = "Bain Hasmashos Yereim 2.8 Degrees", .FunctionName = "GetBainHasmashosYereim2Point8Degrees", .HebName = "בין השמשות יראים 2.8 מעלות", .HebDescription = "תחילת בין השמשות לדעת היראים (רבי אליעזר ממיץ) מחושב כשהשמש 2.8 מעלות מעל האופק ביום השוויון בירושלים, שהיא 16.8 דקות (או 3/4 מתוך מיל בת 22.5 דקות) לפני השקיעה. והבין השמשות מתחיל ב -3/4 מיל לפני השקיעה והלילה בשקיעה.", .EngDescription = "beginning of bain hashmashos (twilight) according to the Yereim (Rabbi Eliezer of Metz) calculated as the sun's position 2.8° above the horizon during the equinox in Yerushalayim, its position 16.8 minutes or 3/4 of an 22.5 minute Mil before sunset. According to the Yereim, bain hashmashos starts 3/4 of a Mil before sunset and tzais or nightfall starts at sunset", .ObjectName = "varCZC"},
@@ -873,11 +893,11 @@ A:
             New aZmanimFunc With {.Num = "143", .EngName = "Sof Zman Achilas Chametz Alos-Tzais 16.1 Degrees", .FunctionName = "GetSofZmanAchilasChametzMGA16Point1Degrees", .HebName = "סו''ז אכילת חמץ מג''א 16.1 מעלות", .HebDescription = "סו''ז אכילת חמץ בערב פסח לפי המגן אברהם (מג''א) המבוסס על עלות 16.1 מעלות לפני הזריחה.", .EngDescription = "The latest time one is allowed eating chametz on erev pesach according to the opinion of the magen avraham based on alos being 16.1° before sunrise.", .ObjectName = "varCZC"},
             New aZmanimFunc With {.Num = "144", .EngName = "Sof Zman Achilas Chametz Alos-Tzais 72 Minutes", .FunctionName = "GetSofZmanAchilasChametzMGA72Minutes", .HebName = "סו''ז אכילת חמץ מג''א 72 דקות", .HebDescription = "סו''ז אכילת חמץ בערב פסח להמגן אברהם (מג''א) על סמך היותו של 72 דקות לפני הזריחה.", .EngDescription = "The latest time one is allowed eating chametz on erev pesach according to the opinion of the magen avraham based on alos being  72 minutes minutes before sunrise.", .ObjectName = "varCZC"},
             New aZmanimFunc With {.Num = "145", .EngName = "Sof Zman Achilas Chametz sunrise-sunset (Gra)", .FunctionName = "GetSofZmanAchilasChametzGRA", .HebName = "סו''ז אכילת חמץ נץ-שקיעה (גר''א)", .HebDescription = "סו''ז אכילת חמץ בערב פסח לפי דעת הגר''א.", .EngDescription = "The latest time one is allowed eating chametz on erev pesach according to the opinion of the gra.", .ObjectName = "varCZC"},
-            New aZmanimFunc With {.Num = "146", .EngName = "Sof Zman Achilas Chametz Baal Hatanya", .FunctionName = "GetSofZmanAchilasChametzBaalHatanya", .HebName = "סו''ז אכילת חמץ לדעת בעל התניא", .HebDescription = "סו''ז אכילת חמץ לדעת בעל התניא המחושב לפי נץ ושקיעה אמתי (ראה עוד אצל נץ החמה לדעת בעל התניא)", .EngDescription = "Sof Zman Achilas Chametz according to the Baal Hatanya based on true sunrise to sunset (see Sunrise Baal Hatanya)", .ObjectName = "varCZC"},
+            New aZmanimFunc With {.Num = "146", .EngName = "Sof Zman Achilas Chametz Baal Hatanya", .FunctionName = "GetSofZmanAchilasChametzBaalHatanya", .HebName = "סו''ז אכילת חמץ לדעת בעל התניא", .HebDescription = "סו''ז אכילת חמץ לדעת בעל התניא המחושב לפי נץ ושקיעה מותאם (ראה עוד אצל נץ החמה לדעת בעל התניא)", .EngDescription = "Sof Zman Achilas Chametz according to the Baal Hatanya based on adjusted sunrise to sunset (see Sunrise Baal Hatanya)", .ObjectName = "varCZC"},
             New aZmanimFunc With {.Num = "147", .EngName = "Sof Zman Biur Chametz Alos-Tzais 16.1 Degrees", .FunctionName = "GetSofZmanBiurChametzMGA16Point1Degrees", .HebName = "סו''ז ביעור חמץ מג''א 16.1 מעלות", .HebDescription = "הזמן האחרון לשריפת חמץ בערב פסח להמגן אברהם (מג''א) המבוסס על עלות 16.1 מעלות לפני הזריחה.", .EngDescription = "The latest time for burning chametz on erev pesach according to the opinion of the magen avraham based on alos being 16.1° before sunrise.", .ObjectName = "varCZC"},
             New aZmanimFunc With {.Num = "148", .EngName = "Sof Zman Biur Chametz Alos-Tzais 72 Minutes", .FunctionName = "GetSofZmanBiurChametzMGA72Minutes", .HebName = "סו''ז ביעור חמץ מג''א 72 דקות", .HebDescription = "הזמן האחרון לשריפת חמץ בערב פסח לפי חוות דעתו של מג''א (מג''א) המבוסס על כך שעלות הוא 72 דקות לפני הזריחה.", .EngDescription = "The latest time for burning chametz on erev pesach according to the opinion of the magen avraham based on alos being  72 minutes minutes before sunrise.", .ObjectName = "varCZC"},
             New aZmanimFunc With {.Num = "149", .EngName = "Sof Zman Biur Chametz sunrise-sunset (Gra)", .FunctionName = "GetSofZmanBiurChametzGRA", .HebName = "סו''ז ביעור חמץ נץ-שקיעה (גר''א)", .HebDescription = "הזמן האחרון לשריפת חמץ בערב פסח לפי הגר''א הפעם הוא 5 שעות לתוך היום על סמך הגר''א שהיום מחושב מזריחת השקיעה.", .EngDescription = "The latest time for burning chametz on erev pesach according to the opinion of the gra this time is 5 hours into the day based on the opinion of the gra that the day is calculated from sunrise to sunset.", .ObjectName = "varCZC"},
-            New aZmanimFunc With {.Num = "150", .EngName = "Sof Zman Biur Chametz Baal Hatanya", .FunctionName = "GetSofZmanBiurChametzBaalHatanya", .HebName = "סו''ז ביעור חמץ לדעת בעל התניא", .HebDescription = "סו''ז ביעור חמץ לדעת בעל התניא המחושב לפי נץ ושקיעה אמתי (ראה עוד אצל נץ החמה לדעת בעל התניא)", .EngDescription = "Sof Zman Biur Chametz according to the Baal Hatanya based on true sunrise to sunset (see Sunrise Baal Hatanya)", .ObjectName = "varCZC"},
+            New aZmanimFunc With {.Num = "150", .EngName = "Sof Zman Biur Chametz Baal Hatanya", .FunctionName = "GetSofZmanBiurChametzBaalHatanya", .HebName = "סו''ז ביעור חמץ לדעת בעל התניא", .HebDescription = "סו''ז ביעור חמץ לדעת בעל התניא המחושב לפי נץ ושקיעה מותאם (ראה עוד אצל נץ החמה לדעת בעל התניא)", .EngDescription = "Sof Zman Biur Chametz according to the Baal Hatanya based on adjusted sunrise to sunset (see Sunrise Baal Hatanya)", .ObjectName = "varCZC"},
             New aZmanimFunc With {.Num = "151", .EngName = "Shaah Zmanis 26 Degrees", .FunctionName = "GetShaahZmanis26Degrees", .HebName = "שעה זמנית 26 מעלות", .HebDescription = "שעה זמנית מחושב באמצעות עלות-צאת של 26°.", .EngDescription = "Shaah zmanis (temporal hour) calculated using alos-tzais of 26°.", .ObjectName = "varCZC"},
             New aZmanimFunc With {.Num = "152", .EngName = "Shaah Zmanis 19.8 Degrees", .FunctionName = "GetShaahZmanis19Point8Degrees", .HebName = "שעה זמנית 19.8 מעלות", .HebDescription = "שעה זמנית מחושב באמצעות עלות-צאת של 19.8°.", .EngDescription = "Shaah zmanis (temporal hour) calculated using alos-tzais of 19.8°.", .ObjectName = "varCZC"},
             New aZmanimFunc With {.Num = "153", .EngName = "Shaah Zmanis 18 Degrees", .FunctionName = "GetShaahZmanis18Degrees", .HebName = "שעה זמנית 18 מעלות", .HebDescription = "שעה זמנית מחושב באמצעות עלות-צאת של 18°.", .EngDescription = "Shaah zmanis (temporal hour) calculated using alos-tzais of 18°.", .ObjectName = "varCZC"},
@@ -892,11 +912,391 @@ A:
             New aZmanimFunc With {.Num = "162", .EngName = "Shaah Zmanis 72 Minutes Zmanis", .FunctionName = "GetShaahZmanis72MinutesZmanis", .HebName = "שעה זמנית 72 דקות זמנית", .HebDescription = "שעה זמנית מחושב באמצעות עלות-צאת של 72 דקות זמנית.", .EngDescription = "Shaah zmanis (temporal hour) according to the opinion of the magen avraham based on alos being  72 minutes zmaniyos before sunrise.", .ObjectName = "varCZC"},
             New aZmanimFunc With {.Num = "163", .EngName = "Shaah Zmanis 60 Minutes", .FunctionName = "GetShaahZmanis60Minutes", .HebName = "שעה זמנית 60 דקות", .HebDescription = "שעה זמנית מחושב באמצעות עלות-צאת של 60 דקות.", .EngDescription = "Shaah zmanis (temporal hour) according to the opinion of the magen avraham  based on alos being 60 minutes before sunrise.", .ObjectName = "varCZC"},
             New aZmanimFunc With {.Num = "164", .EngName = "Shaah Zmanis sunrise-sunset (Gra)", .FunctionName = "GetShaahZmanisGra", .HebName = "שעה זמנית נץ-שקיעה (גר''א)", .HebDescription = "שעה זמנית על פי הגר''א כשהיום מתחיל בזריחה ומסתיים בשקיעה.", .EngDescription = "Shaah Zmanis according to the Gra with the day starting at sunrise and ending at sunset.", .ObjectName = "varCZC"},
-            New aZmanimFunc With {.Num = "165", .EngName = "Shaah Zmanis Baal Hatanya", .FunctionName = "GetShaahZmanisBaalHatanya", .HebName = "שעה זמנית לדעת בעל התניא", .HebDescription = "שעה זמנית לדעת בעל התניא המחושב לפי נץ ושקיעה הלכתי (ראה עוד אצל נץ החמה לדעת בעל התניא)", .EngDescription = "Shaah Zmanis according to the Baal Hatanya based on true sunrise to sunset (see Sunrise Baal Hatanya)", .ObjectName = "varCZC"},
+            New aZmanimFunc With {.Num = "165", .EngName = "Shaah Zmanis Baal Hatanya", .FunctionName = "GetShaahZmanisBaalHatanya", .HebName = "שעה זמנית לדעת בעל התניא", .HebDescription = "שעה זמנית לדעת בעל התניא המחושב לפי נץ ושקיעה הלכתי (ראה עוד אצל נץ החמה לדעת בעל התניא)", .EngDescription = "Shaah Zmanis according to the Baal Hatanya based on adjusted sunrise to sunset (see Sunrise Baal Hatanya)", .ObjectName = "varCZC"},
             New aZmanimFunc With {.Num = "166", .EngName = "Shaah Zmanis Ateret Torah", .FunctionName = "GetShaahZmanisAteretTorah", .HebName = "שעה זמנית עטרת תורה", .HebDescription = "שעה זמנית לפי החכם יוסף הררי-רפול של ישיבת עטרת תורה מחושב כאשר עלות הוא 1/10 מזריחה עד יום שקיעה, או 72 דקות של יום כזה לפני הזריחה, וצאת הוא בדרך כלל מחושב כ- 40 דקות.", .EngDescription = "Shaah zmanis (temporal hour) according to the opinion of the chacham yosef harari-raful of yeshivat ateret torah calculated with alos being 1/10th of sunrise to sunset day, or  72 minutes zmaniyos of such a day before sunrise, and tzais is usually calculated as 40 minutes.", .ObjectName = "varCZC"}
          }
     End Function
+    Public Function GetListOfLocations() As List(Of aLocation)
+        'Collections start from 0
+        Return New List(Of aLocation) From
+         {
+            New aLocation With {.Num = "1", .EngName = "Acre", .EngCountry = "Israel", .HebName = "עכו", .HebCountry = "ישראל", .Latitude = "32.93", .Longitude = "35.08", .Elevation = "7.9", .TimeOffset = "2", .TimeZoneID = "Israel Standard Time"},
+            New aLocation With {.Num = "2", .EngName = "Afula", .EngCountry = "Israel", .HebName = "עפולה", .HebCountry = "ישראל", .Latitude = "32.6", .Longitude = "35.29", .Elevation = "56.4", .TimeOffset = "2", .TimeZoneID = "Israel Standard Time"},
+            New aLocation With {.Num = "3", .EngName = "Alesund", .EngCountry = "Norway", .HebName = "אלסונד", .HebCountry = "נורווגיה", .Latitude = "62.47", .Longitude = "6.19", .Elevation = "26.4", .TimeOffset = "1", .TimeZoneID = "W. Europe Standard Time"},
+            New aLocation With {.Num = "4", .EngName = "Alexandria", .EngCountry = "Egypt", .HebName = "אלכסנדריה", .HebCountry = "מצרים", .Latitude = "31.2", .Longitude = "29.95", .Elevation = "3.3", .TimeOffset = "2", .TimeZoneID = "Egypt Standard Time"},
+            New aLocation With {.Num = "5", .EngName = "Algeria", .EngCountry = "Spain", .HebName = "אלג'יריה", .HebCountry = "ספרד", .Latitude = "36.81", .Longitude = "-2.99", .Elevation = "257.4", .TimeOffset = "1", .TimeZoneID = "Romance Standard Time"},
+            New aLocation With {.Num = "6", .EngName = "Amsterdam", .EngCountry = "Netherlands", .HebName = "אמסטרדם", .HebCountry = "הולנד", .Latitude = "52.37", .Longitude = "4.89", .Elevation = "2.5", .TimeOffset = "1", .TimeZoneID = "W. Europe Standard Time"},
+            New aLocation With {.Num = "7", .EngName = "Antwerp", .EngCountry = "Belgium", .HebName = "אנטוורפן", .HebCountry = "בלגיה", .Latitude = "51.22", .Longitude = "4.41", .Elevation = "8.1", .TimeOffset = "1", .TimeZoneID = "Romance Standard Time"},
+            New aLocation With {.Num = "8", .EngName = "Applecross", .EngCountry = "Australia", .HebName = "פערטה", .HebCountry = "אוסטרליה", .Latitude = "-32", .Longitude = "115.84", .Elevation = "0", .TimeOffset = "8", .TimeZoneID = "W. Australia Standard Time"},
+            New aLocation With {.Num = "9", .EngName = "Arad", .EngCountry = "Israel", .HebName = "ערד", .HebCountry = "ישראל", .Latitude = "31.26", .Longitude = "35.21", .Elevation = "606.4", .TimeOffset = "2", .TimeZoneID = "Israel Standard Time"},
+            New aLocation With {.Num = "10", .EngName = "Ashdod", .EngCountry = "Israel", .HebName = "אשדוד", .HebCountry = "ישראל", .Latitude = "31.79", .Longitude = "34.641", .Elevation = "37.6", .TimeOffset = "2", .TimeZoneID = "Israel Standard Time"},
+            New aLocation With {.Num = "11", .EngName = "Ashkelon", .EngCountry = "Israel", .HebName = "אשקלון", .HebCountry = "ישראל", .Latitude = "31.65", .Longitude = "34.56", .Elevation = "46.8", .TimeOffset = "2", .TimeZoneID = "Israel Standard Time"},
+            New aLocation With {.Num = "12", .EngName = "Athens", .EngCountry = "Greece", .HebName = "אתונה", .HebCountry = "יון", .Latitude = "37.97", .Longitude = "23.72", .Elevation = "98.8", .TimeOffset = "2", .TimeZoneID = "GTB Standard Time"},
+            New aLocation With {.Num = "13", .EngName = "Atlanta", .EngCountry = "United States", .HebName = "אטלנטה", .HebCountry = "ארצות הברית", .Latitude = "33.76", .Longitude = "-84.39", .Elevation = "316.6", .TimeOffset = "-5", .TimeZoneID = "Eastern Standard Time"},
+            New aLocation With {.Num = "14", .EngName = "Bad Kissingen", .EngCountry = "Germany", .HebName = "באד קיסינגן", .HebCountry = "גרמניה", .Latitude = "50.2", .Longitude = "10.08", .Elevation = "211.1", .TimeOffset = "1", .TimeZoneID = "W. Europe Standard Time"},
+            New aLocation With {.Num = "15", .EngName = "Baghdad", .EngCountry = "Iraq", .HebName = "בגדד", .HebCountry = "עיראק", .Latitude = "33.33", .Longitude = "44.34", .Elevation = "35.1", .TimeOffset = "3", .TimeZoneID = "Arabic Standard Time"},
+            New aLocation With {.Num = "16", .EngName = "Baku", .EngCountry = "Azerbaijan", .HebName = "בקו", .HebCountry = "אזרבייג'ן", .Latitude = "40.4", .Longitude = "49.82", .Elevation = "73.8", .TimeOffset = "2", .TimeZoneID = "Azerbaijan Standard Time"},
+            New aLocation With {.Num = "17", .EngName = "Baltimore", .EngCountry = "United States", .HebName = "בולטימור", .HebCountry = "ארצות הברית", .Latitude = "39.25", .Longitude = "-76.56", .Elevation = "-8.6", .TimeOffset = "-5", .TimeZoneID = "Eastern Standard Time"},
+            New aLocation With {.Num = "18", .EngName = "Bangkok", .EngCountry = "Thailand", .HebName = "בנקוק", .HebCountry = "תאילנד", .Latitude = "13.72", .Longitude = "100.45", .Elevation = "3.5", .TimeOffset = "7", .TimeZoneID = "SE Asia Standard Time"},
+            New aLocation With {.Num = "19", .EngName = "Barcelona", .EngCountry = "Spain", .HebName = "ברצלונה", .HebCountry = "ספרד", .Latitude = "41.23", .Longitude = "2.12", .Elevation = "-95.7", .TimeOffset = "1", .TimeZoneID = "Romance Standard Time"},
+            New aLocation With {.Num = "20", .EngName = "Basel", .EngCountry = "Switzerland", .HebName = "בזל", .HebCountry = "שוויץ", .Latitude = "47.55", .Longitude = "7.58", .Elevation = "279.7", .TimeOffset = "1", .TimeZoneID = "W. Europe Standard Time"},
+            New aLocation With {.Num = "21", .EngName = "Bat Yam", .EngCountry = "Israel", .HebName = "בת ים", .HebCountry = "ישראל", .Latitude = "32.02", .Longitude = "34.74", .Elevation = "22.8", .TimeOffset = "2", .TimeZoneID = "Israel Standard Time"},
+            New aLocation With {.Num = "22", .EngName = "Bat Yam", .EngCountry = "Israel", .HebName = "חולון", .HebCountry = "ישראל", .Latitude = "32.01", .Longitude = "34.75", .Elevation = "31.1", .TimeOffset = "2", .TimeZoneID = "Israel Standard Time"},
+            New aLocation With {.Num = "23", .EngName = "Beer Sheva", .EngCountry = "Israel", .HebName = "באר שבע", .HebCountry = "ישראל", .Latitude = "31.24", .Longitude = "34.79", .Elevation = "272.3", .TimeOffset = "2", .TimeZoneID = "Israel Standard Time"},
+            New aLocation With {.Num = "24", .EngName = "Beer Yaakov", .EngCountry = "Israel", .HebName = "באר יעקב", .HebCountry = "ישראל", .Latitude = "31.93", .Longitude = "34.83", .Elevation = "73.7", .TimeOffset = "2", .TimeZoneID = "Israel Standard Time"},
+            New aLocation With {.Num = "25", .EngName = "Beit She'an", .EngCountry = "Israel", .HebName = "בית שאן", .HebCountry = "ישראל", .Latitude = "32.5", .Longitude = "35.5", .Elevation = "-131.6", .TimeOffset = "2", .TimeZoneID = "Israel Standard Time"},
+            New aLocation With {.Num = "26", .EngName = "Beit Shemesh", .EngCountry = "Israel", .HebName = "בית שמש", .HebCountry = "ישראל", .Latitude = "31.74", .Longitude = "34.98", .Elevation = "270.5", .TimeOffset = "2", .TimeZoneID = "Israel Standard Time"},
+            New aLocation With {.Num = "27", .EngName = "Beitar Elite", .EngCountry = "Israel", .HebName = "ביתר עילית", .HebCountry = "ישראל", .Latitude = "31.69", .Longitude = "35.12", .Elevation = "686.4", .TimeOffset = "2", .TimeZoneID = "Israel Standard Time"},
+            New aLocation With {.Num = "28", .EngName = "Berlin", .EngCountry = "Germany", .HebName = "ברלין", .HebCountry = "גרמניה", .Latitude = "52.5", .Longitude = "13.37", .Elevation = "37.3", .TimeOffset = "1", .TimeZoneID = "W. Europe Standard Time"},
+            New aLocation With {.Num = "29", .EngName = "Binyamina-Giv'at Ada", .EngCountry = "Israel", .HebName = "בנימינה", .HebCountry = "ישראל", .Latitude = "32.52", .Longitude = "34.95", .Elevation = "28.7", .TimeOffset = "2", .TimeZoneID = "Israel Standard Time"},
+            New aLocation With {.Num = "30", .EngName = "Bnei Brak", .EngCountry = "Israel", .HebName = "בני ברק", .HebCountry = "ישראל", .Latitude = "32.08", .Longitude = "34.82", .Elevation = "47.5", .TimeOffset = "2", .TimeZoneID = "Israel Standard Time"},
+            New aLocation With {.Num = "31", .EngName = "Bogota", .EngCountry = "Colombia", .HebName = "בוגוטה", .HebCountry = "קולומביה", .Latitude = "4.76", .Longitude = "-74.1", .Elevation = "2549.3", .TimeOffset = "-5", .TimeZoneID = "SA Pacific Standard Time"},
+            New aLocation With {.Num = "32", .EngName = "Boisbriand", .EngCountry = "Canada", .HebName = "בויסבריאנד", .HebCountry = "קנדה", .Latitude = "45.615", .Longitude = "-73.85", .Elevation = "43", .TimeOffset = "-5", .TimeZoneID = "Eastern Standard Time"},
+            New aLocation With {.Num = "33", .EngName = "Bonn", .EngCountry = "Germany", .HebName = "בון", .HebCountry = "גרמניה", .Latitude = "50.75", .Longitude = "6.83", .Elevation = "114.6", .TimeOffset = "1", .TimeZoneID = "W. Europe Standard Time"},
+            New aLocation With {.Num = "34", .EngName = "Boro Park", .EngCountry = "United States", .HebName = "בורו פארק", .HebCountry = "ארצות הברית", .Latitude = "40.63", .Longitude = "-74", .Elevation = "18.3", .TimeOffset = "-5", .TimeZoneID = "Eastern Standard Time"},
+            New aLocation With {.Num = "35", .EngName = "Boston", .EngCountry = "United States", .HebName = "בוסטון", .HebCountry = "ארצות הברית", .Latitude = "42.33", .Longitude = "-71.03", .Elevation = "0", .TimeOffset = "-5", .TimeZoneID = "Eastern Standard Time"},
+            New aLocation With {.Num = "36", .EngName = "Brasilia", .EngCountry = "Else", .HebName = "ברזיליה", .HebCountry = "אחר", .Latitude = "15.77", .Longitude = "-48.02", .Elevation = "-3361.3", .TimeOffset = "-3", .TimeZoneID = "SA Eastern Standard Time"},
+            New aLocation With {.Num = "37", .EngName = "Brooklyn", .EngCountry = "United States", .HebName = "ברוקלין", .HebCountry = "ארצות הברית", .Latitude = "40.63", .Longitude = "-73.95", .Elevation = "10.6", .TimeOffset = "-5", .TimeZoneID = "Eastern Standard Time"},
+            New aLocation With {.Num = "38", .EngName = "Brussels", .EngCountry = "Belgium", .HebName = "בריסל", .HebCountry = "בלגיה", .Latitude = "50.85", .Longitude = "4.36", .Elevation = "30.4", .TimeOffset = "1", .TimeZoneID = "Romance Standard Time"},
+            New aLocation With {.Num = "39", .EngName = "Bucharest", .EngCountry = "Romania", .HebName = "בוקרסט", .HebCountry = "רומניה", .Latitude = "44.38", .Longitude = "26.4", .Elevation = "57.9", .TimeOffset = "2", .TimeZoneID = "GTB Standard Time"},
+            New aLocation With {.Num = "40", .EngName = "Budapest", .EngCountry = "Hungary", .HebName = "בודפשט", .HebCountry = "הונגריה", .Latitude = "47.5", .Longitude = "19.08", .Elevation = "106.9", .TimeOffset = "1", .TimeZoneID = "Central Europe Standard Time"},
+            New aLocation With {.Num = "41", .EngName = "Buenos Aires", .EngCountry = "Argentina", .HebName = "בואנוס איירס", .HebCountry = "ארגנטינה", .Latitude = "-34.58", .Longitude = "-58.43", .Elevation = "9.1", .TimeOffset = "-3", .TimeZoneID = "Argentina Standard Time"},
+            New aLocation With {.Num = "42", .EngName = "Capetown", .EngCountry = "South Africa", .HebName = "קייפטאון", .HebCountry = "דרום אפריקה", .Latitude = "-33.93", .Longitude = "18.44", .Elevation = "26.5", .TimeOffset = "2", .TimeZoneID = "South Africa Standard Time"},
+            New aLocation With {.Num = "43", .EngName = "Casablanca", .EngCountry = "Morocco", .HebName = "קזבלנקה", .HebCountry = "מרוקו", .Latitude = "33.59", .Longitude = "-7.58", .Elevation = "35.2", .TimeOffset = "0", .TimeZoneID = "Morocco Standard Time"},
+            New aLocation With {.Num = "44", .EngName = "Chandigarh", .EngCountry = "India", .HebName = "צנדיגר", .HebCountry = "הודו", .Latitude = "30.73", .Longitude = "76.78", .Elevation = "343", .TimeOffset = "5.5", .TimeZoneID = "India Standard Time"},
+            New aLocation With {.Num = "45", .EngName = "Chicago", .EngCountry = "United States", .HebName = "שיקגו", .HebCountry = "ארצות הברית", .Latitude = "41.9", .Longitude = "-87.63", .Elevation = "180.2", .TimeOffset = "-6", .TimeZoneID = "Central Standard Time"},
+            New aLocation With {.Num = "46", .EngName = "Cincinnati", .EngCountry = "United States", .HebName = "סינסינטי", .HebCountry = "ארצות הברית", .Latitude = "39.16", .Longitude = "-84.43", .Elevation = "186.4", .TimeOffset = "-5", .TimeZoneID = "Eastern Standard Time"},
+            New aLocation With {.Num = "47", .EngName = "Cleveland", .EngCountry = "United States", .HebName = "קליבלנד", .HebCountry = "ארצות הברית", .Latitude = "41.5", .Longitude = "-81.68", .Elevation = "203.7", .TimeOffset = "-5", .TimeZoneID = "Eastern Standard Time"},
+            New aLocation With {.Num = "48", .EngName = "Cologne (K?ln)", .EngCountry = "Germany", .HebName = "קלן", .HebCountry = "גרמניה", .Latitude = "50.9", .Longitude = "6.93", .Elevation = "51.9", .TimeOffset = "1", .TimeZoneID = "W. Europe Standard Time"},
+            New aLocation With {.Num = "49", .EngName = "Copenhagen", .EngCountry = "Denmark", .HebName = "קופנהגן", .HebCountry = "דנמרק", .Latitude = "55.76", .Longitude = "12.33", .Elevation = "12.4", .TimeOffset = "1", .TimeZoneID = "Romance Standard Time"},
+            New aLocation With {.Num = "50", .EngName = "Dallas", .EngCountry = "United States", .HebName = "דאלאס", .HebCountry = "ארצות הברית", .Latitude = "32.84", .Longitude = "-96.84", .Elevation = "146.7", .TimeOffset = "-6", .TimeZoneID = "Central Standard Time"},
+            New aLocation With {.Num = "51", .EngName = "Deerfield Beach", .EngCountry = "United States", .HebName = "דירפילד ביצ'", .HebCountry = "ארצות הברית", .Latitude = "26.32", .Longitude = "-80.08", .Elevation = "4.1", .TimeOffset = "-5", .TimeZoneID = "Eastern Standard Time"},
+            New aLocation With {.Num = "52", .EngName = "Denver", .EngCountry = "United States", .HebName = "דנוור", .HebCountry = "ארצות הברית", .Latitude = "39.75", .Longitude = "-104.93", .Elevation = "1622.7", .TimeOffset = "-7", .TimeZoneID = "Mountain Standard Time"},
+            New aLocation With {.Num = "53", .EngName = "Detroit", .EngCountry = "United States", .HebName = "דטרויט", .HebCountry = "ארצות הברית", .Latitude = "42.333", .Longitude = "-83.047", .Elevation = "183", .TimeOffset = "-5", .TimeZoneID = "Eastern Standard Time"},
+            New aLocation With {.Num = "54", .EngName = "Dimona", .EngCountry = "Israel", .HebName = "דימונה", .HebCountry = "ישראל", .Latitude = "31.06", .Longitude = "35.03", .Elevation = "559", .TimeOffset = "2", .TimeZoneID = "Israel Standard Time"},
+            New aLocation With {.Num = "55", .EngName = "Dorot", .EngCountry = "Israel", .HebName = "מעגלים", .HebCountry = "ישראל", .Latitude = "31.49", .Longitude = "34.66", .Elevation = "139.7", .TimeOffset = "2", .TimeZoneID = "Israel Standard Time"},
+            New aLocation With {.Num = "56", .EngName = "Dublin", .EngCountry = "Ireland", .HebName = "דבלין", .HebCountry = "אירלנד", .Latitude = "53.35", .Longitude = "-6.27", .Elevation = "6.3", .TimeOffset = "0", .TimeZoneID = "GMT Standard Time"},
+            New aLocation With {.Num = "57", .EngName = "Edinburgh", .EngCountry = "United Kingdom", .HebName = "איידינבורג", .HebCountry = "הממלכה המאוחדת", .Latitude = "55.91", .Longitude = "-3.18", .Elevation = "131.2", .TimeOffset = "0", .TimeZoneID = "GMT Standard Time"},
+            New aLocation With {.Num = "58", .EngName = "Eilat", .EngCountry = "Israel", .HebName = "אילת", .HebCountry = "ישראל", .Latitude = "29.55", .Longitude = "34.95", .Elevation = "26.7", .TimeOffset = "2", .TimeZoneID = "Jordan Standard Time"},
+            New aLocation With {.Num = "59", .EngName = "Eilat", .EngCountry = "Israel", .HebName = "עציון גבר", .HebCountry = "ישראל", .Latitude = "29.53", .Longitude = "34.95", .Elevation = "0", .TimeOffset = "2", .TimeZoneID = "Jordan Standard Time"},
+            New aLocation With {.Num = "60", .EngName = "Ein Bokek", .EngCountry = "Israel", .HebName = "עין בוקק", .HebCountry = "ישראל", .Latitude = "31.2", .Longitude = "35.36", .Elevation = "-366", .TimeOffset = "2", .TimeZoneID = "Israel Standard Time"},
+            New aLocation With {.Num = "61", .EngName = "Ein Hod", .EngCountry = "Israel", .HebName = "ניר עציון", .HebCountry = "ישראל", .Latitude = "32.7", .Longitude = "34.98", .Elevation = "93.1", .TimeOffset = "2", .TimeZoneID = "Israel Standard Time"},
+            New aLocation With {.Num = "62", .EngName = "Elad", .EngCountry = "Israel", .HebName = "אלעד", .HebCountry = "ישראל", .Latitude = "32.05", .Longitude = "34.95", .Elevation = "108.5", .TimeOffset = "2", .TimeZoneID = "Israel Standard Time"},
+            New aLocation With {.Num = "63", .EngName = "Eli", .EngCountry = "Israel", .HebName = "עלי", .HebCountry = "ישראל", .Latitude = "32.06", .Longitude = "35.26", .Elevation = "607.7", .TimeOffset = "2", .TimeZoneID = "Israel Standard Time"},
+            New aLocation With {.Num = "64", .EngName = "Equator", .EngCountry = "Else", .HebName = "קו המשווה", .HebCountry = "אחר", .Latitude = "0", .Longitude = "0", .Elevation = "-3492", .TimeOffset = "0", .TimeZoneID = "UTC"},
+            New aLocation With {.Num = "65", .EngName = "Fes", .EngCountry = "Morocco", .HebName = "פס, מרוקו", .HebCountry = "מרוקו", .Latitude = "34.04", .Longitude = "-4.98", .Elevation = "426.6", .TimeOffset = "0", .TimeZoneID = "Morocco Standard Time"},
+            New aLocation With {.Num = "66", .EngName = "Formosa", .EngCountry = "Argentina", .HebName = "פורמוסה", .HebCountry = "ארגנטינה", .Latitude = "-26.18", .Longitude = "-58.17", .Elevation = "66", .TimeOffset = "-3", .TimeZoneID = "Argentina Standard Time"},
+            New aLocation With {.Num = "67", .EngName = "Frankfurt", .EngCountry = "Germany", .HebName = "פרנקפורט", .HebCountry = "גרמניה", .Latitude = "50.11", .Longitude = "8.65", .Elevation = "97.8", .TimeOffset = "1", .TimeZoneID = "W. Europe Standard Time"},
+            New aLocation With {.Num = "68", .EngName = "Frankfurt", .EngCountry = "Germany", .HebName = "פרנקפורט דמיין", .HebCountry = "גרמניה", .Latitude = "50.1", .Longitude = "8.68", .Elevation = "100.7", .TimeOffset = "1", .TimeZoneID = "W. Europe Standard Time"},
+            New aLocation With {.Num = "69", .EngName = "Gateshead", .EngCountry = "United Kingdom", .HebName = "גייטסהעד", .HebCountry = "הממלכה המאוחדת", .Latitude = "54.95", .Longitude = "-1.6", .Elevation = "81.5", .TimeOffset = "0", .TimeZoneID = "GMT Standard Time"},
+            New aLocation With {.Num = "70", .EngName = "Geneva", .EngCountry = "Switzerland", .HebName = "ג'נבה", .HebCountry = "שוויץ", .Latitude = "46.2", .Longitude = "6.12", .Elevation = "394.6", .TimeOffset = "1", .TimeZoneID = "W. Europe Standard Time"},
+            New aLocation With {.Num = "71", .EngName = "Gibraltar", .EngCountry = "Gibraltar", .HebName = "גיברלטר", .HebCountry = "גיברלטר", .Latitude = "36.13", .Longitude = "-5.35", .Elevation = "56.8", .TimeOffset = "1", .TimeZoneID = "W. Europe Standard Time"},
+            New aLocation With {.Num = "72", .EngName = "Giv'at Ye'arim", .EngCountry = "Israel", .HebName = "טלזסטון", .HebCountry = "ישראל", .Latitude = "31.78", .Longitude = "35.1", .Elevation = "699.4", .TimeOffset = "2", .TimeZoneID = "Israel Standard Time"},
+            New aLocation With {.Num = "73", .EngName = "Givat Zeev", .EngCountry = "Israel", .HebName = "גבעת זאב", .HebCountry = "ישראל", .Latitude = "31.86", .Longitude = "35.16", .Elevation = "653.1", .TimeOffset = "2", .TimeZoneID = "Israel Standard Time"},
+            New aLocation With {.Num = "74", .EngName = "Glasgow", .EngCountry = "United Kingdom", .HebName = "גלסקו", .HebCountry = "הממלכה המאוחדת", .Latitude = "55.86", .Longitude = "-4.25", .Elevation = "11.7", .TimeOffset = "0", .TimeZoneID = "GMT Standard Time"},
+            New aLocation With {.Num = "75", .EngName = "Gomel", .EngCountry = "Belarus", .HebName = "גומל", .HebCountry = "בלארוס", .Latitude = "52.38", .Longitude = "30.83", .Elevation = "128", .TimeOffset = "2", .TimeZoneID = "Belarus Standard Time"},
+            New aLocation With {.Num = "76", .EngName = "Goteborg", .EngCountry = "Sweden", .HebName = "גוטבורג", .HebCountry = "שבדיה", .Latitude = "57.7", .Longitude = "11.95", .Elevation = "2.4", .TimeOffset = "1", .TimeZoneID = "W. Europe Standard Time"},
+            New aLocation With {.Num = "77", .EngName = "Hadera", .EngCountry = "Israel", .HebName = "חדרה", .HebCountry = "ישראל", .Latitude = "32.44", .Longitude = "34.91", .Elevation = "21.9", .TimeOffset = "2", .TimeZoneID = "Israel Standard Time"},
+            New aLocation With {.Num = "78", .EngName = "Hafez Hayim", .EngCountry = "Israel", .HebName = "חפץ חיים", .HebCountry = "ישראל", .Latitude = "31.48", .Longitude = "34.47", .Elevation = "73.9", .TimeOffset = "2", .TimeZoneID = "Israel Standard Time"},
+            New aLocation With {.Num = "79", .EngName = "Haifa", .EngCountry = "Israel", .HebName = "חיפה", .HebCountry = "ישראל", .Latitude = "32.8", .Longitude = "34.991", .Elevation = "236.1", .TimeOffset = "2", .TimeZoneID = "Israel Standard Time"},
+            New aLocation With {.Num = "80", .EngName = "Haifa", .EngCountry = "Israel", .HebName = "קרית ים", .HebCountry = "ישראל", .Latitude = "32.84", .Longitude = "35.07", .Elevation = "11.2", .TimeOffset = "2", .TimeZoneID = "Israel Standard Time"},
+            New aLocation With {.Num = "81", .EngName = "Hamburg", .EngCountry = "Germany", .HebName = "המבורג", .HebCountry = "גרמניה", .Latitude = "53.54", .Longitude = "10", .Elevation = "7.2", .TimeOffset = "1", .TimeZoneID = "W. Europe Standard Time"},
+            New aLocation With {.Num = "82", .EngName = "Hartford CT", .EngCountry = "United States", .HebName = "הארטפורד, קונטיקט", .HebCountry = "ארצות הברית", .Latitude = "41.75", .Longitude = "-72.7", .Elevation = "33.7", .TimeOffset = "-5", .TimeZoneID = "Eastern Standard Time"},
+            New aLocation With {.Num = "83", .EngName = "Hebron", .EngCountry = "Israel", .HebName = "חברון", .HebCountry = "ישראל", .Latitude = "31.53", .Longitude = "35.09", .Elevation = "906.9", .TimeOffset = "2", .TimeZoneID = "Israel Standard Time"},
+            New aLocation With {.Num = "84", .EngName = "Helsinki", .EngCountry = "Finland", .HebName = "הלסינקי", .HebCountry = "פינלנד", .Latitude = "60.1", .Longitude = "24.93", .Elevation = "0", .TimeOffset = "2", .TimeZoneID = "FLE Standard Time"},
+            New aLocation With {.Num = "85", .EngName = "Herzliah", .EngCountry = "Israel", .HebName = "הרצליה", .HebCountry = "ישראל", .Latitude = "32.16", .Longitude = "34.84", .Elevation = "53", .TimeOffset = "2", .TimeZoneID = "Israel Standard Time"},
+            New aLocation With {.Num = "86", .EngName = "Herzliya", .EngCountry = "Israel", .HebName = "רמת השרון", .HebCountry = "ישראל", .Latitude = "32.16", .Longitude = "34.85", .Elevation = "78.6", .TimeOffset = "2", .TimeZoneID = "Israel Standard Time"},
+            New aLocation With {.Num = "87", .EngName = "Herzliya", .EngCountry = "Israel", .HebName = "רעננה", .HebCountry = "ישראל", .Latitude = "32.16", .Longitude = "34.85", .Elevation = "78.6", .TimeOffset = "2", .TimeZoneID = "Israel Standard Time"},
+            New aLocation With {.Num = "88", .EngName = "Hettange-Grande", .EngCountry = "France", .HebName = "טיונויל", .HebCountry = "צרפת", .Latitude = "49.4", .Longitude = "6.17", .Elevation = "171.1", .TimeOffset = "1", .TimeZoneID = "Romance Standard Time"},
+            New aLocation With {.Num = "89", .EngName = "Hollywood", .EngCountry = "United States", .HebName = "הוליווד", .HebCountry = "ארצות הברית", .Latitude = "26.1", .Longitude = "-80.2", .Elevation = "3.2", .TimeOffset = "-5", .TimeZoneID = "Eastern Standard Time"},
+            New aLocation With {.Num = "90", .EngName = "Hong Kong", .EngCountry = "Hong Kong", .HebName = "הונג קונג", .HebCountry = "הונג קונג", .Latitude = "22.25", .Longitude = "114.24", .Elevation = "139.6", .TimeOffset = "8", .TimeZoneID = "China Standard Time"},
+            New aLocation With {.Num = "91", .EngName = "Hong Kong", .EngCountry = "Hong Kong", .HebName = "ויקטוריה הק", .HebCountry = "הונג קונג", .Latitude = "22.25", .Longitude = "114.24", .Elevation = "139.6", .TimeOffset = "8", .TimeZoneID = "China Standard Time"},
+            New aLocation With {.Num = "92", .EngName = "Honolulu", .EngCountry = "United States", .HebName = "הונולולו", .HebCountry = "ארצות הברית", .Latitude = "21.35", .Longitude = "-157.75", .Elevation = "215.4", .TimeOffset = "-10", .TimeZoneID = "Hawaiian Standard Time"},
+            New aLocation With {.Num = "93", .EngName = "Houston", .EngCountry = "United States", .HebName = "האוסטון", .HebCountry = "ארצות הברית", .Latitude = "29.84", .Longitude = "-95.35", .Elevation = "19.5", .TimeOffset = "-6", .TimeZoneID = "Central Standard Time"},
+            New aLocation With {.Num = "94", .EngName = "Hoyo de la Puerta", .EngCountry = "Venezuela", .HebName = "קרקס", .HebCountry = "ונצואלה", .Latitude = "10.36", .Longitude = "-66.89", .Elevation = "1201.4", .TimeOffset = "-4", .TimeZoneID = "Venezuela Standard Time"},
+            New aLocation With {.Num = "95", .EngName = "Ifran", .EngCountry = "Morocco", .HebName = "איפרן", .HebCountry = "מרוקו", .Latitude = "33.53", .Longitude = "-5.1", .Elevation = "1656.4", .TimeOffset = "0", .TimeZoneID = "Morocco Standard Time"},
+            New aLocation With {.Num = "96", .EngName = "Istanbul", .EngCountry = "Turkey", .HebName = "איסטנבול", .HebCountry = "טורקיה", .Latitude = "41.01", .Longitude = "29.91", .Elevation = "129.8", .TimeOffset = "2", .TimeZoneID = "Turkey Standard Time"},
+            New aLocation With {.Num = "97", .EngName = "Jerusalem", .EngCountry = "Israel", .HebName = "ירושלים", .HebCountry = "ישראל", .Latitude = "31.78", .Longitude = "35.22", .Elevation = "785.3", .TimeOffset = "2", .TimeZoneID = "Israel Standard Time"},
+            New aLocation With {.Num = "98", .EngName = "Johannesburg", .EngCountry = "South Africa", .HebName = "יוהנסבורג", .HebCountry = "דרום אפריקה", .Latitude = "-26.3", .Longitude = "28.18", .Elevation = "1545.4", .TimeOffset = "2", .TimeZoneID = "South Africa Standard Time"},
+            New aLocation With {.Num = "99", .EngName = "Kansas City", .EngCountry = "United States", .HebName = "קענזאס סיטי", .HebCountry = "ארצות הברית", .Latitude = "39.1", .Longitude = "-94.6", .Elevation = "228.2", .TimeOffset = "-6", .TimeZoneID = "Central Standard Time"},
+            New aLocation With {.Num = "100", .EngName = "Karmiel", .EngCountry = "Israel", .HebName = "כרמיאל", .HebCountry = "ישראל", .Latitude = "32.92", .Longitude = "35.3", .Elevation = "293.6", .TimeOffset = "2", .TimeZoneID = "Israel Standard Time"},
+            New aLocation With {.Num = "101", .EngName = "Kdumim", .EngCountry = "Israel", .HebName = "קדומים", .HebCountry = "ישראל", .Latitude = "32.21", .Longitude = "35.15", .Elevation = "362.3", .TimeOffset = "2", .TimeZoneID = "Israel Standard Time"},
+            New aLocation With {.Num = "102", .EngName = "Kiev", .EngCountry = "Ukraine", .HebName = "קייב", .HebCountry = "אוקראינה", .Latitude = "50.43", .Longitude = "30.52", .Elevation = "139.7", .TimeOffset = "2", .TimeZoneID = "FLE Standard Time"},
+            New aLocation With {.Num = "103", .EngName = "Kiryat Arba", .EngCountry = "Israel", .HebName = "קרית ארבע", .HebCountry = "ישראל", .Latitude = "31.52", .Longitude = "35.1", .Elevation = "946.1", .TimeOffset = "2", .TimeZoneID = "Israel Standard Time"},
+            New aLocation With {.Num = "104", .EngName = "Kiryat Gat", .EngCountry = "Israel", .HebName = "קרית גת", .HebCountry = "ישראל", .Latitude = "31.61", .Longitude = "34.77", .Elevation = "124.5", .TimeOffset = "2", .TimeZoneID = "Israel Standard Time"},
+            New aLocation With {.Num = "105", .EngName = "Kiryat Malakhi", .EngCountry = "Israel", .HebName = "קרית מלאכי", .HebCountry = "ישראל", .Latitude = "31.73", .Longitude = "34.75", .Elevation = "65.5", .TimeOffset = "2", .TimeZoneID = "Israel Standard Time"},
+            New aLocation With {.Num = "106", .EngName = "Lakewood", .EngCountry = "United States", .HebName = "לייקווד", .HebCountry = "ארצות הברית", .Latitude = "40.1", .Longitude = "-74.24", .Elevation = "17.8", .TimeOffset = "-5", .TimeZoneID = "Eastern Standard Time"},
+            New aLocation With {.Num = "107", .EngName = "Lausanne", .EngCountry = "Switzerland", .HebName = "לוזן", .HebCountry = "שוויץ", .Latitude = "46.54", .Longitude = "6.62", .Elevation = "601.1", .TimeOffset = "1", .TimeZoneID = "W. Europe Standard Time"},
+            New aLocation With {.Num = "108", .EngName = "Leeds", .EngCountry = "United Kingdom", .HebName = "ליעדס", .HebCountry = "הממלכה המאוחדת", .Latitude = "53.8", .Longitude = "-1.56", .Elevation = "40.6", .TimeOffset = "0", .TimeZoneID = "GMT Standard Time"},
+            New aLocation With {.Num = "109", .EngName = "Liverpool", .EngCountry = "United Kingdom", .HebName = "ליברפול", .HebCountry = "הממלכה המאוחדת", .Latitude = "53.41", .Longitude = "-2.98", .Elevation = "22.3", .TimeOffset = "0", .TimeZoneID = "GMT Standard Time"},
+            New aLocation With {.Num = "110", .EngName = "Lod", .EngCountry = "Israel", .HebName = "לוד", .HebCountry = "ישראל", .Latitude = "31.95", .Longitude = "34.89", .Elevation = "65", .TimeOffset = "2", .TimeZoneID = "Israel Standard Time"},
+            New aLocation With {.Num = "111", .EngName = "London", .EngCountry = "United Kingdom", .HebName = "לונדון", .HebCountry = "הממלכה המאוחדת", .Latitude = "51.6", .Longitude = "-0.1", .Elevation = "19.5", .TimeOffset = "0", .TimeZoneID = "GMT Standard Time"},
+            New aLocation With {.Num = "112", .EngName = "Los Angeles", .EngCountry = "United States", .HebName = "לוס אנג'לס", .HebCountry = "ארצות הברית", .Latitude = "34.05", .Longitude = "-118.24", .Elevation = "82.4", .TimeOffset = "-8", .TimeZoneID = "Pacific Standard Time"},
+            New aLocation With {.Num = "113", .EngName = "Lucerne", .EngCountry = "Switzerland", .HebName = "לוצרן", .HebCountry = "שוויץ", .Latitude = "47.05", .Longitude = "8.31", .Elevation = "439.3", .TimeOffset = "1", .TimeZoneID = "W. Europe Standard Time"},
+            New aLocation With {.Num = "114", .EngName = "Ma'ale Adumim", .EngCountry = "Israel", .HebName = "מעלה אדומים", .HebCountry = "ישראל", .Latitude = "31.77", .Longitude = "35.3", .Elevation = "493.6", .TimeOffset = "2", .TimeZoneID = "Israel Standard Time"},
+            New aLocation With {.Num = "115", .EngName = "Madesimo", .EngCountry = "Italy", .HebName = "מדיסימו", .HebCountry = "איטליה", .Latitude = "46.44", .Longitude = "9.34", .Elevation = "1334.4", .TimeOffset = "1", .TimeZoneID = "W. Europe Standard Time"},
+            New aLocation With {.Num = "116", .EngName = "Madrid", .EngCountry = "Spain", .HebName = "מדריד", .HebCountry = "ספרד", .Latitude = "40.4", .Longitude = "-3.7", .Elevation = "588.1", .TimeOffset = "1", .TimeZoneID = "Romance Standard Time"},
+            New aLocation With {.Num = "117", .EngName = "Malaga", .EngCountry = "Spain", .HebName = "מלגה", .HebCountry = "ספרד", .Latitude = "36.7", .Longitude = "-4.42", .Elevation = "-0.8", .TimeOffset = "1", .TimeZoneID = "Romance Standard Time"},
+            New aLocation With {.Num = "118", .EngName = "Manchester", .EngCountry = "United Kingdom", .HebName = "מנצ'סטר", .HebCountry = "הממלכה המאוחדת", .Latitude = "53.5", .Longitude = "-2.24", .Elevation = "60.8", .TimeOffset = "0", .TimeZoneID = "GMT Standard Time"},
+            New aLocation With {.Num = "119", .EngName = "Manchester", .EngCountry = "United Kingdom", .HebName = "סלפורד", .HebCountry = "הממלכה המאוחדת", .Latitude = "53.5", .Longitude = "-2.25", .Elevation = "53.2", .TimeOffset = "0", .TimeZoneID = "GMT Standard Time"},
+            New aLocation With {.Num = "120", .EngName = "Marrakech", .EngCountry = "Morocco", .HebName = "מרקש", .HebCountry = "מרוקו", .Latitude = "31.6", .Longitude = "-7.99", .Elevation = "481.5", .TimeOffset = "0", .TimeZoneID = "Morocco Standard Time"},
+            New aLocation With {.Num = "121", .EngName = "Marseille", .EngCountry = "France", .HebName = "מרסיי", .HebCountry = "צרפת", .Latitude = "43.3", .Longitude = "5.31", .Elevation = "-16.5", .TimeOffset = "1", .TimeZoneID = "Romance Standard Time"},
+            New aLocation With {.Num = "122", .EngName = "Medellin", .EngCountry = "Colombia", .HebName = "מידעין", .HebCountry = "קולומביה", .Latitude = "6.24", .Longitude = "-75.58", .Elevation = "1473.2", .TimeOffset = "-5", .TimeZoneID = "SA Pacific Standard Time"},
+            New aLocation With {.Num = "123", .EngName = "Meknes", .EngCountry = "Morocco", .HebName = "מקנס", .HebCountry = "מרוקו", .Latitude = "33.9", .Longitude = "-5.56", .Elevation = "487.2", .TimeOffset = "0", .TimeZoneID = "Morocco Standard Time"},
+            New aLocation With {.Num = "124", .EngName = "Melbourne", .EngCountry = "Australia", .HebName = "מלבורן", .HebCountry = "אוסטרליה", .Latitude = "-37.81", .Longitude = "144.96", .Elevation = "19.5", .TimeOffset = "10", .TimeZoneID = "AUS Eastern Standard Time"},
+            New aLocation With {.Num = "125", .EngName = "Memphis TN", .EngCountry = "United States", .HebName = "ממפיס, טנסי", .HebCountry = "ארצות הברית", .Latitude = "35.14", .Longitude = "-90.04", .Elevation = "80.2", .TimeOffset = "-6", .TimeZoneID = "Central Standard Time"},
+            New aLocation With {.Num = "126", .EngName = "Meron", .EngCountry = "Israel", .HebName = "מירון", .HebCountry = "ישראל", .Latitude = "32.98", .Longitude = "35.43", .Elevation = "884.8", .TimeOffset = "2", .TimeZoneID = "Israel Standard Time"},
+            New aLocation With {.Num = "127", .EngName = "Mexico City", .EngCountry = "Mexico", .HebName = "מקסיקו סיטי", .HebCountry = "מקסיקו", .Latitude = "19.45", .Longitude = "-98.95", .Elevation = "2238.1", .TimeOffset = "-6", .TimeZoneID = "Central Standard Time (Mexico)"},
+            New aLocation With {.Num = "128", .EngName = "Miami", .EngCountry = "United States", .HebName = "מיאמי", .HebCountry = "ארצות הברית", .Latitude = "25.83", .Longitude = "-80.26", .Elevation = "1.9", .TimeOffset = "-5", .TimeZoneID = "Eastern Standard Time"},
+            New aLocation With {.Num = "129", .EngName = "Miami beach", .EngCountry = "United States", .HebName = "מיאמי-ביטש", .HebCountry = "ארצות הברית", .Latitude = "25.78", .Longitude = "-80.28", .Elevation = "0", .TimeOffset = "-5", .TimeZoneID = "Eastern Standard Time"},
+            New aLocation With {.Num = "130", .EngName = "Migdal HaEmek", .EngCountry = "Israel", .HebName = "מגדל העמק", .HebCountry = "ישראל", .Latitude = "32.67", .Longitude = "35.23", .Elevation = "128", .TimeOffset = "2", .TimeZoneID = "Israel Standard Time"},
+            New aLocation With {.Num = "131", .EngName = "Migdal HaEmek", .EngCountry = "Israel", .HebName = "נהלל", .HebCountry = "ישראל", .Latitude = "32.67", .Longitude = "35.23", .Elevation = "128", .TimeOffset = "2", .TimeZoneID = "Israel Standard Time"},
+            New aLocation With {.Num = "132", .EngName = "Milano", .EngCountry = "Italy", .HebName = "מילאנו", .HebCountry = "איטליה", .Latitude = "45.45", .Longitude = "9.18", .Elevation = "115.1", .TimeOffset = "1", .TimeZoneID = "W. Europe Standard Time"},
+            New aLocation With {.Num = "133", .EngName = "Milwaukee", .EngCountry = "United States", .HebName = "מילווקי", .HebCountry = "ארצות הברית", .Latitude = "43.04", .Longitude = "-87.91", .Elevation = "178.8", .TimeOffset = "-6", .TimeZoneID = "Central Standard Time"},
+            New aLocation With {.Num = "134", .EngName = "Minneapolis", .EngCountry = "United States", .HebName = "מיניאפוליס", .HebCountry = "ארצות הברית", .Latitude = "44.88", .Longitude = "-93.21", .Elevation = "249", .TimeOffset = "-6", .TimeZoneID = "Central Standard Time"},
+            New aLocation With {.Num = "135", .EngName = "Minsk", .EngCountry = "Belarus", .HebName = "מינסק", .HebCountry = "בלארוס", .Latitude = "53.86", .Longitude = "27.82", .Elevation = "232.2", .TimeOffset = "2", .TimeZoneID = "Belarus Standard Time"},
+            New aLocation With {.Num = "136", .EngName = "Mitzpe Ramon", .EngCountry = "Israel", .HebName = "מצפה רמון", .HebCountry = "ישראל", .Latitude = "30.61", .Longitude = "34.8", .Elevation = "862.4", .TimeOffset = "2", .TimeZoneID = "Israel Standard Time"},
+            New aLocation With {.Num = "137", .EngName = "Modiin ilit", .EngCountry = "Israel", .HebName = "מודיעין עילית", .HebCountry = "ישראל", .Latitude = "31.933", .Longitude = "35.041", .Elevation = "284.8", .TimeOffset = "2", .TimeZoneID = "Israel Standard Time"},
+            New aLocation With {.Num = "138", .EngName = "Modi'in Ilit", .EngCountry = "Israel", .HebName = "קרית ספר", .HebCountry = "ישראל", .Latitude = "31.93", .Longitude = "35.04", .Elevation = "301.4", .TimeOffset = "2", .TimeZoneID = "Israel Standard Time"},
+            New aLocation With {.Num = "139", .EngName = "Monroe", .EngCountry = "United States", .HebName = "קרית יואל", .HebCountry = "ארצות הברית", .Latitude = "41.34", .Longitude = "-74.17", .Elevation = "199.2", .TimeOffset = "-5", .TimeZoneID = "Eastern Standard Time"},
+            New aLocation With {.Num = "140", .EngName = "Monsey", .EngCountry = "United States", .HebName = "מונסי", .HebCountry = "ארצות הברית", .Latitude = "41.1", .Longitude = "-74.06", .Elevation = "147.3", .TimeOffset = "-5", .TimeZoneID = "Eastern Standard Time"},
+            New aLocation With {.Num = "141", .EngName = "Montevideo", .EngCountry = "Uruguay", .HebName = "מונטיבידאו", .HebCountry = "אורוגוואי", .Latitude = "-34.84", .Longitude = "-56.24", .Elevation = "25.4", .TimeOffset = "-3", .TimeZoneID = "Montevideo Standard Time"},
+            New aLocation With {.Num = "142", .EngName = "Monticello", .EngCountry = "United States", .HebName = "מונטיסלו", .HebCountry = "ארצות הברית", .Latitude = "41.65", .Longitude = "-74.74", .Elevation = "393.1", .TimeOffset = "-5", .TimeZoneID = "Eastern Standard Time"},
+            New aLocation With {.Num = "143", .EngName = "Montreal", .EngCountry = "Canada", .HebName = "מונטריאול", .HebCountry = "קנדה", .Latitude = "45.51", .Longitude = "-73.56", .Elevation = "24.1", .TimeOffset = "-5", .TimeZoneID = "Eastern Standard Time"},
+            New aLocation With {.Num = "144", .EngName = "Montreux", .EngCountry = "Switzerland", .HebName = "מונטרה", .HebCountry = "שוויץ", .Latitude = "46.4", .Longitude = "6.87", .Elevation = "372", .TimeOffset = "1", .TimeZoneID = "W. Europe Standard Time"},
+            New aLocation With {.Num = "145", .EngName = "Moscow", .EngCountry = "Russia", .HebName = "מוסקבה", .HebCountry = "רוסיה", .Latitude = "55.75", .Longitude = "37.61", .Elevation = "138.1", .TimeOffset = "3", .TimeZoneID = "Russian Standard Time"},
+            New aLocation With {.Num = "146", .EngName = "Nahariyya", .EngCountry = "Israel", .HebName = "נהריה", .HebCountry = "ישראל", .Latitude = "33.01", .Longitude = "35.1", .Elevation = "15.4", .TimeOffset = "2", .TimeZoneID = "Israel Standard Time"},
+            New aLocation With {.Num = "147", .EngName = "Nahariyya", .EngCountry = "Israel", .HebName = "שבי ציון", .HebCountry = "ישראל", .Latitude = "33.01", .Longitude = "35.1", .Elevation = "15.4", .TimeOffset = "2", .TimeZoneID = "Israel Standard Time"},
+            New aLocation With {.Num = "148", .EngName = "Narvik", .EngCountry = "Norway", .HebName = "נרוויק", .HebCountry = "נורווגיה", .Latitude = "68.44", .Longitude = "17.41", .Elevation = "58.9", .TimeOffset = "1", .TimeZoneID = "W. Europe Standard Time"},
+            New aLocation With {.Num = "149", .EngName = "Natur", .EngCountry = "Israel", .HebName = "חיספין", .HebCountry = "ישראל", .Latitude = "32.85", .Longitude = "35.77", .Elevation = "414.4", .TimeOffset = "2", .TimeZoneID = "Israel Standard Time"},
+            New aLocation With {.Num = "150", .EngName = "Natzeret", .EngCountry = "Israel", .HebName = "נצרת עילית", .HebCountry = "ישראל", .Latitude = "32.7", .Longitude = "35.32", .Elevation = "413.6", .TimeOffset = "2", .TimeZoneID = "Israel Standard Time"},
+            New aLocation With {.Num = "151", .EngName = "Negohot", .EngCountry = "Israel", .HebName = "נגוהות", .HebCountry = "ישראל", .Latitude = "31.49", .Longitude = "34.97", .Elevation = "521.4", .TimeOffset = "2", .TimeZoneID = "Israel Standard Time"},
+            New aLocation With {.Num = "152", .EngName = "Netanya", .EngCountry = "Israel", .HebName = "נתניה", .HebCountry = "ישראל", .Latitude = "32.34", .Longitude = "34.86", .Elevation = "28.9", .TimeOffset = "2", .TimeZoneID = "Israel Standard Time"},
+            New aLocation With {.Num = "153", .EngName = "Netivot", .EngCountry = "Israel", .HebName = "כפר מימון", .HebCountry = "ישראל", .Latitude = "31.42", .Longitude = "34.59", .Elevation = "149.9", .TimeOffset = "2", .TimeZoneID = "Israel Standard Time"},
+            New aLocation With {.Num = "154", .EngName = "Netivot", .EngCountry = "Israel", .HebName = "נתיבות", .HebCountry = "ישראל", .Latitude = "31.42", .Longitude = "34.59", .Elevation = "149.9", .TimeOffset = "2", .TimeZoneID = "Israel Standard Time"},
+            New aLocation With {.Num = "155", .EngName = "Netivot", .EngCountry = "Israel", .HebName = "תושיה", .HebCountry = "ישראל", .Latitude = "31.42", .Longitude = "34.59", .Elevation = "149.9", .TimeOffset = "2", .TimeZoneID = "Israel Standard Time"},
+            New aLocation With {.Num = "156", .EngName = "New Delhi", .EngCountry = "India", .HebName = "ניו דלהי", .HebCountry = "הודו", .Latitude = "28.59", .Longitude = "77.21", .Elevation = "211.3", .TimeOffset = "5.5", .TimeZoneID = "India Standard Time"},
+            New aLocation With {.Num = "157", .EngName = "New Orleans", .EngCountry = "United States", .HebName = "ניו אורליאנס", .HebCountry = "ארצות הברית", .Latitude = "30", .Longitude = "-90.12", .Elevation = "0", .TimeOffset = "-6", .TimeZoneID = "Central Standard Time"},
+            New aLocation With {.Num = "158", .EngName = "New square", .EngCountry = "United States", .HebName = "ניו סקווירא", .HebCountry = "ארצות הברית", .Latitude = "41.1", .Longitude = "-74.06", .Elevation = "147.3", .TimeOffset = "-5", .TimeZoneID = "Eastern Standard Time"},
+            New aLocation With {.Num = "159", .EngName = "New York", .EngCountry = "United States", .HebName = "ניו יורק", .HebCountry = "ארצות הברית", .Latitude = "40.71", .Longitude = "-74", .Elevation = "5.5", .TimeOffset = "-5", .TimeZoneID = "Eastern Standard Time"},
+            New aLocation With {.Num = "160", .EngName = "Newcastle", .EngCountry = "United Kingdom", .HebName = "ניוקאסל", .HebCountry = "הממלכה המאוחדת", .Latitude = "54.95", .Longitude = "-1.62", .Elevation = "20.2", .TimeOffset = "0", .TimeZoneID = "GMT Standard Time"},
+            New aLocation With {.Num = "161", .EngName = "North Pole", .EngCountry = "Else", .HebName = "קוטב צפוני", .HebCountry = "אחר", .Latitude = "90", .Longitude = "0", .Elevation = "-4228.9", .TimeOffset = "0", .TimeZoneID = "UTC"},
+            New aLocation With {.Num = "162", .EngName = "Odessa", .EngCountry = "Ukraine", .HebName = "אודיסה", .HebCountry = "אוקראינה", .Latitude = "46.48", .Longitude = "30.72", .Elevation = "52.5", .TimeOffset = "2", .TimeZoneID = "FLE Standard Time"},
+            New aLocation With {.Num = "163", .EngName = "Oslo", .EngCountry = "Norway", .HebName = "אוסלו", .HebCountry = "נורווגיה", .Latitude = "59.91", .Longitude = "10.74", .Elevation = "7.5", .TimeOffset = "1", .TimeZoneID = "W. Europe Standard Time"},
+            New aLocation With {.Num = "164", .EngName = "Ottawa", .EngCountry = "United States", .HebName = "אוטווה", .HebCountry = "ארצות הברית", .Latitude = "41.1", .Longitude = "-74.06", .Elevation = "147.3", .TimeOffset = "-5", .TimeZoneID = "Eastern Standard Time"},
+            New aLocation With {.Num = "165", .EngName = "Paavalniemi", .EngCountry = "Finland", .HebName = "רובונימי", .HebCountry = "פינלנד", .Latitude = "66.49", .Longitude = "25.7", .Elevation = "80.8", .TimeOffset = "1", .TimeZoneID = "FLE Standard Time"},
+            New aLocation With {.Num = "166", .EngName = "Palm Springs", .EngCountry = "United States", .HebName = "פאלם ספרינגס", .HebCountry = "ארצות הברית", .Latitude = "33.83", .Longitude = "-116.66", .Elevation = "1900.9", .TimeOffset = "-8", .TimeZoneID = "Pacific Standard Time"},
+            New aLocation With {.Num = "167", .EngName = "Panama", .EngCountry = "Panama", .HebName = "פנמה", .HebCountry = "פנמה", .Latitude = "9.91", .Longitude = "-79.93", .Elevation = "-1736.8", .TimeOffset = "-5", .TimeZoneID = "SA Pacific Standard Time"},
+            New aLocation With {.Num = "168", .EngName = "Pardes Hanna-Karkur", .EngCountry = "Israel", .HebName = "פרדס חנה", .HebCountry = "ישראל", .Latitude = "32.46", .Longitude = "34.96", .Elevation = "46.8", .TimeOffset = "2", .TimeZoneID = "Israel Standard Time"},
+            New aLocation With {.Num = "169", .EngName = "Paris", .EngCountry = "France", .HebName = "פריס", .HebCountry = "צרפת", .Latitude = "48.86", .Longitude = "2.34", .Elevation = "35.9", .TimeOffset = "1", .TimeZoneID = "Romance Standard Time"},
+            New aLocation With {.Num = "170", .EngName = "Peking", .EngCountry = "China", .HebName = "פקינג", .HebCountry = "חרסינה", .Latitude = "39.97", .Longitude = "116.45", .Elevation = "39", .TimeOffset = "8", .TimeZoneID = "China Standard Time"},
+            New aLocation With {.Num = "171", .EngName = "Petah Tikva", .EngCountry = "Israel", .HebName = "פתח תקוה", .HebCountry = "ישראל", .Latitude = "32.09", .Longitude = "34.88", .Elevation = "45.2", .TimeOffset = "2", .TimeZoneID = "Israel Standard Time"},
+            New aLocation With {.Num = "172", .EngName = "Philadelphia", .EngCountry = "United States", .HebName = "פילדלפיה", .HebCountry = "ארצות הברית", .Latitude = "39.93", .Longitude = "-75.16", .Elevation = "9", .TimeOffset = "-5", .TimeZoneID = "Eastern Standard Time"},
+            New aLocation With {.Num = "173", .EngName = "Phoenix", .EngCountry = "United States", .HebName = "פניקס", .HebCountry = "ארצות הברית", .Latitude = "33.44", .Longitude = "-112.07", .Elevation = "329.6", .TimeOffset = "-7", .TimeZoneID = "US Mountain Standard Time"},
+            New aLocation With {.Num = "174", .EngName = "Pittsburgh", .EngCountry = "United States", .HebName = "פיטסבורג", .HebCountry = "ארצות הברית", .Latitude = "40.4", .Longitude = "-80.04", .Elevation = "361.8", .TimeOffset = "-5", .TimeZoneID = "Eastern Standard Time"},
+            New aLocation With {.Num = "175", .EngName = "Prague", .EngCountry = "Czechia", .HebName = "פראג", .HebCountry = "צ'כיה", .Latitude = "50.08", .Longitude = "14.42", .Elevation = "196.3", .TimeOffset = "1", .TimeZoneID = "Central Europe Standard Time"},
+            New aLocation With {.Num = "176", .EngName = "Providence", .EngCountry = "United States", .HebName = "פרווידנס", .HebCountry = "ארצות הברית", .Latitude = "41.82", .Longitude = "-71.4", .Elevation = "12", .TimeOffset = "-5", .TimeZoneID = "Eastern Standard Time"},
+            New aLocation With {.Num = "177", .EngName = "Qiryat Shemona", .EngCountry = "Israel", .HebName = "קרית שמונה", .HebCountry = "ישראל", .Latitude = "33.2", .Longitude = "35.56", .Elevation = "260", .TimeOffset = "2", .TimeZoneID = "Israel Standard Time"},
+            New aLocation With {.Num = "178", .EngName = "Rabat", .EngCountry = "Morocco", .HebName = "ראבט", .HebCountry = "מרוקו", .Latitude = "34.01", .Longitude = "-6.8", .Elevation = "3.3", .TimeOffset = "0", .TimeZoneID = "Morocco Standard Time"},
+            New aLocation With {.Num = "179", .EngName = "Ramat Beit Shemesh A", .EngCountry = "Israel", .HebName = "רמת בית שמש א", .HebCountry = "ישראל", .Latitude = "31.71", .Longitude = "34.99", .Elevation = "342.9", .TimeOffset = "2", .TimeZoneID = "Israel Standard Time"},
+            New aLocation With {.Num = "180", .EngName = "Ramat Magshimim", .EngCountry = "Israel", .HebName = "רמת מגשימים", .HebCountry = "ישראל", .Latitude = "32.84", .Longitude = "35.81", .Elevation = "421.7", .TimeOffset = "2", .TimeZoneID = "Israel Standard Time"},
+            New aLocation With {.Num = "181", .EngName = "Ramla", .EngCountry = "Israel", .HebName = "רמלה", .HebCountry = "ישראל", .Latitude = "31.92", .Longitude = "34.86", .Elevation = "85.9", .TimeOffset = "2", .TimeZoneID = "Israel Standard Time"},
+            New aLocation With {.Num = "182", .EngName = "Ramot,Jerusalem", .EngCountry = "Israel", .HebName = "שכונת רמות י-ם", .HebCountry = "ישראל", .Latitude = "31.81", .Longitude = "35.19", .Elevation = "687.8", .TimeOffset = "2", .TimeZoneID = "Israel Standard Time"},
+            New aLocation With {.Num = "183", .EngName = "Rehovot", .EngCountry = "Israel", .HebName = "רחובות", .HebCountry = "ישראל", .Latitude = "31.89", .Longitude = "34.81", .Elevation = "53.2", .TimeOffset = "2", .TimeZoneID = "Israel Standard Time"},
+            New aLocation With {.Num = "184", .EngName = "Revaha", .EngCountry = "Israel", .HebName = "קוממיות", .HebCountry = "ישראל", .Latitude = "31.65", .Longitude = "34.73", .Elevation = "83.2", .TimeOffset = "2", .TimeZoneID = "Israel Standard Time"},
+            New aLocation With {.Num = "185", .EngName = "Reykjav?k", .EngCountry = "Iceland", .HebName = "רקייויק", .HebCountry = "איסלנד", .Latitude = "64.13", .Longitude = "-21.96", .Elevation = "0", .TimeOffset = "0", .TimeZoneID = "Greenwich Standard Time"},
+            New aLocation With {.Num = "186", .EngName = "Rhodes", .EngCountry = "Greece", .HebName = "רודוס", .HebCountry = "יון", .Latitude = "36.4", .Longitude = "28.19", .Elevation = "131.4", .TimeOffset = "2", .TimeZoneID = "GTB Standard Time"},
+            New aLocation With {.Num = "187", .EngName = "Riga", .EngCountry = "Latvia", .HebName = "ריגה", .HebCountry = "לטביה", .Latitude = "56.94", .Longitude = "24.1", .Elevation = "3.1", .TimeOffset = "1", .TimeZoneID = "FLE Standard Time"},
+            New aLocation With {.Num = "188", .EngName = "Rio de Janeiro", .EngCountry = "Brazil", .HebName = "ריו דה-ז'נירו", .HebCountry = "ברזיל", .Latitude = "-22.85", .Longitude = "-43.68", .Elevation = "3.7", .TimeOffset = "-3", .TimeZoneID = "E. South America Standard Time"},
+            New aLocation With {.Num = "189", .EngName = "Rishon LeTsiyon", .EngCountry = "Israel", .HebName = "כפר חבד", .HebCountry = "ישראל", .Latitude = "31.96", .Longitude = "34.8", .Elevation = "66.8", .TimeOffset = "2", .TimeZoneID = "Israel Standard Time"},
+            New aLocation With {.Num = "190", .EngName = "Rishon LeTsiyon", .EngCountry = "Israel", .HebName = "ראשון לציון", .HebCountry = "ישראל", .Latitude = "31.96", .Longitude = "34.8", .Elevation = "66.8", .TimeOffset = "2", .TimeZoneID = "Israel Standard Time"},
+            New aLocation With {.Num = "191", .EngName = "Rome", .EngCountry = "Italy", .HebName = "רומא", .HebCountry = "איטליה", .Latitude = "41.9", .Longitude = "12.5", .Elevation = "55.6", .TimeOffset = "1", .TimeZoneID = "W. Europe Standard Time"},
+            New aLocation With {.Num = "192", .EngName = "Rosh Haayin", .EngCountry = "Israel", .HebName = "ראש העין", .HebCountry = "ישראל", .Latitude = "32.08", .Longitude = "34.95", .Elevation = "62.5", .TimeOffset = "2", .TimeZoneID = "Israel Standard Time"},
+            New aLocation With {.Num = "193", .EngName = "Safed", .EngCountry = "Israel", .HebName = "ראש פינה", .HebCountry = "ישראל", .Latitude = "32.96", .Longitude = "35.49", .Elevation = "629", .TimeOffset = "2", .TimeZoneID = "Israel Standard Time"},
+            New aLocation With {.Num = "194", .EngName = "Saint Louis", .EngCountry = "United States", .HebName = "סנט לואיס", .HebCountry = "ארצות הברית", .Latitude = "38.65", .Longitude = "-90.31", .Elevation = "159.8", .TimeOffset = "-6", .TimeZoneID = "Central Standard Time"},
+            New aLocation With {.Num = "195", .EngName = "San Diego", .EngCountry = "United States", .HebName = "סאן דיאגו", .HebCountry = "ארצות הברית", .Latitude = "32.71", .Longitude = "-117.13", .Elevation = "31.1", .TimeOffset = "-8", .TimeZoneID = "Pacific Standard Time"},
+            New aLocation With {.Num = "196", .EngName = "San Francisco", .EngCountry = "United States", .HebName = "סאן פרנסיסקו", .HebCountry = "ארצות הברית", .Latitude = "37.78", .Longitude = "-122.42", .Elevation = "20.2", .TimeOffset = "-8", .TimeZoneID = "Pacific Standard Time"},
+            New aLocation With {.Num = "197", .EngName = "San Jacinto", .EngCountry = "Uruguay", .HebName = "סן חסינטו", .HebCountry = "אורוגוואי", .Latitude = "-34.55", .Longitude = "-55.87", .Elevation = "53.7", .TimeOffset = "-3", .TimeZoneID = "Montevideo Standard Time"},
+            New aLocation With {.Num = "198", .EngName = "San Jose", .EngCountry = "United States", .HebName = "סאן ג'וז", .HebCountry = "ארצות הברית", .Latitude = "37.34", .Longitude = "-121.89", .Elevation = "24.2", .TimeOffset = "-8", .TimeZoneID = "Pacific Standard Time"},
+            New aLocation With {.Num = "199", .EngName = "San Jose de Mayo", .EngCountry = "Uruguay", .HebName = "סאן ג'וזה דה", .HebCountry = "אורוגוואי", .Latitude = "-34.35", .Longitude = "-56.72", .Elevation = "47.6", .TimeOffset = "-3", .TimeZoneID = "Montevideo Standard Time"},
+            New aLocation With {.Num = "200", .EngName = "Sao Paulo", .EngCountry = "Brazil", .HebName = "סאן פאולו", .HebCountry = "ברזיל", .Latitude = "-23.6", .Longitude = "-46.66", .Elevation = "746.7", .TimeOffset = "-3", .TimeZoneID = "E. South America Standard Time"},
+            New aLocation With {.Num = "201", .EngName = "Seattle", .EngCountry = "United States", .HebName = "סיאטל", .HebCountry = "ארצות הברית", .Latitude = "47.6", .Longitude = "-122.33", .Elevation = "9.4", .TimeOffset = "-8", .TimeZoneID = "Pacific Standard Time"},
+            New aLocation With {.Num = "202", .EngName = "Seoul", .EngCountry = "Tokyo", .HebName = "סיאול", .HebCountry = "טוקיו", .Latitude = "37.59", .Longitude = "129.9", .Elevation = "-1547", .TimeOffset = "9", .TimeZoneID = "Tokyo Standard Time"},
+            New aLocation With {.Num = "203", .EngName = "Sha'alvim", .EngCountry = "Israel", .HebName = "שעלבים", .HebCountry = "ישראל", .Latitude = "31.86", .Longitude = "34.98", .Elevation = "154", .TimeOffset = "2", .TimeZoneID = "Israel Standard Time"},
+            New aLocation With {.Num = "204", .EngName = "Shechem", .EngCountry = "Israel", .HebName = "שכם", .HebCountry = "ישראל", .Latitude = "32.21", .Longitude = "35.26", .Elevation = "769.3", .TimeOffset = "2", .TimeZoneID = "Israel Standard Time"},
+            New aLocation With {.Num = "205", .EngName = "South Pole", .EngCountry = "New Zealand", .HebName = "קוטב דרומי", .HebCountry = "ניו זילנד", .Latitude = "-90", .Longitude = "0", .Elevation = "2801", .TimeOffset = "0", .TimeZoneID = "New Zealand Standard Time"},
+            New aLocation With {.Num = "206", .EngName = "Splugen", .EngCountry = "Switzerland", .HebName = "שפולגן", .HebCountry = "שוויץ", .Latitude = "46.55", .Longitude = "9.31", .Elevation = "1495.4", .TimeOffset = "1", .TimeZoneID = "W. Europe Standard Time"},
+            New aLocation With {.Num = "207", .EngName = "Steinsel", .EngCountry = "Luxembourg", .HebName = "לוקסנבורג", .HebCountry = "לוקסמבורג", .Latitude = "49.66", .Longitude = "6.17", .Elevation = "424.3", .TimeOffset = "1", .TimeZoneID = "W. Europe Standard Time"},
+            New aLocation With {.Num = "208", .EngName = "St-Laurent-du-Var", .EngCountry = "France", .HebName = "ניס - ניצה", .HebCountry = "צרפת", .Latitude = "43.7", .Longitude = "7.18", .Elevation = "39.3", .TimeOffset = "1", .TimeZoneID = "Romance Standard Time"},
+            New aLocation With {.Num = "209", .EngName = "Stockholm", .EngCountry = "Sweden", .HebName = "שטוקהולם", .HebCountry = "שבדיה", .Latitude = "59.3", .Longitude = "17.95", .Elevation = "52.1", .TimeOffset = "1", .TimeZoneID = "W. Europe Standard Time"},
+            New aLocation With {.Num = "210", .EngName = "Sydney", .EngCountry = "Australia", .HebName = "סידני", .HebCountry = "אוסטרליה", .Latitude = "-33.87", .Longitude = "151.21", .Elevation = "27.1", .TimeOffset = "10", .TimeZoneID = "AUS Eastern Standard Time"},
+            New aLocation With {.Num = "211", .EngName = "Tacuarembo", .EngCountry = "Uruguay", .HebName = "טקוארמבו", .HebCountry = "אורוגוואי", .Latitude = "-31.7", .Longitude = "-55.98", .Elevation = "125.8", .TimeOffset = "-3", .TimeZoneID = "Montevideo Standard Time"},
+            New aLocation With {.Num = "212", .EngName = "Tel Aviv", .EngCountry = "Israel", .HebName = "תל אביב", .HebCountry = "ישראל", .Latitude = "32.06", .Longitude = "34.77", .Elevation = "21.1", .TimeOffset = "2", .TimeZoneID = "Israel Standard Time"},
+            New aLocation With {.Num = "213", .EngName = "Tel Aviv-Yafo", .EngCountry = "Israel", .HebName = "גבעתיים", .HebCountry = "ישראל", .Latitude = "32.05", .Longitude = "34.8", .Elevation = "30.5", .TimeOffset = "2", .TimeZoneID = "Israel Standard Time"},
+            New aLocation With {.Num = "214", .EngName = "Tiberias", .EngCountry = "Israel", .HebName = "טבריה", .HebCountry = "ישראל", .Latitude = "32.79", .Longitude = "35.531", .Elevation = "-134.6", .TimeOffset = "2", .TimeZoneID = "Israel Standard Time"},
+            New aLocation With {.Num = "215", .EngName = "Tifrah", .EngCountry = "Israel", .HebName = "תפרח", .HebCountry = "ישראל", .Latitude = "31.32", .Longitude = "34.67", .Elevation = "151.1", .TimeOffset = "2", .TimeZoneID = "Israel Standard Time"},
+            New aLocation With {.Num = "216", .EngName = "Tokyo", .EngCountry = "Japan", .HebName = "טוקיו", .HebCountry = "יפן", .Latitude = "35.83", .Longitude = "139.76", .Elevation = "20.1", .TimeOffset = "9", .TimeZoneID = "Tokyo Standard Time"},
+            New aLocation With {.Num = "217", .EngName = "Toronto", .EngCountry = "Canada", .HebName = "טורונטו", .HebCountry = "קנדה", .Latitude = "43.68", .Longitude = "-79.43", .Elevation = "152.9", .TimeOffset = "-5", .TimeZoneID = "Eastern Standard Time"},
+            New aLocation With {.Num = "218", .EngName = "Toulon", .EngCountry = "France", .HebName = "טולון", .HebCountry = "צרפת", .Latitude = "43.15", .Longitude = "5.87", .Elevation = "183.7", .TimeOffset = "1", .TimeZoneID = "Romance Standard Time"},
+            New aLocation With {.Num = "219", .EngName = "Toulouse", .EngCountry = "France", .HebName = "טולוז", .HebCountry = "צרפת", .Latitude = "43.6", .Longitude = "1.45", .Elevation = "145.8", .TimeOffset = "1", .TimeZoneID = "Romance Standard Time"},
+            New aLocation With {.Num = "220", .EngName = "Tromso", .EngCountry = "Norway", .HebName = "טרומסו", .HebCountry = "נורווגיה", .Latitude = "69.66", .Longitude = "18.96", .Elevation = "43.1", .TimeOffset = "1", .TimeZoneID = "W. Europe Standard Time"},
+            New aLocation With {.Num = "221", .EngName = "Tucson", .EngCountry = "United States", .HebName = "טוסאן", .HebCountry = "ארצות הברית", .Latitude = "32.21", .Longitude = "-110.96", .Elevation = "738.2", .TimeOffset = "-7", .TimeZoneID = "US Mountain Standard Time"},
+            New aLocation With {.Num = "222", .EngName = "Turnberry", .EngCountry = "scotland", .HebName = "טורברי", .HebCountry = "סקוטלנד", .Latitude = "55.3", .Longitude = "-4.82", .Elevation = "39.8", .TimeOffset = "0", .TimeZoneID = "GMT Standard Time"},
+            New aLocation With {.Num = "223", .EngName = "Uman", .EngCountry = "Ukraine", .HebName = "אומן", .HebCountry = "אוקראינה", .Latitude = "48.74", .Longitude = "30.23", .Elevation = "183", .TimeOffset = "2", .TimeZoneID = "FLE Standard Time"},
+            New aLocation With {.Num = "224", .EngName = "Venice", .EngCountry = "Italy", .HebName = "וינציה", .HebCountry = "איטליה", .Latitude = "45.39", .Longitude = "12.46", .Elevation = "-13.9", .TimeOffset = "1", .TimeZoneID = "W. Europe Standard Time"},
+            New aLocation With {.Num = "225", .EngName = "Vienna", .EngCountry = "Austria", .HebName = "וינה", .HebCountry = "אוסטריה", .Latitude = "48.21", .Longitude = "16.36", .Elevation = "178.3", .TimeOffset = "1", .TimeZoneID = "W. Europe Standard Time"},
+            New aLocation With {.Num = "226", .EngName = "Warsaw", .EngCountry = "Poland", .HebName = "ורשא", .HebCountry = "פולין", .Latitude = "52.24", .Longitude = "21", .Elevation = "113.6", .TimeOffset = "1", .TimeZoneID = "Central European Standard Time"},
+            New aLocation With {.Num = "227", .EngName = "Washington", .EngCountry = "United States", .HebName = "וושינגטון", .HebCountry = "ארצות הברית", .Latitude = "38.9", .Longitude = "-77.03", .Elevation = "15.2", .TimeOffset = "-5", .TimeZoneID = "Eastern Standard Time"},
+            New aLocation With {.Num = "228", .EngName = "Winnipeg", .EngCountry = "Canada", .HebName = "ויניפג", .HebCountry = "קנדה", .Latitude = "49.89", .Longitude = "-97.14", .Elevation = "232", .TimeOffset = "-6", .TimeZoneID = "Central Standard Time"},
+            New aLocation With {.Num = "229", .EngName = "Yagur", .EngCountry = "Israel", .HebName = "כפר חסידים", .HebCountry = "ישראל", .Latitude = "32.74", .Longitude = "35.08", .Elevation = "18.2", .TimeOffset = "2", .TimeZoneID = "Israel Standard Time"},
+            New aLocation With {.Num = "230", .EngName = "Yagur", .EngCountry = "Israel", .HebName = "נשר", .HebCountry = "ישראל", .Latitude = "32.74", .Longitude = "35.08", .Elevation = "18.2", .TimeOffset = "2", .TimeZoneID = "Israel Standard Time"},
+            New aLocation With {.Num = "231", .EngName = "Yagur", .EngCountry = "Israel", .HebName = "קרית טבעון", .HebCountry = "ישראל", .Latitude = "32.74", .Longitude = "35.08", .Elevation = "18.2", .TimeOffset = "2", .TimeZoneID = "Israel Standard Time"},
+            New aLocation With {.Num = "232", .EngName = "Yeruham", .EngCountry = "Israel", .HebName = "ירוחם", .HebCountry = "ישראל", .Latitude = "30.99", .Longitude = "34.91", .Elevation = "461.2", .TimeOffset = "2", .TimeZoneID = "Israel Standard Time"},
+            New aLocation With {.Num = "233", .EngName = "Zephath", .EngCountry = "Israel", .HebName = "צפת", .HebCountry = "ישראל", .Latitude = "32.962", .Longitude = "35.496", .Elevation = "760.2", .TimeOffset = "2", .TimeZoneID = "Israel Standard Time"},
+            New aLocation With {.Num = "234", .EngName = "Zikhron Ya'akov", .EngCountry = "Israel", .HebName = "זכרון יעקב", .HebCountry = "ישראל", .Latitude = "32.57", .Longitude = "34.95", .Elevation = "149.5", .TimeOffset = "2", .TimeZoneID = "Israel Standard Time"},
+            New aLocation With {.Num = "235", .EngName = "Zurich", .EngCountry = "Switzerland", .HebName = "ציריך", .HebCountry = "שוויץ", .Latitude = "47.37", .Longitude = "8.54", .Elevation = "407.8", .TimeOffset = "1", .TimeZoneID = "W. Europe Standard Time"}
+         }
+    End Function
 
+
+    '=======================================================================
+    'utilities
+    '=======================================================================
+    Public Function HebDateStringtoNom(ByVal hebstring) 'based on VBA
+        Dim i, temp1 As Integer, day, Month, Year As String
+
+        Dim myHdate() As String = Split(hebstring, " ", -1)
+
+        If myHdate.Count = 3 Then
+            day = myHdate(0)
+            Month = myHdate(1)
+            Year = myHdate(2)
+        End If
+
+        If myHdate.Count = 4 Then
+            day = myHdate(0)
+            Month = myHdate(1) & " " & myHdate(2)
+            Year = myHdate(3)
+        End If
+
+
+        temp1 = 0
+        For i = 1 To Len(day)
+            temp1 = temp1 + HebLtoNom(Mid(day, i, 1))
+        Next
+        day = temp1
+
+        temp1 = 0
+        For i = 1 To Len(Year)
+            temp1 = temp1 + HebLtoNom(Mid(Year, i, 1))
+            'If Mid(Year, i, 1) = "-" Then temp1 = temp1 * 1000
+        Next
+        Year = temp1 + 5000
+
+        'no need for it here
+        'Month = HebMtoNom(Month)
+
+        'HebDateStringtoNom = Month & "/" & day & "/" & Year
+        Return day & " " & Month & " " & Year
+
+    End Function
+    Private Function HebLtoNom(ByVal hebstring As String)
+        Dim temp1
+        Dim mynum1() As Integer = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
+            10, 20, 20, 30, 40, 40, 50, 50, 60, 70, 80, 80, 90, 90,
+            100, 200, 300, 400}
+
+        Dim mynum2() As String = {"'", "א", "ב", "ג", "ד", "ה", "ו", "ז", "ח", "ט",
+        "י", "כ", "ך", "ל", "מ", "ם", "נ", "ן", "ס", "ע", "פ", "ף", "צ", "ץ",
+        "ק", "ר", "ש", "ת"}
+
+        For i = 0 To UBound(mynum2)
+            If hebstring = mynum2(i) Then temp1 = mynum1(i)
+        Next
+
+        Return temp1
+    End Function
+    Private Function HebMtoNom(ByVal hebstring)
+        Dim temp1
+        Dim myMonthM1() As String = {"", "תשרי", "חשון", "כסלו", "טבת", "שבט", "אדר א", "אדר ב", "ניסן", "אייר", "סיון", "תמוז", "אב", "אלול"}
+        Dim myMonthM2() As Integer = {0, 1, 2, 3, 4, 5, 6.1, 6.2, 7, 8, 9, 10, 11, 12}
+
+        For i = 0 To UBound(myMonthM1)
+            If hebstring = myMonthM1(i) Then temp1 = myMonthM2(i)
+        Next
+        Return temp1
+    End Function
+    Public Function TrimStringEllipsis(TextIn As String, FontIn As System.Drawing.Font, MaxSizeInPixels As Integer) As String
+        Dim TrimmedText As String
+        Dim graphics = (New System.Windows.Forms.Label()).CreateGraphics()
+        Dim CurrentSize As Integer = graphics.MeasureString(TextIn, FontIn).Width
+        'no need to trim
+        If CurrentSize <= MaxSizeInPixels Then Return TextIn
+
+        For Each c As Char In TextIn
+            TrimmedText += c
+            CurrentSize = graphics.MeasureString(TrimmedText & "...", FontIn).Width
+            If CurrentSize >= MaxSizeInPixels Then Exit For
+        Next
+        Return TrimmedText & "..."
+    End Function
+
+
+    '=======================================================================
+    'Not in use - saved
+    '=======================================================================
+    Public Function Load_Zmanim_Func()
+        'old used to get a list of all zmnaim Function's from DLL
+        Dim varZmanimFunc As New List(Of String)
+
+        varZmanTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time")
+        Dim timeZone As ITimeZone = New PZmanimTimeZone(varZmanTimeZone) 'WindowsTimeZone("Eastern Standard Time") '
+        Dim location As New GeoLocation("", 35, 31, 0, timeZone)
+        varCZC = New ComplexZmanimCalendar(Now, location)
+
+        Dim assembly As Reflection.Assembly = Reflection.Assembly.GetAssembly(GetType(Zmanim.ComplexZmanimCalendar))
+        For Each t As Type In assembly.GetTypes()
+            If t.ToString() = "Zmanim.ComplexZmanimCalendar" Then
+                For Each m In t.GetMembers.OrderBy(Function(temp) temp.Name)
+                    If Check_valid_zman(m.Name, True) = True Then
+                        varZmanimFunc.Add(New String(m.Name))
+                    Else
+                        'to add ShaahZmanis
+                        If InStr(m.Name, "ShaahZmanis") Then varZmanimFunc.Add(New String(m.Name))
+                    End If
+                Next
+            End If
+        Next
+        'add AddedGets
+        varZmanimFunc.Add("ZmanGetMisheyakir50")
+        varZmanimFunc.Add("ZmanGetPlagHamincha8Point5Degrees")
+        varZmanimFunc.Add("ZmanGetBeinHashmases8Point5Degrees13Min")
+        varZmanimFunc.Add("ZmanGetBeinHashmases8Point5Degrees5Point3")
+        varZmanimFunc.Add("ZmanGetCandleLighting40")
+        'varZmanimFunc.ForEach(Sub(x) Debug.Print(x))
+    End Function
+    Private Function fill_strings(name As String, zman As String, Optional num As Integer = 36) As String
+        Dim my_num As Integer
+        my_num = Len(name) + Len(zman)
+        my_num = my_num / 4
+
+        'debug.print(name.PadRight(num, ".") & zman)
+        Return name.PadRight(num, ".") & zman
+    End Function
+    Private Function fix_month_num(ByVal mddate)
+        'not in use anymore
+        Dim month_num As Integer
+
+        If varHC.GetMonth(mddate) <= 6 Then month_num = varHC.GetMonth(mddate) + 6
+
+        If varHC.GetLeapMonth(varHC.GetYear(mddate)) = 7 Then 'כשהוא שנה מעובר/ שבלא זה מחזיר 0
+            If varHC.GetMonth(mddate) = 7 Then month_num = 13 'אדר ב
+            If varHC.GetMonth(mddate) >= 8 Then month_num = varHC.GetMonth(mddate) - 7
+        Else
+            If varHC.GetMonth(mddate) >= 7 Then month_num = varHC.GetMonth(mddate) - 6
+        End If
+        Return month_num
+    End Function
     Function getnamebyTimeOffset(ByVal num As Double, ByVal windowsName As Boolean)
         'not in use
         'Using  GeoTimeZone.TimeZoneLookup and TimeZoneConverter.TZConvert
@@ -967,115 +1367,21 @@ A:
 
         Return name
     End Function
-    '=======================================================================
-    'utilities
-    '=======================================================================
-    Public Function HebDateStringtoNom(ByVal hebstring) 'based on VBA
-        Dim i, temp1 As Integer, day, Month, Year As String
-
-        Dim myHdate() As String = Split(hebstring, " ", -1)
-
-        If myHdate.Count = 3 Then
-            day = myHdate(0)
-            Month = myHdate(1)
-            Year = myHdate(2)
-        End If
-
-        If myHdate.Count = 4 Then
-            day = myHdate(0)
-            Month = myHdate(1) & " " & myHdate(2)
-            Year = myHdate(3)
-        End If
-
-
-        temp1 = 0
-        For i = 1 To Len(day)
-            temp1 = temp1 + HebLtoNom(Mid(day, i, 1))
-        Next
-        day = temp1
-
-        temp1 = 0
-        For i = 1 To Len(Year)
-            temp1 = temp1 + HebLtoNom(Mid(Year, i, 1))
-            'If Mid(Year, i, 1) = "-" Then temp1 = temp1 * 1000
-        Next
-        Year = temp1 + 5000
-
-        'no need for it here
-        'Month = HebMtoNom(Month)
-
-        'HebDateStringtoNom = Month & "/" & day & "/" & Year
-        Return day & " " & Month & " " & Year
-
-    End Function
-    Private Function HebLtoNom(ByVal hebstring As String)
-        Dim temp1
-        Dim mynum1() As Integer = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
-            10, 20, 20, 30, 40, 40, 50, 50, 60, 70, 80, 80, 90, 90,
-            100, 200, 300, 400}
-
-        Dim mynum2() As String = {"'", "א", "ב", "ג", "ד", "ה", "ו", "ז", "ח", "ט",
-        "י", "כ", "ך", "ל", "מ", "ם", "נ", "ן", "ס", "ע", "פ", "ף", "צ", "ץ",
-        "ק", "ר", "ש", "ת"}
-
-        For i = 0 To UBound(mynum2)
-            If hebstring = mynum2(i) Then temp1 = mynum1(i)
-        Next
-
-        Return temp1
-    End Function
-    Private Function HebMtoNom(ByVal hebstring)
-        Dim temp1
-        Dim myMonthM1() As String = {"", "תשרי", "חשון", "כסלו", "טבת", "שבט", "אדר א", "אדר ב", "ניסן", "אייר", "סיון", "תמוז", "אב", "אלול"}
-        Dim myMonthM2() As Integer = {0, 1, 2, 3, 4, 5, 6.1, 6.2, 7, 8, 9, 10, 11, 12}
-
-        For i = 0 To UBound(myMonthM1)
-            If hebstring = myMonthM1(i) Then temp1 = myMonthM2(i)
-        Next
-        Return temp1
-    End Function
-
-    Private Function fix_month_num(ByVal mddate)
-        'not in use anymore
-        Dim month_num As Integer
-
-        If varHC.GetMonth(mddate) <= 6 Then month_num = varHC.GetMonth(mddate) + 6
-
-        If varHC.GetLeapMonth(varHC.GetYear(mddate)) = 7 Then 'כשהוא שנה מעובר/ שבלא זה מחזיר 0
-            If varHC.GetMonth(mddate) = 7 Then month_num = 13 'אדר ב
-            If varHC.GetMonth(mddate) >= 8 Then month_num = varHC.GetMonth(mddate) - 7
-        Else
-            If varHC.GetMonth(mddate) >= 7 Then month_num = varHC.GetMonth(mddate) - 6
-        End If
-        Return month_num
-    End Function
-    Public Function TrimStringEllipsis(TextIn As String, FontIn As System.Drawing.Font, MaxSizeInPixels As Integer) As String
-        Dim TrimmedText As String
-        Dim graphics = (New System.Windows.Forms.Label()).CreateGraphics()
-        Dim CurrentSize As Integer = graphics.MeasureString(TextIn, FontIn).Width
-        'no need to trim
-        If CurrentSize <= MaxSizeInPixels Then Return TextIn
-
-        For Each c As Char In TextIn
-            TrimmedText += c
-            CurrentSize = graphics.MeasureString(TrimmedText & "...", FontIn).Width
-            If CurrentSize >= MaxSizeInPixels Then Exit For
-        Next
-        Return TrimmedText & "..."
-    End Function
-    Private Function fill_strings(name As String, zman As String, Optional num As Integer = 36) As String
-        Dim my_num As Integer
-        my_num = Len(name) + Len(zman)
-        my_num = my_num / 4
-
-        'debug.print(name.PadRight(num, ".") & zman)
-        Return name.PadRight(num, ".") & zman
-    End Function
-
+    Public Sub CopyUserLocationToList(ByVal UserLocation As aLocation)
+        varLocationList.Where(Function(X) X.Num = UserLocation.Num).First.Num = UserLocation.Num
+        varLocationList.Where(Function(X) X.Num = UserLocation.Num).First.EngName = UserLocation.EngName
+        varLocationList.Where(Function(X) X.Num = UserLocation.Num).First.HebName = UserLocation.HebName
+        varLocationList.Where(Function(X) X.Num = UserLocation.Num).First.EngCountry = UserLocation.EngCountry
+        varLocationList.Where(Function(X) X.Num = UserLocation.Num).First.HebCountry = UserLocation.HebCountry
+        varLocationList.Where(Function(X) X.Num = UserLocation.Num).First.Longitude = UserLocation.Longitude
+        varLocationList.Where(Function(X) X.Num = UserLocation.Num).First.Latitude = UserLocation.Latitude
+        varLocationList.Where(Function(X) X.Num = UserLocation.Num).First.Elevation = UserLocation.Elevation
+        varLocationList.Where(Function(X) X.Num = UserLocation.Num).First.TimeOffset = UserLocation.TimeOffset
+        varLocationList.Where(Function(X) X.Num = UserLocation.Num).First.TimeZoneID = UserLocation.TimeZoneID
+    End Sub
 End Module
 
-'old
-'varZmanimFunc.ForEach(Sub(x) Debug.Print(x))
+
 
 
 

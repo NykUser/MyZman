@@ -4,12 +4,12 @@
 
         GroupBox1.Font = MemoryFonts.GetFont(1, 12, FontStyle.Regular)
         GroupBox2.Font = MemoryFonts.GetFont(1, 12, FontStyle.Regular)
+        GroupBox3.Font = MemoryFonts.GetFont(1, 12, FontStyle.Regular)
         tbTimeR.Font = MemoryFonts.GetFont(0, 10, FontStyle.Regular)
         CbTimeA.Font = MemoryFonts.GetFont(0, 10, FontStyle.Regular)
         CbTimeB.Font = MemoryFonts.GetFont(0, 10, FontStyle.Regular)
         tbTimeA.Font = MemoryFonts.GetFont(0, 10, FontStyle.Regular)
         tbTimeB.Font = MemoryFonts.GetFont(0, 10, FontStyle.Regular)
-        CBMday.Font = MemoryFonts.GetFont(0, 8.75, FontStyle.Regular)
 
         CbTimeA.Items.Clear()
         CbTimeB.Items.Clear()
@@ -17,15 +17,14 @@
         If varSC.HebrewMenus = True Then
             GroupBox1.RightToLeft = 1
             GroupBox2.RightToLeft = 1
+            GroupBox3.RightToLeft = 1
             tbTimeA.RightToLeft = 0
             tbTimeB.RightToLeft = 0
             tbTimeR.RightToLeft = 0
             Me.Text = "השווה זמנים"
             GroupBox1.Text = "זמן א"
             GroupBox2.Text = "זמן ב"
-            LabelDifference.Font = MemoryFonts.GetFont(0, 8.75, FontStyle.Regular)
-            LabelDifference.Text = "הבדל"
-            LabelDifference.RightToLeft = 1
+            GroupBox3.Text = "הבדל"
             For Each ZmanFunc As aZmanimFunc In varZmanimFuncList
                 'add ChrW(&H200F) & " " for () at end of name
                 CbTimeA.Items.Add(ZmanFunc.HebName & ChrW(&H200F) & " ")
@@ -34,12 +33,12 @@
         Else
             GroupBox1.RightToLeft = 0
             GroupBox2.RightToLeft = 0
+            GroupBox3.RightToLeft = 0
             CbTimeA.RightToLeft = 0
             CbTimeB.RightToLeft = 0
             GroupBox1.Text = "Zman 1"
             GroupBox2.Text = "Zman 2"
-            LabelDifference.Text = "Difference"
-            LabelDifference.Font = MemoryFonts.GetFont(0, 7.75, FontStyle.Regular)
+            GroupBox3.Text = "Difference"
             For Each ZmanFunc As aZmanimFunc In varZmanimFuncList
                 CbTimeA.Items.Add(ZmanFunc.EngName)
                 CbTimeB.Items.Add(ZmanFunc.EngName)
@@ -62,7 +61,7 @@
     Private Sub CbTimeB_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CbTimeB.SelectedIndexChanged
         run_difference()
     End Sub
-    Private Sub CBMday_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CBMday.CheckedChanged
+    Private Sub CBMday_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         run_difference()
     End Sub
     Public Sub SetAutoComplete(ByVal sender As Object, ByVal AutoComplete As Boolean)
@@ -155,23 +154,24 @@
 
 
         'remove hebname is eng
-        For Each place As aLocation In alist.Location
+        For Each place As aLocation In alist.UserLocation
             If Regex.Match(place.HebName, "[A-z]").Success = True Then
                 place.HebName = ""
             End If
         Next
 
-        Debug.Print(alist.Location.Count)
+        Debug.Print(alist.UserLocation.Count)
 
         Dim counter As Integer
         Dim write As New BinaryWriter(File.Open(filename & ".DAT", FileMode.Create))
         With write
-            .Write(alist.Location.Count)
-            For Each place As aLocation In alist.Location
+            .Write(alist.UserLocation.Count)
+            For Each place As aLocation In alist.UserLocation
                 counter += 1
                 Debug.Print(counter)
                 Debug.Print(place.EngName)
-                .Write(place.Country)
+                .Write(place.EngCountry)
+                .Write(place.HebCountry)
                 .Write(place.Elevation)
                 .Write(place.Latitude)
                 .Write(place.Longitude)

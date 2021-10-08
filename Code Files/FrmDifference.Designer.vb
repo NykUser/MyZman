@@ -24,7 +24,6 @@ Partial Class FrmDifference
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FrmDifference))
         Me.btAddTimeZoneId = New System.Windows.Forms.Button()
-        Me.CBMday = New System.Windows.Forms.CheckBox()
         Me.btSystemInfo = New System.Windows.Forms.Button()
         Me.make_dat_file = New System.Windows.Forms.Button()
         Me.TextBox1 = New System.Windows.Forms.TextBox()
@@ -32,14 +31,15 @@ Partial Class FrmDifference
         Me.CbTimeB = New System.Windows.Forms.ComboBox()
         Me.tbTimeA = New System.Windows.Forms.TextBox()
         Me.tbTimeB = New System.Windows.Forms.TextBox()
-        Me.tbTimeR = New System.Windows.Forms.TextBox()
         Me.btSunOffset = New System.Windows.Forms.Button()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
         Me.Butexit = New System.Windows.Forms.Button()
-        Me.LabelDifference = New System.Windows.Forms.Label()
+        Me.GroupBox3 = New System.Windows.Forms.GroupBox()
+        Me.tbTimeR = New System.Windows.Forms.TextBox()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
+        Me.GroupBox3.SuspendLayout()
         Me.SuspendLayout()
         '
         'btAddTimeZoneId
@@ -51,16 +51,6 @@ Partial Class FrmDifference
         Me.btAddTimeZoneId.TabIndex = 74
         Me.btAddTimeZoneId.Text = "ListAddZoneId"
         Me.btAddTimeZoneId.UseVisualStyleBackColor = True
-        '
-        'CBMday
-        '
-        Me.CBMday.AutoSize = True
-        Me.CBMday.Location = New System.Drawing.Point(181, 203)
-        Me.CBMday.Name = "CBMday"
-        Me.CBMday.Size = New System.Drawing.Size(58, 17)
-        Me.CBMday.TabIndex = 73
-        Me.CBMday.Text = "- 1 day"
-        Me.CBMday.UseVisualStyleBackColor = True
         '
         'btSystemInfo
         '
@@ -133,13 +123,6 @@ Partial Class FrmDifference
         Me.tbTimeB.Size = New System.Drawing.Size(224, 24)
         Me.tbTimeB.TabIndex = 71
         '
-        'tbTimeR
-        '
-        Me.tbTimeR.Location = New System.Drawing.Point(71, 200)
-        Me.tbTimeR.Name = "tbTimeR"
-        Me.tbTimeR.Size = New System.Drawing.Size(105, 20)
-        Me.tbTimeR.TabIndex = 72
-        '
         'btSunOffset
         '
         Me.btSunOffset.Location = New System.Drawing.Point(280, 19)
@@ -165,7 +148,6 @@ Partial Class FrmDifference
         'GroupBox2
         '
         Me.GroupBox2.Controls.Add(Me.tbTimeB)
-        Me.GroupBox2.Controls.Add(Me.Butexit)
         Me.GroupBox2.Controls.Add(Me.CbTimeB)
         Me.GroupBox2.Font = New System.Drawing.Font("David", 12.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
         Me.GroupBox2.ForeColor = System.Drawing.Color.DodgerBlue
@@ -183,21 +165,31 @@ Partial Class FrmDifference
         Me.Butexit.FlatAppearance.BorderColor = System.Drawing.SystemColors.Info
         Me.Butexit.FlatAppearance.MouseDownBackColor = System.Drawing.SystemColors.Info
         Me.Butexit.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.Info
-        Me.Butexit.Location = New System.Drawing.Point(188, 58)
+        Me.Butexit.Location = New System.Drawing.Point(246, -2)
         Me.Butexit.Name = "Butexit"
-        Me.Butexit.Size = New System.Drawing.Size(10, 10)
+        Me.Butexit.Size = New System.Drawing.Size(1, 1)
         Me.Butexit.TabIndex = 78
         Me.Butexit.Text = "&exit"
         Me.Butexit.UseVisualStyleBackColor = False
         '
-        'LabelDifference
+        'GroupBox3
         '
-        Me.LabelDifference.AutoSize = True
-        Me.LabelDifference.Location = New System.Drawing.Point(13, 203)
-        Me.LabelDifference.Name = "LabelDifference"
-        Me.LabelDifference.Size = New System.Drawing.Size(56, 13)
-        Me.LabelDifference.TabIndex = 77
-        Me.LabelDifference.Text = "Difference"
+        Me.GroupBox3.Controls.Add(Me.tbTimeR)
+        Me.GroupBox3.Font = New System.Drawing.Font("David", 12.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
+        Me.GroupBox3.ForeColor = System.Drawing.Color.DodgerBlue
+        Me.GroupBox3.Location = New System.Drawing.Point(9, 202)
+        Me.GroupBox3.Name = "GroupBox3"
+        Me.GroupBox3.Size = New System.Drawing.Size(236, 61)
+        Me.GroupBox3.TabIndex = 78
+        Me.GroupBox3.TabStop = False
+        Me.GroupBox3.Text = "Difference"
+        '
+        'tbTimeR
+        '
+        Me.tbTimeR.Location = New System.Drawing.Point(6, 24)
+        Me.tbTimeR.Name = "tbTimeR"
+        Me.tbTimeR.Size = New System.Drawing.Size(224, 24)
+        Me.tbTimeR.TabIndex = 71
         '
         'FrmDifference
         '
@@ -205,21 +197,20 @@ Partial Class FrmDifference
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.AliceBlue
         Me.CancelButton = Me.Butexit
-        Me.ClientSize = New System.Drawing.Size(255, 231)
-        Me.Controls.Add(Me.LabelDifference)
+        Me.ClientSize = New System.Drawing.Size(255, 276)
+        Me.Controls.Add(Me.GroupBox3)
+        Me.Controls.Add(Me.Butexit)
         Me.Controls.Add(Me.GroupBox2)
         Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.btAddTimeZoneId)
-        Me.Controls.Add(Me.CBMday)
         Me.Controls.Add(Me.btSystemInfo)
         Me.Controls.Add(Me.make_dat_file)
         Me.Controls.Add(Me.TextBox1)
-        Me.Controls.Add(Me.tbTimeR)
         Me.Controls.Add(Me.btSunOffset)
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
-        Me.MaximumSize = New System.Drawing.Size(500, 270)
-        Me.MinimumSize = New System.Drawing.Size(271, 247)
+        Me.MaximumSize = New System.Drawing.Size(500, 315)
+        Me.MinimumSize = New System.Drawing.Size(271, 315)
         Me.Name = "FrmDifference"
         Me.Text = "Compare Zmanim"
         Me.TopMost = True
@@ -227,13 +218,14 @@ Partial Class FrmDifference
         Me.GroupBox1.PerformLayout()
         Me.GroupBox2.ResumeLayout(False)
         Me.GroupBox2.PerformLayout()
+        Me.GroupBox3.ResumeLayout(False)
+        Me.GroupBox3.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
     End Sub
 
     Friend WithEvents btAddTimeZoneId As Button
-    Friend WithEvents CBMday As CheckBox
     Friend WithEvents btSystemInfo As Button
     Friend WithEvents make_dat_file As Button
     Friend WithEvents TextBox1 As TextBox
@@ -241,10 +233,10 @@ Partial Class FrmDifference
     Friend WithEvents CbTimeB As ComboBox
     Friend WithEvents tbTimeA As TextBox
     Friend WithEvents tbTimeB As TextBox
-    Friend WithEvents tbTimeR As TextBox
     Friend WithEvents btSunOffset As Button
     Friend WithEvents GroupBox1 As GroupBox
     Friend WithEvents GroupBox2 As GroupBox
-    Friend WithEvents LabelDifference As Label
     Friend WithEvents Butexit As Button
+    Friend WithEvents GroupBox3 As GroupBox
+    Friend WithEvents tbTimeR As TextBox
 End Class

@@ -500,7 +500,7 @@ Public Class FrmSchedule
         e.Handled = True
     End Sub
     Sub FrmSchedule_change_place(ByVal num As Integer)
-        If varSC.Location.Count < 1 Then Exit Sub
+        If varSC.UserLocation.Count < 1 Then Exit Sub
         Dim SelectedPlace As Object
         Try
             If varSC.PlaceListInHebrew = True Then

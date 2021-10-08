@@ -8,7 +8,7 @@ Module ProjectsGlobalVariables
     Public Property varCZC As ComplexZmanimCalendar
     Public Property varEngPlaceList As LocationCollection = New LocationCollection 'As New List(Of aLocation)
     Public Property varHebPlaceList As LocationCollection = New LocationCollection 'As New List(Of aLocation)
-    Public Property varZmanimFunc As New List(Of String)
+    Public Property varLocationList As New List(Of aLocation)
     Public Property varZmanimFuncList As New List(Of aZmanimFunc)
     Public Property varDescriptionBalloonTip As CustomBalloonTip
     Public Property varFinishedLoading As Boolean = False
@@ -27,5 +27,7 @@ Module ProjectsGlobalVariables
     Public Property varLocationSecondTry As Boolean = False
     Public Property varHC As New HebrewCalendar()
     Public Property varHculture As CultureInfo = CultureInfo.CreateSpecificCulture("he-IL")
+    Public Property varGC As New GregorianCalendar()
+    Public Property varEculture As CultureInfo = CultureInfo.CreateSpecificCulture("en-IL")
     Public Property varProgramRunTime As Date = Now
 End Module
