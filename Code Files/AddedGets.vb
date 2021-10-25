@@ -124,7 +124,7 @@
     End Function
     Public Function ZmanGetParsha(ByVal DateIn As Date, inIsrael As Boolean, Optional EngNames As Boolean = False) As String
         'move to sab - needed for week of R"H 
-        If DateIn.DayOfWeek <> 6 Then DateIn = DateIn.AddDays(Add_till_sab(DateIn.DayOfWeek))
+        If DateIn.DayOfWeek <> DayOfWeek.Saturday Then DateIn = DateIn.AddDays(Add_till_sab(DateIn.DayOfWeek))
 
         Dim jc As New JewishCalendar()
         Dim jewishYear = jc.GetYear(DateIn)
@@ -247,16 +247,16 @@
             End If
         End If
     End Function
-    Private Function Add_till_sab(ByVal day)
-        'monday is 1
-        Dim temp1
-        If day = 0 Then temp1 = 6
-        If day = 1 Then temp1 = 5
-        If day = 2 Then temp1 = 4
-        If day = 3 Then temp1 = 3
-        If day = 4 Then temp1 = 2
-        If day = 5 Then temp1 = 1
-        Return temp1
+    Private Function Add_till_sab(ByVal day As DayOfWeek) As Integer
+        ' monday is 1
+        If (day = DayOfWeek.Sunday) Then Return 6
+        If (day = DayOfWeek.Monday) Then Return 5
+        If (day = DayOfWeek.Tuesday) Then Return 4
+        If (day = DayOfWeek.Wednesday) Then Return 3
+        If (day = DayOfWeek.Thursday) Then Return 2
+        If (day = DayOfWeek.Friday) Then Return 1
+
+        Return 0
     End Function
     Public Function GetParshaNew2(ByRef ParshaEng As String)
         'uses the JewishCalendar.cs name to get the heb name - this usess the new JewishCalendar.cs from 2021 - but the is an issue with some years like תשע"ח תשפ"ט

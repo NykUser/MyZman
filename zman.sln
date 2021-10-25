@@ -5,15 +5,15 @@ VisualStudioVersion = 16.0.30517.126
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "zman", "zman.vbproj", "{6B13CA4F-07F4-4EAC-8C36-F2A456377EC3}"
 	ProjectSection(ProjectDependencies) = postProject
-		{7629E910-1996-448E-B344-AA925F23EEE6} = {7629E910-1996-448E-B344-AA925F23EEE6}
+		{9E34FB2A-4B06-45D5-A0D6-6DAED49CAFC9} = {9E34FB2A-4B06-45D5-A0D6-6DAED49CAFC9}
 	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zmanim", "Zmanim\Zmanim.csproj", "{7629E910-1996-448E-B344-AA925F23EEE6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C56185C5-117E-4E75-A827-2565C1E78D67}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 	EndProjectSection
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Zmanim", "ZmanimVB\Zmanim.vbproj", "{9E34FB2A-4B06-45D5-A0D6-6DAED49CAFC9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -30,14 +30,14 @@ Global
 		{6B13CA4F-07F4-4EAC-8C36-F2A456377EC3}.Release|Any CPU.ActiveCfg = Release|x86
 		{6B13CA4F-07F4-4EAC-8C36-F2A456377EC3}.Release|x86.ActiveCfg = Release|x86
 		{6B13CA4F-07F4-4EAC-8C36-F2A456377EC3}.Release|x86.Build.0 = Release|x86
-		{7629E910-1996-448E-B344-AA925F23EEE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7629E910-1996-448E-B344-AA925F23EEE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7629E910-1996-448E-B344-AA925F23EEE6}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{7629E910-1996-448E-B344-AA925F23EEE6}.Debug|x86.Build.0 = Debug|Any CPU
-		{7629E910-1996-448E-B344-AA925F23EEE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7629E910-1996-448E-B344-AA925F23EEE6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7629E910-1996-448E-B344-AA925F23EEE6}.Release|x86.ActiveCfg = Release|Any CPU
-		{7629E910-1996-448E-B344-AA925F23EEE6}.Release|x86.Build.0 = Release|Any CPU
+		{9E34FB2A-4B06-45D5-A0D6-6DAED49CAFC9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E34FB2A-4B06-45D5-A0D6-6DAED49CAFC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E34FB2A-4B06-45D5-A0D6-6DAED49CAFC9}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9E34FB2A-4B06-45D5-A0D6-6DAED49CAFC9}.Debug|x86.Build.0 = Debug|Any CPU
+		{9E34FB2A-4B06-45D5-A0D6-6DAED49CAFC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E34FB2A-4B06-45D5-A0D6-6DAED49CAFC9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E34FB2A-4B06-45D5-A0D6-6DAED49CAFC9}.Release|x86.ActiveCfg = Release|Any CPU
+		{9E34FB2A-4B06-45D5-A0D6-6DAED49CAFC9}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

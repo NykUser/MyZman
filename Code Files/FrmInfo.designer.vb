@@ -78,6 +78,7 @@ Partial Class Frminfo
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
         Me.btHideLocationInfo = New System.Windows.Forms.Button()
         Me.PanelOnCbTimeZone = New System.Windows.Forms.Panel()
+        Me.rbtLocationContexOpen = New zman.WindowsFormsApplication1.RoundButton()
         Me.LabelTimeZone = New System.Windows.Forms.Label()
         Me.LabelCountry = New System.Windows.Forms.Label()
         Me.ZmanimContextMenuHelper = New System.Windows.Forms.ContextMenuStrip(Me.components)
@@ -93,6 +94,7 @@ Partial Class Frminfo
         Me.dpEngdate = New System.Windows.Forms.DateTimePicker()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.rtbParsha = New System.Windows.Forms.RichTextBox()
+        Me.rbtTodayRefresh = New zman.WindowsFormsApplication1.RoundButton()
         Me.PanelOndpEngdate = New System.Windows.Forms.Panel()
         Me.TimerTransparency = New System.Windows.Forms.Timer(Me.components)
         Me.TimerZmanimAfterChange = New System.Windows.Forms.Timer(Me.components)
@@ -102,8 +104,6 @@ Partial Class Frminfo
         Me.ZmanDisplayName = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.ZmanTime = New System.Windows.Forms.DataGridViewComboBoxColumn()
         Me.LabelDisclaimer = New System.Windows.Forms.Label()
-        Me.rbtTodayRefresh = New zman.WindowsFormsApplication1.RoundButton()
-        Me.rbtLocationContexOpen = New zman.WindowsFormsApplication1.RoundButton()
         Me.LocationContextMenu.SuspendLayout()
         Me.StatusStrip1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
@@ -575,6 +575,19 @@ Partial Class Frminfo
         Me.PanelOnCbTimeZone.Size = New System.Drawing.Size(183, 17)
         Me.PanelOnCbTimeZone.TabIndex = 29
         '
+        'rbtLocationContexOpen
+        '
+        Me.rbtLocationContexOpen.Anchor = System.Windows.Forms.AnchorStyles.Top
+        Me.rbtLocationContexOpen.FlatAppearance.BorderSize = 0
+        Me.rbtLocationContexOpen.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.rbtLocationContexOpen.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
+        Me.rbtLocationContexOpen.Image = Global.zman.My.Resources.Resources.three_dots_icon_gray
+        Me.rbtLocationContexOpen.Location = New System.Drawing.Point(241, 20)
+        Me.rbtLocationContexOpen.Name = "rbtLocationContexOpen"
+        Me.rbtLocationContexOpen.Size = New System.Drawing.Size(17, 28)
+        Me.rbtLocationContexOpen.TabIndex = 8
+        Me.rbtLocationContexOpen.UseVisualStyleBackColor = True
+        '
         'LabelTimeZone
         '
         Me.LabelTimeZone.Anchor = System.Windows.Forms.AnchorStyles.Top
@@ -708,6 +721,18 @@ Partial Class Frminfo
         Me.rtbParsha.TabIndex = 11
         Me.rtbParsha.Text = ""
         '
+        'rbtTodayRefresh
+        '
+        Me.rbtTodayRefresh.FlatAppearance.BorderSize = 0
+        Me.rbtTodayRefresh.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.rbtTodayRefresh.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
+        Me.rbtTodayRefresh.Image = Global.zman.My.Resources.Resources.Undo_16x
+        Me.rbtTodayRefresh.Location = New System.Drawing.Point(239, 23)
+        Me.rbtTodayRefresh.Name = "rbtTodayRefresh"
+        Me.rbtTodayRefresh.Size = New System.Drawing.Size(26, 23)
+        Me.rbtTodayRefresh.TabIndex = 3
+        Me.rbtTodayRefresh.UseVisualStyleBackColor = True
+        '
         'PanelOndpEngdate
         '
         Me.PanelOndpEngdate.Controls.Add(Me.dpEngdate)
@@ -788,31 +813,6 @@ Partial Class Frminfo
         Me.LabelDisclaimer.TabIndex = 28
         Me.LabelDisclaimer.Text = "Don't"
         Me.LabelDisclaimer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
-        'rbtTodayRefresh
-        '
-        Me.rbtTodayRefresh.FlatAppearance.BorderSize = 0
-        Me.rbtTodayRefresh.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.rbtTodayRefresh.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
-        Me.rbtTodayRefresh.Image = Global.zman.My.Resources.Resources.Undo_16x
-        Me.rbtTodayRefresh.Location = New System.Drawing.Point(239, 23)
-        Me.rbtTodayRefresh.Name = "rbtTodayRefresh"
-        Me.rbtTodayRefresh.Size = New System.Drawing.Size(26, 23)
-        Me.rbtTodayRefresh.TabIndex = 3
-        Me.rbtTodayRefresh.UseVisualStyleBackColor = True
-        '
-        'rbtLocationContexOpen
-        '
-        Me.rbtLocationContexOpen.Anchor = System.Windows.Forms.AnchorStyles.Top
-        Me.rbtLocationContexOpen.FlatAppearance.BorderSize = 0
-        Me.rbtLocationContexOpen.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.rbtLocationContexOpen.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
-        Me.rbtLocationContexOpen.Image = Global.zman.My.Resources.Resources.three_dots_icon_gray
-        Me.rbtLocationContexOpen.Location = New System.Drawing.Point(241, 20)
-        Me.rbtLocationContexOpen.Name = "rbtLocationContexOpen"
-        Me.rbtLocationContexOpen.Size = New System.Drawing.Size(17, 28)
-        Me.rbtLocationContexOpen.TabIndex = 8
-        Me.rbtLocationContexOpen.UseVisualStyleBackColor = True
         '
         'Frminfo
         '

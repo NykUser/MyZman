@@ -29,7 +29,7 @@ Public Class Frminfo
         If CultureInfo.CurrentCulture.Calendar.GetType.Name = "HebrewCalendar" Then
             dpEngdate.RightToLeft = 1
             dpEngdate.RightToLeftLayout = 1
-            dpEngdate.CustomFormat = "yyyy MMM dd dddd"
+            dpEngdate.CustomFormat = "yyyy    MMM  dd    " 'dddd
         End If
 
         DataGridView1.Select()
@@ -1314,11 +1314,53 @@ Public Class Frminfo
     End Sub
     Private Sub Button1_Click_1(sender As Object, e As EventArgs)
         varEculture.DateTimeFormat.Calendar = varGC
-        Debug.Print(dpEngdate.Value.ToString("U", varEculture))
-        Debug.Print(CDate(dpEngdate.Value))
+        'Debug.Print(dpEngdate.Value.ToString("U", varEculture))
+        'Debug.Print(CDate(dpEngdate.Value))
         'date1.ToString("d", CultureInfo.InvariantCulture)
         'testingnow()
     End Sub
+
+    Private Sub Button1_Click(sender As Object, e As EventArgs)
+
+
+        Debug.Print(GetHebrewLetterToNum("תשסג"))
+        Dim hdf As New HebrewDateFormatter
+        Dim jc As New JewishCalendar
+
+        'this can replace zmangetParshah - the is also a list for eng
+        Debug.Print(hdf.FormatParsha(Today, False))
+
+
+
+        Exit Sub
+        Dim Digit = (58 Mod 10)
+        Debug.Print(Digit)
+
+        Digit = (53 Mod 10)
+        Debug.Print(Digit)
+        Debug.Print(GetNumtoHebrewLetter(7, 1, True, True))
+        'Debug.Print(757 \ 10)
+    End Sub
+
+    Private Function GetHebrewLetterToNum(ByVal hebstring As String)
+        Dim Num
+        Dim Result
+        Dim NumArray() As Integer = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
+            10, 20, 20, 30, 40, 40, 50, 50, 60, 70, 80, 80, 90, 90,
+            100, 200, 300, 400}
+
+        Dim LetterArray() As String = {"'", "א", "ב", "ג", "ד", "ה", "ו", "ז", "ח", "ט",
+        "י", "כ", "ך", "ל", "מ", "ם", "נ", "ן", "ס", "ע", "פ", "ף", "צ", "ץ",
+        "ק", "ר", "ש", "ת"}
+
+        For i = 0 To hebstring.Length - 1
+            For k = 0 To LetterArray.Length - 1 'UBound(LetterArray)
+                If hebstring.Substring(i, 1) = LetterArray(k) Then Result += NumArray(k)
+            Next
+        Next
+
+        Return Result
+    End Function
 End Class
 
 

@@ -551,7 +551,6 @@ Module FunctionsModule
     End Sub
     Public Function Get_HebDate(DateIn As Date, Optional LongHebDayFormat As Boolean = False) As String()
         Dim Hebdate, Holiday, Hebday, Parsha, Daf As String
-        Dim JC As New JewishCalendar()
         Dim HDF As New HebrewDateFormatter()
         Dim YC As New YomiCalculator()
         HDF.HebrewFormat = True
@@ -1182,13 +1181,13 @@ A:
 
         temp1 = 0
         For i = 1 To Len(day)
-            temp1 = temp1 + HebLtoNom(Mid(day, i, 1))
+            temp1 = temp1 + HebLtoNum(Mid(day, i, 1))
         Next
         day = temp1
 
         temp1 = 0
         For i = 1 To Len(Year)
-            temp1 = temp1 + HebLtoNom(Mid(Year, i, 1))
+            temp1 = temp1 + HebLtoNum(Mid(Year, i, 1))
             'If Mid(Year, i, 1) = "-" Then temp1 = temp1 * 1000
         Next
         Year = temp1 + 5000
@@ -1200,22 +1199,23 @@ A:
         Return day & " " & Month & " " & Year
 
     End Function
-    Private Function HebLtoNom(ByVal hebstring As String)
-        Dim temp1
-        Dim mynum1() As Integer = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
+    Public Function HebLtoNum(ByVal hebstring As String)
+        Dim Result
+        Dim NumArray() As Integer = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
             10, 20, 20, 30, 40, 40, 50, 50, 60, 70, 80, 80, 90, 90,
             100, 200, 300, 400}
 
-        Dim mynum2() As String = {"'", "א", "ב", "ג", "ד", "ה", "ו", "ז", "ח", "ט",
+        Dim LetterArray() As String = {"'", "א", "ב", "ג", "ד", "ה", "ו", "ז", "ח", "ט",
         "י", "כ", "ך", "ל", "מ", "ם", "נ", "ן", "ס", "ע", "פ", "ף", "צ", "ץ",
         "ק", "ר", "ש", "ת"}
 
-        For i = 0 To UBound(mynum2)
-            If hebstring = mynum2(i) Then temp1 = mynum1(i)
+        For i = 0 To UBound(LetterArray)
+            If hebstring = LetterArray(i) Then Result = NumArray(i)
         Next
 
-        Return temp1
+        Return Result
     End Function
+
     Private Function HebMtoNom(ByVal hebstring)
         Dim temp1
         Dim myMonthM1() As String = {"", "תשרי", "חשון", "כסלו", "טבת", "שבט", "אדר א", "אדר ב", "ניסן", "אייר", "סיון", "תמוז", "אב", "אלול"}
@@ -1226,6 +1226,7 @@ A:
         Next
         Return temp1
     End Function
+
     Public Function TrimStringEllipsis(TextIn As String, FontIn As System.Drawing.Font, MaxSizeInPixels As Integer) As String
         Dim TrimmedText As String
         Dim graphics = (New System.Windows.Forms.Label()).CreateGraphics()
@@ -1239,6 +1240,95 @@ A:
             If CurrentSize >= MaxSizeInPixels Then Exit For
         Next
         Return TrimmedText & "..."
+    End Function
+    ''' <summary>
+    ''' Gets a string where each number in <paramrefname="number"/> is replaced with the
+    ''' Hebrew Letter representation.
+    ''' </summary>
+    ''' <paramname="intNum">The number to convert.</param>
+    ''' <paramname="intIncludeThousands">Include Thousands. 0 for false 1 for true 2 for apostrophe after Thousand num</param>
+    ''' <paramname="IncludeQuotes">Include Quotes.</param>
+    ''' <paramname="blnGoodNumbers">Convert to Good Numbers.</param>
+    ''' <returns>
+    ''' A <seecref="String"/> Hebrew Letter representation of the <paramrefname="number"/>.
+    ''' </returns>
+    Public Function GetNumtoHebrewLetter(ByVal intNum As Integer, Optional intIncludeThousands As Integer = 0, Optional blnIncludeQuotes As Boolean = True, Optional blnGoodNumbers As Boolean = True) As String
+        Dim strTemp As String
+        Dim strThousands As String
+        Dim Digit As Integer
+        strTemp = ""
+
+        If intNum >= 1000 Then
+            strThousands = GetNumtoHebrewLetter(intNum \ 1000, 0, False) 'dont get apostrophe will be set belwo
+            intNum = intNum Mod 1000
+            If intIncludeThousands = 2 Then strThousands &= "'"    'apostrophe after alef
+        End If
+
+        If intNum >= 100 Then
+            Digit = intNum \ 100
+            Select Case Digit
+                Case 1 : strTemp &= "ק"
+                Case 2 : strTemp &= "ר"
+                Case 3 : strTemp &= "ש"
+                Case 4 : strTemp &= "ת"
+                Case 5 : strTemp &= "תק"
+                Case 6 : strTemp &= "תר"
+                Case 7 : strTemp &= "תש"
+                Case 8 : strTemp &= "תת"
+                Case 9 : strTemp &= "תתק"
+            End Select
+        End If
+
+        If intNum >= 10 Then
+            Digit = (intNum Mod 100) \ 10
+            Select Case Digit
+                Case 1 : strTemp &= "י"
+                Case 2 : strTemp &= "כ"
+                Case 3 : strTemp &= "ל"
+                Case 4 : strTemp &= "מ"
+                Case 5 : strTemp &= "נ"
+                Case 6 : strTemp &= "ס"
+                Case 7 : strTemp &= "ע"
+                Case 8 : strTemp &= "פ"
+                Case 9 : strTemp &= "צ"
+            End Select
+        End If
+
+        Digit = (intNum Mod 10)
+        Select Case Digit
+            Case 1 : strTemp &= "א"
+            Case 2 : strTemp &= "ב"
+            Case 3 : strTemp &= "ג"
+            Case 4 : strTemp &= "ד"
+            Case 5 : strTemp &= "ה"
+            Case 6 : strTemp &= "ו"
+            Case 7 : strTemp &= "ז"
+            Case 8 : strTemp &= "ח"
+            Case 9 : strTemp &= "ט"
+        End Select
+
+        strTemp = strTemp.Replace("יה", "טו")
+        strTemp = strTemp.Replace("יו", "טז")
+
+        If blnGoodNumbers Then
+            strTemp = strTemp.Replace("רצח", "רחצ")
+            strTemp = strTemp.Replace("רע", "ער")
+            strTemp = strTemp.Replace("רעה", "ערה")
+            strTemp = strTemp.Replace("שד", "דש")
+            strTemp = strTemp.Replace("שמד", "דשמ")
+        End If
+
+        If blnIncludeQuotes Then
+            If strTemp.Length >= 2 Then
+                strTemp = strTemp.Substring(0, strTemp.Length - 1) & """" & strTemp.Substring(strTemp.Length - 1, 1)
+                'strTemp = Mid(strTemp, 1, Len(strTemp) - 1) & """" & Mid(strTemp, Len(strTemp), 1)
+            End If
+            If strTemp.Length = 1 Then strTemp &= "'"
+        End If
+
+        If intIncludeThousands > 0 And intIncludeThousands < 3 Then strTemp = strThousands & strTemp
+
+        Return strTemp
     End Function
 
 
