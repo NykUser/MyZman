@@ -38,41 +38,44 @@ Namespace Zmanim.JewishCalendar
             ADAR
             ADAR_II
         End Enum
-
+        'Nykedit 0 based added more Holidays
         Public Enum JewishHoliday
-            NONE = -1
-            EREV_PESACH = 0
-            PESACH = 1
-            CHOL_HAMOED_PESACH = 2
-            PESACH_SHENI = 3
-            EREV_SHAVUOS = 4
-            SHAVUOS = 5
-            SEVENTEEN_OF_TAMMUZ = 6
-            TISHA_BEAV = 7
-            TU_BEAV = 8
-            EREV_ROSH_HASHANA = 9
-            ROSH_HASHANA = 10
-            FAST_OF_GEDALYAH = 11
-            EREV_YOM_KIPPUR = 12
-            YOM_KIPPUR = 13
-            EREV_SUCCOS = 14
-            SUCCOS = 15
-            CHOL_HAMOED_SUCCOS = 16
-            HOSHANA_RABBA = 17
-            SHEMINI_ATZERES = 18
-            SIMCHAS_TORAH = 19
-            CHANUKAH = 21
-            TENTH_OF_TEVES = 22
-            TU_BESHVAT = 23
-            FAST_OF_ESTHER = 24
-            PURIM = 25
-            SHUSHAN_PURIM = 26
-            PURIM_KATAN = 27
-            ROSH_CHODESH = 28
-            YOM_HASHOAH = 29
-            YOM_HAZIKARON = 30
-            YOM_HAATZMAUT = 31
-            YOM_YERUSHALAYIM = 32
+            NONE
+            EREV_PESACH
+            PESACH
+            CHOL_HAMOED_PESACH
+            SHVII_SHEL_PESACH
+            ACHARON_SHEL_PESACH
+            PESACH_SHENI
+            EREV_SHAVUOS
+            SHAVUOS
+            SEVENTEEN_OF_TAMMUZ
+            TISHA_BEAV
+            TU_BEAV
+            EREV_ROSH_HASHANA
+            ROSH_HASHANA
+            FAST_OF_GEDALYAH
+            EREV_YOM_KIPPUR
+            YOM_KIPPUR
+            EREV_SUCCOS
+            SUCCOS
+            CHOL_HAMOED_SUCCOS
+            HOSHANA_RABBA
+            SHEMINI_ATZERES
+            SIMCHAS_TORAH
+            EREV_CHANUKAH
+            CHANUKAH
+            TENTH_OF_TEVES
+            TU_BESHVAT
+            FAST_OF_ESTHER
+            PURIM
+            SHUSHAN_PURIM
+            PURIM_KATAN
+            ROSH_CHODESH
+            YOM_HASHOAH
+            YOM_HAZIKARON
+            YOM_HAATZMAUT
+            YOM_YERUSHALAYIM
         End Enum
 
         Public Enum JewishYearType
@@ -144,10 +147,15 @@ Namespace Zmanim.JewishCalendar
             CHUKAS_BALAK
             MATOS_MASEI
             NITZAVIM_VAYEILECH
+            SHUVA
+            SHIRAH
             SHKALIM
             ZACHOR
             PARA
             HACHODESH
+            HAGADOL
+            CHAZON
+            NACHAMU
         End Enum
 
         Public Function NativeMonthToJewishMonth(ByVal nativeMonth As Integer, ByVal leapYear As Boolean) As JewishMonth
@@ -280,13 +288,11 @@ Namespace Zmanim.JewishCalendar
             Select Case hebrewMonth
                 Case JewishMonth.NISSAN
 
-                    If dayOfMonth = 14 Then
-                        Return JewishHoliday.EREV_PESACH
-                    ElseIf dayOfMonth = 15 OrElse dayOfMonth = 21 OrElse (Not inIsrael AndAlso (dayOfMonth = 16 OrElse dayOfMonth = 22)) Then
-                        Return JewishHoliday.PESACH
-                    ElseIf dayOfMonth >= 17 AndAlso dayOfMonth <= 20 OrElse (dayOfMonth = 16 AndAlso inIsrael) Then
-                        Return JewishHoliday.CHOL_HAMOED_PESACH
-                    End If
+                    If dayOfMonth = 14 Then Return JewishHoliday.EREV_PESACH
+                    If dayOfMonth = 15 OrElse (dayOfMonth = 16 AndAlso inIsrael = False) Then Return JewishHoliday.PESACH
+                    If dayOfMonth = 21 Then Return JewishHoliday.SHVII_SHEL_PESACH
+                    If dayOfMonth = 22 AndAlso inIsrael = False Then Return JewishHoliday.ACHARON_SHEL_PESACH
+                    If dayOfMonth >= 17 AndAlso dayOfMonth <= 20 OrElse (dayOfMonth = 16 AndAlso inIsrael) Then Return JewishHoliday.CHOL_HAMOED_PESACH
 
                     If useModernHolidays AndAlso ((dayOfMonth = 26 AndAlso dayOfWeek = 5) OrElse (dayOfMonth = 28 AndAlso dayOfWeek = 2) OrElse (dayOfMonth = 27 AndAlso dayOfWeek <> 1 AndAlso dayOfWeek <> 6)) Then
                         Return JewishHoliday.YOM_HASHOAH
@@ -431,7 +437,7 @@ Namespace Zmanim.JewishCalendar
         End Function
 
         Private Function IsYomTovAssurBemelacha(ByVal holidayIndex As JewishHoliday) As Boolean
-            Return holidayIndex = JewishHoliday.PESACH OrElse holidayIndex = JewishHoliday.SHAVUOS OrElse holidayIndex = JewishHoliday.SUCCOS OrElse holidayIndex = JewishHoliday.SHEMINI_ATZERES OrElse holidayIndex = JewishHoliday.SIMCHAS_TORAH OrElse holidayIndex = JewishHoliday.ROSH_HASHANA OrElse holidayIndex = JewishHoliday.YOM_KIPPUR
+            Return holidayIndex = JewishHoliday.PESACH OrElse holidayIndex = JewishHoliday.SHVII_SHEL_PESACH OrElse holidayIndex = JewishHoliday.ACHARON_SHEL_PESACH OrElse holidayIndex = JewishHoliday.SHAVUOS OrElse holidayIndex = JewishHoliday.SUCCOS OrElse holidayIndex = JewishHoliday.SHEMINI_ATZERES OrElse holidayIndex = JewishHoliday.SIMCHAS_TORAH OrElse holidayIndex = JewishHoliday.ROSH_HASHANA OrElse holidayIndex = JewishHoliday.YOM_KIPPUR
         End Function
 
         Private Function IsCholHamoed(ByVal holidayIndex As JewishHoliday) As Boolean
@@ -766,18 +772,29 @@ Namespace Zmanim.JewishCalendar
         End Function
 
         'nykedit added Function's not in the C# port from Java
-        '* Returns a parsha enum if the Shabbos Is one of the four parshiyos of Parsha.SHKALIM, Parsha.ZACHOR, Parsha.PARA,
-        '* Parsha.HACHODESH Or Parsha.NONE for a regular Shabbos (Or any weekday).
-        '* @return one of the four parshiyos of Parsha.SHKALIM, Parsha.ZACHOR, Parsha.PARA, Parsha.HACHODESH Or Parsha.NONE.
-        Public Function getSpecialShabbos(ByVal dt As DateTime) As Parsha
+
+        '''<summary>
+        ''' Returns a parsha Enum If the Shabbos Is one Of the four parshiyos Of Parsha.SHKALIM, Parsha.ZACHOR, Parsha.PARA,
+        ''' Parsha.HACHODESH Or Parsha.NONE for a regular Shabbos (Or any weekday).
+        ''' Nyk added SHUVA SHIRAH HAGADOL CHAZON NACHAMU
+        ''' </summary>
+        ''' <param name="dt">the The date to check</param>
+        Public Function GetSpecialShabbos(ByVal dt As DateTime) As Parsha
             If dt.DayOfWeek = DayOfWeek.Saturday Then
+
+
+                If GetParshah(dt) = Parsha.BESHALACH Then Return Parsha.SHIRAH
+
+                If GetJewishMonth(dt) = JewishMonth.TISHREI AndAlso GetDayOfMonth(dt) > 2 AndAlso GetDayOfMonth(dt) < 10 Then _
+                   Return Parsha.SHUVA
+
+
                 If GetJewishMonth(dt) = JewishMonth.SHEVAT AndAlso Not IsLeapYearFromDateTime(dt) _
                     OrElse GetJewishMonth(dt) = JewishMonth.ADAR AndAlso IsLeapYearFromDateTime(dt) Then
                     If GetDayOfMonth(dt) = 25 OrElse GetDayOfMonth(dt) = 27 OrElse GetDayOfMonth(dt) = 29 Then
                         Return Parsha.SHKALIM
                     End If
                 End If
-
 
                 If GetJewishMonth(dt) = JewishMonth.ADAR AndAlso Not IsLeapYearFromDateTime(dt) _
                 OrElse GetJewishMonth(dt) = JewishMonth.ADAR_II Then
@@ -793,8 +810,18 @@ Namespace Zmanim.JewishCalendar
                         OrElse GetDayOfMonth(dt) = 29 Then Return Parsha.HACHODESH
                 End If
 
-                If GetJewishMonth(dt) = JewishMonth.NISSAN AndAlso GetDayOfMonth(dt) = 1 Then _
-                   Return Parsha.HACHODESH
+                If GetJewishMonth(dt) = JewishMonth.NISSAN Then
+                    If GetDayOfMonth(dt) = 1 Then Return Parsha.HACHODESH
+                    'this will move it back a week when sab is ErevYomTov
+                    'If GetDayOfMonth(dt) >= 7 AndAlso GetDayOfMonth(dt) < 14 Then Return Parsha.HAGADOL
+                    If GetDayOfMonth(dt) >= 8 AndAlso GetDayOfMonth(dt) < 15 Then Return Parsha.HAGADOL
+                End If
+
+                If GetJewishMonth(dt) = JewishMonth.AV Then
+                    If GetDayOfMonth(dt) >= 3 AndAlso GetDayOfMonth(dt) < 10 Then Return Parsha.CHAZON
+                    If GetDayOfMonth(dt) >= 10 AndAlso GetDayOfMonth(dt) < 17 Then Return Parsha.NACHAMU
+                End If
+
             End If
             Return Parsha.NONE
 
@@ -821,6 +848,82 @@ Namespace Zmanim.JewishCalendar
                     OrElse ((GetJewishMonth(dt) = JewishMonth.SIVAN) _
                     AndAlso (GetDayOfMonth(dt) = 6))))))
         End Function
+        'this is in place of the more complex function GetJewishCalendarElapsedDays and getDaysSinceStartOfJewishYear in JewishDate.Java needed for תקופה and מולד
+        'DaysTill5344 was retrvied by passing 5344 to getJewishCalendarElapsedDays (in old C# port)
+        'the notes on getJewishCalendarElapsedDays says it gets the mean conjunction of Tishri not ROSH HASHANA        
 
+        '''<summary>
+        ''' Returns the number of days elapsed from the Sunday prior to the start of the Jewish calendar to the date entered
+        ''' </summary>
+        ''' <param name="dt">the date to use</param>
+        ''' <returns>
+        ''' the number of days elapsed from prior to the molad Tohu BaHaRaD (Be = Monday, Ha= 5 hours and Rad =204 chalakim/parts) prior to the start of the Jewish calendar, 
+        ''' BeHaRaD is 23:11:20 on Sunday night(5 hours 204/1080 chalakim after sunset on Sunday evening).
+        ''' </returns>
+        Public Function GetElapsedDays(ByVal dt As DateTime) As Integer
+            Dim DaysTill5344 As Integer = 1951501
+            If GetYear(dt) >= 5344 Then
+                'mybase with 14 hour gets it right
+                dt = MyBase.ToDateTime(MyBase.GetYear(dt), MyBase.GetMonth(dt), MyBase.GetDayOfMonth(dt), 14, 0, 0, 0) 'New DateTime(GetYear(dt), GetMonth(dt), GetDayOfMonth(dt))
+                Dim StartDate = MyBase.ToDateTime(5344, 1, 1, 14, 0, 0, 0)
+                Dim span As TimeSpan = dt - StartDate
+                Dim Totaldays As Integer = DaysTill5344 + CInt(span.Days)
+                Return Totaldays
+            End If
+            Return 0
+        End Function
+
+        ' Tekufas Shmuel: a solar year Is 365.25 days.
+        ' notation: days,hours,chalakim
+        ' molad BaHaRad was 2D,5H,204C
+        ' Or 5H,204C from the start of rosh hashana year 1
+        ' molad nissan add 177D,4H,438C (6  29D,12H,793C)
+        ' Or 177D,9H,642C after rosh hashana year 1
+        ' tekufas nissan was 7D,9H,642C before molad nissan ~rambam.
+        ' Or 170D,0H,0C after rosh hashana year 1
+        ' tekufas tishrei was 182D,3H (365.25 / 2) before tekufas nissan
+        ' Or 12D,15H before Rosh Hashana year 1
+        ' outside of EY we say Tal Umatar in Birkas Hashanim from 60 days after tekufas tishrei.
+        ' 60 includes the day of the tekufah And the day we start.
+        ' 60 days from the tekufah == 47D,9H from Rosh Hashana year 1
+
+        ' days since Rosh Hashana year 1
+        ' add 1/2 day as the first tekufas tishrei was 9 hours into the day
+        ' this allows all 4 years of the secular leap year cycle to share 47 days
+        ' make from 47D,9H to 47D for simplicity
+        Public Function TekufasTishreiElapsedDays(ByVal dt As DateTime) As Integer
+            'Dim days As Double = getJewishCalendarElapsedDays(getJewishYear()) + (getDaysSinceStartOfJewishYear() - 1) + 0.5
+            ' removed the miuns 1 and +0.5 - this gets it right
+            Dim days As Double = (GetElapsedDays(dt)) '+ 0.5
+            ' days of completed solar years
+            Dim solar As Double = (MyBase.GetYear(dt) - 1) * 365.25
+            Return days - solar
+        End Function
+        Public Function GetTalUmatarStartsToday(ByVal dt As DateTime, ByVal InIsrael As Boolean) As Boolean
+            If InIsrael Then
+                'Nyk moved to 6 to get the day befor to start at Maariva
+                If GetJewishMonth(dt) = JewishMonth.CHESHVAN AndAlso MyBase.GetDayOfMonth(dt) = 6 Then Return True
+                Return False
+            End If
+            'Nyk moved to 46 to get the day befor to start at Maariva
+            Return TekufasTishreiElapsedDays(dt) = 46
+        End Function
+        ' Molad Nisan year 1 was 177 days after molad tohu of Tishrei. We multiply 29.5 day months  6 months from Tishrei
+        ' to Nisan = 177. Subtract 7 days since tekufas Nisan was 7 days And 9 hours before the molad as stated in the Rambam
+        ' And we are now at 170 days. Because getJewishCalendarElapsedDays And getDaysSinceStartOfJewishYear use the value for
+        ' Rosh Hashana as 1, we have to add 1 day days for a total of 171. To this add a day since the tekufah Is on a Tuesday
+        ' night And we push off the bracha to Wednesday AM resulting in the 172 used in the calculation.
+        'nyk edit made 171 this got it right
+
+        Public Function GetBirkasHachamah(ByVal dt As DateTime) As Boolean
+            Dim elapsedDays As Integer = (GetElapsedDays(dt))
+            'elapsed days to the current calendar date
+            If ((elapsedDays Mod (28 * 365.25)) = 171) Then
+                ' 28 years of 365.25 days + the offset from molad tohu mentioned above
+                Return True
+            End If
+            Return False
+        End Function
     End Class
+
 End Namespace

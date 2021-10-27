@@ -307,6 +307,24 @@ Zmanim
  <returns> the secondary masechta (tractate) of the Daf Yomi in Hebrew, It will only return
  For Kinnim and Tamid when on the first Daf \u05E7\u05D9\u05E0\u05D9\u05DD for Tamid.</returns>
 </member>
+<member name="M:Zmanim.JewishCalendar.JewishCalendar.GetSpecialShabbos(System.DateTime)">
+<summary>
+ Returns a parsha Enum If the Shabbos Is one Of the four parshiyos Of Parsha.SHKALIM, Parsha.ZACHOR, Parsha.PARA,
+ Parsha.HACHODESH Or Parsha.NONE for a regular Shabbos (Or any weekday).
+ Nyk added SHUVA SHIRAH HAGADOL CHAZON NACHAMU
+ </summary>
+ <param name="dt">the The date to check</param>
+</member>
+<member name="M:Zmanim.JewishCalendar.JewishCalendar.GetElapsedDays(System.DateTime)">
+<summary>
+ Returns the number of days elapsed from the Sunday prior to the start of the Jewish calendar to the date entered
+ </summary>
+ <param name="dt">the date to use</param>
+ <returns>
+ the number of days elapsed from prior to the molad Tohu BaHaRaD (Be = Monday, Ha= 5 hours and Rad =204 chalakim/parts) prior to the start of the Jewish calendar, 
+ BeHaRaD is 23:11:20 on Sunday night(5 hours 204/1080 chalakim after sunset on Sunday evening).
+ </returns>
+</member>
 <member name="T:Zmanim.TimeZone.ITimeZone">
  <summary>
  Provides the most basic useage of a TimeZone.

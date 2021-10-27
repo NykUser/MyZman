@@ -21,6 +21,7 @@
 Imports System.Text
 Imports System
 Imports System.Diagnostics
+
 Namespace Zmanim.JewishCalendar
     Public Class HebrewDateFormatter
         Private hebrewFormatField As Boolean = False
@@ -30,14 +31,13 @@ Namespace Zmanim.JewishCalendar
         Private UseGershGershayimField As Boolean = True
         Private longWeekFormatField As Boolean = True
         'Nykedit 0 should be empty string
-        'Nykedit SpecialShabbos
-        Private HebrewParshaList As String() = {"", "בראשית", "נח", "לך לך", "וירא", "חיי שרה", "תולדות", "ויצא", "וישלח", "וישב", "מקץ", "ויגש", "ויחי", "שמות", "וארא", "בא", "בשלח", "יתרו", "משפטים", "תרומה", "תצוה", "כי תשא", "ויקהל", "פקודי", "ויקרא", "צו", "שמיני", "תזריע", "מצרע", "אחרי מות", "קדושים", "אמור", "בהר", "בחקתי", "במדבר", "נשא", "בהעלתך", "שלח לך", "קרח", "חוקת", "בלק", "פינחס", "מטות", "מסעי", "דברים", "ואתחנן", "עקב", "ראה", "שופטים", "כי תצא", "כי תבוא", "ניצבים", "וילך", "האזינו", "ויקהל פקודי", "תזריע מצרע", "אחרי מות קדושים", "בהר בחקתי", "חוקת בלק", "מטות מסעי", "ניצבים וילך", "שקלים", "זכור", "פרה", "החודש"}
-        Private TransliteratedParshaList As String() = {"", "Bereshis", "Noach", "Lech Lecha", "Vayera", "Chayei Sara", "Toldos", "Vayetzei", "Vayishlach", "Vayeshev", "Miketz", "Vayigash", "Vayechi", "Shemos", "Vaera", "Bo", "Beshalach", "Yisro", "Mishpatim", "Terumah", "Tetzaveh", "Ki Sisa", "Vayakhel", "Pekudei", "Vayikra", "Tzav", "Shmini", "Tazria", "Metzora", "Achrei Mos", "Kedoshim", "Emor", "Behar", "Bechukosai", "Bamidbar", "Nasso", "Beha'aloscha", "Sh'lach", "Korach", "Chukas", "Balak", "Pinchas", "Matos", "Masei", "Devarim", "Vaeschanan", "Eikev", "Re'eh", "Shoftim", "Ki Seitzei", "Ki Savo", "Nitzavim", "Vayeilech", "Ha'Azinu", "Vayakhel Pekudei", "Tazria Metzora", "Achrei Mos Kedoshim", "Behar Bechukosai", "Chukas Balak", "Matos Masei", "Nitzavim Vayeilech", "Shkalim", "Zachor", "Para", "Hachodesh"}
-
+        'Nykedit SpecialShabbos and שובה שירה הגדול חזון נחמו
+        Private HebrewParshaList As String() = {"", "בראשית", "נח", "לך לך", "וירא", "חיי שרה", "תולדות", "ויצא", "וישלח", "וישב", "מקץ", "ויגש", "ויחי", "שמות", "וארא", "בא", "בשלח", "יתרו", "משפטים", "תרומה", "תצוה", "כי תשא", "ויקהל", "פקודי", "ויקרא", "צו", "שמיני", "תזריע", "מצרע", "אחרי מות", "קדושים", "אמור", "בהר", "בחקתי", "במדבר", "נשא", "בהעלתך", "שלח לך", "קרח", "חוקת", "בלק", "פינחס", "מטות", "מסעי", "דברים", "ואתחנן", "עקב", "ראה", "שופטים", "כי תצא", "כי תבוא", "ניצבים", "וילך", "האזינו", "ויקהל פקודי", "תזריע מצרע", "אחרי מות קדושים", "בהר בחקתי", "חוקת בלק", "מטות מסעי", "ניצבים וילך", "שובה", "שירה", "שקלים", "זכור", "פרה", "החודש", "הגדול", "חזון", "נחמו"}
+        Private TransliteratedParshaList As String() = {"", "Bereshis", "Noach", "Lech Lecha", "Vayera", "Chayei Sara", "Toldos", "Vayetzei", "Vayishlach", "Vayeshev", "Miketz", "Vayigash", "Vayechi", "Shemos", "Vaera", "Bo", "Beshalach", "Yisro", "Mishpatim", "Terumah", "Tetzaveh", "Ki Sisa", "Vayakhel", "Pekudei", "Vayikra", "Tzav", "Shmini", "Tazria", "Metzora", "Achrei Mos", "Kedoshim", "Emor", "Behar", "Bechukosai", "Bamidbar", "Nasso", "Beha'aloscha", "Sh'lach", "Korach", "Chukas", "Balak", "Pinchas", "Matos", "Masei", "Devarim", "Vaeschanan", "Eikev", "Re'eh", "Shoftim", "Ki Seitzei", "Ki Savo", "Nitzavim", "Vayeilech", "Ha'Azinu", "Vayakhel Pekudei", "Tazria Metzora", "Achrei Mos Kedoshim", "Behar Bechukosai", "Chukas Balak", "Matos Masei", "Nitzavim Vayeilech", "Shuva", "Shirah", "Shkalim", "Zachor", "Para", "Hachodesh", "HaGadol", "Chazon", " Nachamu"}
         Private hebrewDaysOfWeek As String() = {"ראשון", "שני", "שלישי", "רביעי", "חמישי", "ששי", "שבת"}
-        Private transliteratedHolidays As String() = {"Erev Pesach", "Pesach", "Chol Hamoed Pesach", "Pesach Sheni", "Erev Shavuos", "Shavuos", "Seventeenth of Tammuz", "Tishah B'Av", "Tu B'Av", "Erev Rosh Hashana", "Rosh Hashana", "Fast of Gedalyah", "Erev Yom Kippur", "Yom Kippur", "Erev Succos", "Succos", "Chol Hamoed Succos", "Hoshana Rabbah", "Shemini Atzeres", "Simchas Torah", "Erev Chanukah", "Chanukah", "Tenth of Teves", "Tu B'Shvat", "Fast of Esther", "Purim", "Shushan Purim", "Purim Katan", "Rosh Chodesh", "Yom HaShoah", "Yom Hazikaron", "Yom Ha'atzmaut", "Yom Yerushalayim"}
-        'nykedit שושן פורים
-        Private hebrewHolidays As String() = {"ערב פסח", "פסח", "חול המועד פסח", "פסח שני", "ערב שבועות", "שבועות", "שבעה עשר בתמוז", "תשעה באב", "ט״ו באב", "ערב ראש השנה", "ראש השנה", "צום גדליה", "ערב יום כיפור", "יום כיפור", "ערב סוכות", "סוכות", "חול המועד סוכות", "הושענא רבה", "שמיני עצרת", "שמחת תורה", "ערב חנוכה", "חנוכה", "עשרה בטבת", "ט״ו בשבט", "תענית אסתר", "פורים", "שושן פורים", "פורים קטן", "ראש חודש", "יום השואה", "יום הזיכרון", "יום העצמאות", "יום ירושלים"}
+        'made first empty that will be none add Shvii Shel Pesach and more 
+        Private transliteratedHolidays As String() = {"", "Erev Pesach", "Pesach", "Chol Hamoed Pesach", "Shvii Shel Pesach", "Acharon shel Pesach", "Pesach Sheni", "Erev Shavuos", "Shavuos", "Seventeenth of Tammuz", "Tishah B'Av", "Tu B'Av", "Erev Rosh Hashana", "Rosh Hashana", "Fast of Gedalyah", "Erev Yom Kippur", "Yom Kippur", "Erev Succos", "Succos", "Chol Hamoed Succos", "Hoshana Rabbah", "Shemini Atzeres", "Simchas Torah", "Erev Chanukah", "Chanukah", "Tenth of Teves", "Tu B'Shvat", "Fast of Esther", "Purim", "Shushan Purim", "Purim Katan", "Rosh Chodesh", "Yom HaShoah", "Yom Hazikaron", "Yom Ha'atzmaut", "Yom Yerushalayim"}
+        Private hebrewHolidays As String() = {"", "ערב פסח", "פסח", "חול המועד פסח", "שביעי של פסח", "אחרון של פסח", "פסח שני", "ערב שבועות", "שבועות", "שבעה עשר בתמוז", "תשעה באב", "ט״ו באב", "ערב ראש השנה", "ראש השנה", "צום גדליה", "ערב יום כיפור", "יום כיפור", "ערב סוכות", "סוכות", "חול המועד סוכות", "הושענא רבה", "שמיני עצרת", "שמחת תורה", "ערב חנוכה", "חנוכה", "עשרה בטבת", "ט״ו בשבט", "תענית אסתר", "פורים", "שושן פורים", "פורים קטן", "ראש חודש", "יום השואה", "יום הזיכרון", "יום העצמאות", "יום ירושלים"}
         Private Const GERESH As String = "׳"
         Private Const GERSHAYIM As String = "״"
         Private transliteratedMonthsField As String() = {"Nissan", "Iyar", "Sivan", "Tammuz", "Av", "Elul", "Tishrei", "Cheshvan", "Kislev", "Teves", "Shevat", "Adar", "Adar II", "Adar I"}
@@ -81,7 +81,7 @@ Namespace Zmanim.JewishCalendar
             Dim index As Integer = CInt(holiday)
 
 
-            If holiday = jewishCalendar.JewishHoliday.CHANUKAH Then
+            If holiday = JewishCalendar.JewishHoliday.CHANUKAH Then
                 Dim dayOfChanukah As Integer = jewishCalendar.GetDayOfChanukah(dt)
                 Return If(HebrewFormat, (FormatHebrewNumber(dayOfChanukah) & " ד" & hebrewHolidays(index)), (transliteratedHolidays(index) & " " & dayOfChanukah))
             End If
@@ -110,15 +110,15 @@ Namespace Zmanim.JewishCalendar
 
             If dayOfMonth = 30 Then
 
-                If month < jewishCalendar.JewishMonth.ADAR OrElse month = jewishCalendar.JewishMonth.ADAR AndAlso isLeapYear Then
+                If month < JewishCalendar.JewishMonth.ADAR OrElse month = JewishCalendar.JewishMonth.ADAR AndAlso isLeapYear Then
                     month += 1
                 Else
-                    month = jewishCalendar.JewishMonth.NISSAN
+                    month = JewishCalendar.JewishMonth.NISSAN
                 End If
             End If
 
             Dim updatedDateTime As DateTime = jewishCalendar.GetJewishDateTime(year, month, dayOfMonth)
-            formattedRoshChodesh = If(HebrewFormat, hebrewHolidays(CInt(jewishCalendar.JewishHoliday.ROSH_CHODESH)), transliteratedHolidays(CInt(jewishCalendar.JewishHoliday.ROSH_CHODESH)))
+            formattedRoshChodesh = If(HebrewFormat, hebrewHolidays(CInt(JewishCalendar.JewishHoliday.ROSH_CHODESH)), transliteratedHolidays(CInt(JewishCalendar.JewishHoliday.ROSH_CHODESH)))
             formattedRoshChodesh += " " & FormatMonth(updatedDateTime)
             Return formattedRoshChodesh
         End Function
@@ -223,16 +223,16 @@ Namespace Zmanim.JewishCalendar
 
             If HebrewFormat Then
 
-                If isLeapYear AndAlso month = jewishCalendar.JewishMonth.ADAR Then
+                If isLeapYear AndAlso month = JewishCalendar.JewishMonth.ADAR Then
                     Return hebrewMonthsField(13) & (If(UseGershGershayim, GERESH, ""))
-                ElseIf isLeapYear AndAlso month = jewishCalendar.JewishMonth.ADAR_II Then
+                ElseIf isLeapYear AndAlso month = JewishCalendar.JewishMonth.ADAR_II Then
                     Return hebrewMonthsField(12) & (If(UseGershGershayim, GERESH, ""))
                 Else
                     Return hebrewMonthsField(CInt(month) - 1)
                 End If
             Else
 
-                If isLeapYear AndAlso month = jewishCalendar.JewishMonth.ADAR Then
+                If isLeapYear AndAlso month = JewishCalendar.JewishMonth.ADAR Then
                     Return transliteratedMonthsField(13)
                 Else
                     Return transliteratedMonthsField(CInt(month) - 1)
@@ -279,12 +279,12 @@ Namespace Zmanim.JewishCalendar
         End Function
 
         Public Overridable Function GetFormattedKviah(ByVal jewishYear As Integer) As String
-            Dim dt As DateTime = jewishCalendar.GetJewishDateTime(jewishYear, jewishCalendar.JewishMonth.TISHREI, 1)
+            Dim dt As DateTime = jewishCalendar.GetJewishDateTime(jewishYear, JewishCalendar.JewishMonth.TISHREI, 1)
             Dim yearType As JewishCalendar.JewishYearType = jewishCalendar.GetJewishYearType(dt)
             Dim roshHashanaDayOfweek As Integer = jewishCalendar.GetJewishDayOfWeek(dt)
             Dim returnValue As String = FormatHebrewNumber(roshHashanaDayOfweek)
-            returnValue += (If(yearType = jewishCalendar.JewishYearType.CHASERIM, "ח", If(yearType = jewishCalendar.JewishYearType.SHELAIMIM, "ש", "כ")))
-            dt = jewishCalendar.GetJewishDateTime(jewishYear, jewishCalendar.JewishMonth.NISSAN, 15)
+            returnValue += (If(yearType = JewishCalendar.JewishYearType.CHASERIM, "ח", If(yearType = JewishCalendar.JewishYearType.SHELAIMIM, "ש", "כ")))
+            dt = jewishCalendar.GetJewishDateTime(jewishYear, JewishCalendar.JewishMonth.NISSAN, 15)
             Dim pesachDayOfweek As Integer = jewishCalendar.GetJewishDayOfWeek(dt)
             returnValue += FormatHebrewNumber(pesachDayOfweek)
             returnValue = returnValue.Replace(GERESH, "")
@@ -299,8 +299,7 @@ Namespace Zmanim.JewishCalendar
             End If
         End Function
 
-        'NykEdit not sure but this did not work looks like an issue with port to vb
-        'changed to Use Function GetNumtoHebrewLetter 
+
         Public Overridable Function FormatHebrewNumber(ByVal number As Integer) As String
             If number < 0 Then
                 Throw New System.ArgumentException("negative numbers can't be formatted")
@@ -308,88 +307,15 @@ Namespace Zmanim.JewishCalendar
                 Throw New System.ArgumentException("numbers > 9999 can't be formatted")
             End If
 
+            'the was a issue with the port from C# to vb
+            'changed to Use Function GetNumtoHebrewLetter 
             Return GetNumtoHebrewLetter(number, 0, UseGershGershayim, False)
-            'will not continue for here
-
-            Dim ALAFIM As String = "אלפים"
-            Dim EFES As String = "אפס"
-            Dim jHundreds As String() = New String() {"", "ק", "ר", "ש", "ת", "תק", "תר", "תש", "תת", "תתק"}
-            Dim jTens As String() = New String() {"", "י", "כ", "ל", "מ", "נ", "ס", "ע", "פ", "צ"}
-            Dim jTenEnds As String() = New String() {"", "י", "ך", "ל", "ם", "ן", "ס", "ע", "ף", "ץ"}
-            Dim tavTaz As String() = New String() {"טו", "טז"}
-            Dim jOnes As String() = New String() {"", "א", "ב", "ג", "ד", "ה", "ו", "ז", "ח", "ט"}
-
-            If number = 0 Then
-                Return EFES
-            End If
-
-            Dim shortNumber As Integer = number Mod 1000
-            Dim singleDigitNumber As Boolean = (shortNumber < 11 OrElse (shortNumber < 100 AndAlso shortNumber Mod 10 = 0) OrElse (shortNumber <= 400 AndAlso shortNumber Mod 100 = 0))
-            Dim thousands As Integer = number / 1000
-            Dim sb As StringBuilder = New StringBuilder()
-
-            If number Mod 1000 = 0 Then
-                sb.Append(jOnes(thousands))
-
-                If UseGershGershayim Then
-                    sb.Append(GERESH)
-                End If
-
-                sb.Append(" ")
-                sb.Append(ALAFIM)
-                Return sb.ToString()
-            ElseIf UseLongHebrewYears AndAlso number >= 1000 Then
-                sb.Append(jOnes(thousands))
-
-                If UseGershGershayim Then
-                    sb.Append(GERESH)
-                End If
-
-                sb.Append(" ")
-            End If
-
-            number = number Mod 1000
-            Dim hundreds As Integer = number / 100
-            sb.Append(jHundreds(hundreds))
-            number = number Mod 100
-
-            If number = 15 Then
-                sb.Append(tavTaz(0))
-            ElseIf number = 16 Then
-                sb.Append(tavTaz(1))
-            Else
-                Dim tens As Integer = number / 10
-
-                If number Mod 10 = 0 Then
-
-                    If singleDigitNumber = False Then
-                        sb.Append(jTenEnds(tens))
-                    Else
-                        sb.Append(jTens(tens))
-                    End If
-                Else
-                    sb.Append(jTens(tens))
-                    number = number Mod 10
-                    sb.Append(jOnes(number))
-                End If
-            End If
-
-            If UseGershGershayim Then
-
-                If singleDigitNumber = True Then
-                    sb.Append(GERESH)
-                Else
-                    sb.Insert(sb.Length - 1, GERSHAYIM)
-                End If
-            End If
-
-            Return sb.ToString()
         End Function
 
         'Nykedit new not in C# port
         Public Overridable Function FormatSpecialParsha(ByVal dt As DateTime) As String
             Dim SpecialParsha = jewishCalendar.getSpecialShabbos(dt.Date)
-            If SpecialParsha = jewishCalendar.Parsha.NONE Then Return ""
+            If SpecialParsha = JewishCalendar.Parsha.NONE Then Return ""
             Try
                 '-1 as the is a empty string at 0
                 Return If(HebrewFormat, HebrewParshaList(SpecialParsha - 1), TransliteratedParshaList(SpecialParsha - 1))
@@ -397,7 +323,38 @@ Namespace Zmanim.JewishCalendar
                 Return ""
             End Try
         End Function
+        'new func for TalUmatar
+        Public Function FormatTalUmatarStarts(ByVal dt As DateTime, ByVal InIsrael As Boolean) As String
+            Dim istoday = jewishCalendar.GetTalUmatarStartsToday(dt, InIsrael)
+            Dim wasyesterday = jewishCalendar.GetTalUmatarStartsToday(dt.AddDays(-1), InIsrael)
 
+            If istoday = True Then
+                'move from Erav Shabbos
+                If dt.DayOfWeek = DayOfWeek.Friday Then Return ""
+                GoTo Yes
+            End If
+            'yesterday was Erav Shabbos
+            If wasyesterday = True And dt.DayOfWeek = DayOfWeek.Saturday Then GoTo Yes
+
+            Return ""
+Yes:
+            If HebrewFormat = True Then
+                Return "טל ומטר בערבית"
+            Else
+                Return "Tal Umatar To Maariv"
+            End If
+        End Function
+        'new func for BirkasHachamah
+        Public Function FormatBirkasHachamah(ByVal dt As DateTime) As String
+            If jewishCalendar.GetBirkasHachamah(dt) = True Then
+                If HebrewFormat = True Then
+                    Return "ברכת החמה"
+                Else
+                    Return "Birkas Hachamah"
+                End If
+            End If
+            Return ""
+        End Function
 
         'nykedit
         ''' <summary>
