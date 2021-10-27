@@ -629,11 +629,6 @@ Namespace Zmanim
 
             'Nykedit
             Dim dt As DateTime = (New DateTime()).AddHours(time)
-            Dim hours As Integer = dt.Hour
-            Dim minutes As Integer = dt.Minute
-            Dim seconds As Integer = dt.Second
-            Dim Milliseconds As Integer = dt.Millisecond
-
             'this did not work in vb as nedeed 
             'Dim calculatedTime As Double = time
             'Dim hours As Integer = CType(calculatedTime, Integer)
@@ -647,48 +642,12 @@ Namespace Zmanim
             'calculatedTime -= seconds
             '' remaining milliseconds
 
+
             Dim [date] = DateWithLocation.Date
-            Dim utcDateTime = New DateTime([date].Year, [date].Month, [date].Day, hours, minutes, seconds, Milliseconds, DateTimeKind.Utc)
+            Dim utcDateTime = New DateTime([date].Year, [date].Month, [date].Day, dt.Hour, dt.Minute, dt.Second, dt.Millisecond, DateTimeKind.Utc)
             Dim localOffset As Long = DateWithLocation.Location.TimeZone.UtcOffset(utcDateTime)
             Return utcDateTime.AddMilliseconds(localOffset)
         End Function
-        'Protected Function getDateFromTime2(ByVal time As Double, ByVal isSunrise As Boolean) As Date
-        '    If Double.IsNaN(time) Then
-        '        Return Nothing
-        '    End If
-
-        '    Dim calculatedTime As Double = time
-        '    Dim hours As Integer = CType(calculatedTime, Integer)
-        '    ' retain only the hours
-        '    calculatedTime = (calculatedTime - hours)
-        '    Dim minutes As Integer = CType((calculatedTime * 60), Integer)
-        '    ' retain only the minutes
-        '    calculatedTime = (calculatedTime - minutes)
-        '    Dim seconds As Integer = CType((calculatedTime * 60), Integer)
-        '    ' retain only the seconds
-        '    calculatedTime = (calculatedTime - seconds)
-        '    ' remaining milliseconds
-
-        '    '' Check if a date transition has occurred, or is about to occur - this indicates the date of the event is
-        '    '' actually not the target date, but the day prior or after
-        '    'Dim localTimeHours As Integer = (CType(getGeoLocation.getLongitude, Integer) / 15)
-        '    'If (isSunrise _
-        '    '        AndAlso (localTimeHours _
-        '    '        + (hours > 18))) Then
-        '    '    cal.add(Calendar.DAY_OF_MONTH, -1)
-        '    'ElseIf (Not isSunrise _
-        '    '        AndAlso (localTimeHours _
-        '    '        + (hours < 6))) Then
-        '    '    cal.add(Calendar.DAY_OF_MONTH, 1)
-        '    'End If
-
-        '    cal.set(Calendar.HOUR_OF_DAY, hours)
-        '    cal.set(Calendar.MINUTE, minutes)
-        '    cal.set(Calendar.SECOND, seconds)
-        '    cal.set(Calendar.MILLISECOND, CType((calculatedTime * 1000), Integer))
-        '    Return cal.getTime
-        'End Function
-
         ''' <summary>
         ''' Will return the dip below the horizon before sunrise that matches the
         ''' offset minutes on passed in. For example passing in 72 minutes for a
