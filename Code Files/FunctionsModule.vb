@@ -1161,10 +1161,12 @@ A:
     '=======================================================================
     'utilities
     '=======================================================================
-    Public Function HebDateStringtoNom(ByVal hebstring) 'based on VBA
+    Public Function HebDateStringtoNom(ByVal Hebstring As String) As String 'based on VBA
         Dim i, temp1 As Integer, day, Month, Year As String
+        day = ""
+        Year = ""
 
-        Dim myHdate() As String = Split(hebstring, " ", -1)
+        Dim myHdate() As String = Hebstring.Split(" ")
 
         If myHdate.Count = 3 Then
             day = myHdate(0)
@@ -1178,43 +1180,43 @@ A:
             Year = myHdate(3)
         End If
 
-
         temp1 = 0
-        For i = 1 To Len(day)
-            temp1 = temp1 + HebLtoNum(Mid(day, i, 1))
+        For i = 0 To day.Length - 1
+            temp1 = temp1 + GetHebrewLetterToNum(day.Substring(i, 1))
         Next
-        day = temp1
+        day = CStr(temp1)
+
+        If IsNumeric(Year) Then Return day & " " & Month & " " & Year
 
         temp1 = 0
-        For i = 1 To Len(Year)
-            temp1 = temp1 + HebLtoNum(Mid(Year, i, 1))
+        For i = 0 To Year.Length - 1
+            temp1 = temp1 + GetHebrewLetterToNum(Year.Substring(i, 1))
             'If Mid(Year, i, 1) = "-" Then temp1 = temp1 * 1000
         Next
-        Year = temp1 + 5000
+        Year = CStr(temp1 + 5000)
 
-        'no need for it here
-        'Month = HebMtoNom(Month)
-
-        'HebDateStringtoNom = Month & "/" & day & "/" & Year
         Return day & " " & Month & " " & Year
 
     End Function
-    Public Function HebLtoNum(ByVal hebstring As String)
-        Dim Result
+    Private Function GetHebrewLetterToNum(ByVal hebstring As String) As Integer
+        Dim Result As Integer
         Dim NumArray() As Integer = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
-            10, 20, 20, 30, 40, 40, 50, 50, 60, 70, 80, 80, 90, 90,
-            100, 200, 300, 400}
+                    10, 20, 20, 30, 40, 40, 50, 50, 60, 70, 80, 80, 90, 90,
+                    100, 200, 300, 400}
 
         Dim LetterArray() As String = {"'", "א", "ב", "ג", "ד", "ה", "ו", "ז", "ח", "ט",
-        "י", "כ", "ך", "ל", "מ", "ם", "נ", "ן", "ס", "ע", "פ", "ף", "צ", "ץ",
-        "ק", "ר", "ש", "ת"}
+                     "י", "כ", "ך", "ל", "מ", "ם", "נ", "ן", "ס", "ע", "פ", "ף", "צ", "ץ",
+                     "ק", "ר", "ש", "ת"}
 
-        For i = 0 To UBound(LetterArray)
-            If hebstring = LetterArray(i) Then Result = NumArray(i)
+        For i = 0 To hebstring.Length - 1
+            For k = 0 To LetterArray.Length - 1 'UBound(LetterArray)
+                If hebstring.Substring(i, 1) = LetterArray(k) Then Result += NumArray(k)
+            Next
         Next
 
         Return Result
     End Function
+
 
     Private Function HebMtoNom(ByVal hebstring)
         Dim temp1

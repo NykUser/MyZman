@@ -21,7 +21,7 @@
 Imports System.Text
 Imports System
 Imports System.Diagnostics
-
+Imports System.Collections.Generic
 Namespace Zmanim.JewishCalendar
     Public Class HebrewDateFormatter
         Private hebrewFormatField As Boolean = False
@@ -30,10 +30,6 @@ Namespace Zmanim.JewishCalendar
         Private UseLonghebrewYearsField As Boolean = False
         Private UseGershGershayimField As Boolean = True
         Private longWeekFormatField As Boolean = True
-        'Nykedit 0 should be empty string
-        'Nykedit SpecialShabbos and שובה שירה הגדול חזון נחמו
-        Private HebrewParshaList As String() = {"", "בראשית", "נח", "לך לך", "וירא", "חיי שרה", "תולדות", "ויצא", "וישלח", "וישב", "מקץ", "ויגש", "ויחי", "שמות", "וארא", "בא", "בשלח", "יתרו", "משפטים", "תרומה", "תצוה", "כי תשא", "ויקהל", "פקודי", "ויקרא", "צו", "שמיני", "תזריע", "מצרע", "אחרי מות", "קדושים", "אמור", "בהר", "בחקתי", "במדבר", "נשא", "בהעלתך", "שלח לך", "קרח", "חוקת", "בלק", "פינחס", "מטות", "מסעי", "דברים", "ואתחנן", "עקב", "ראה", "שופטים", "כי תצא", "כי תבוא", "ניצבים", "וילך", "האזינו", "ויקהל פקודי", "תזריע מצרע", "אחרי מות קדושים", "בהר בחקתי", "חוקת בלק", "מטות מסעי", "ניצבים וילך", "שובה", "שירה", "שקלים", "זכור", "פרה", "החודש", "הגדול", "חזון", "נחמו"}
-        Private TransliteratedParshaList As String() = {"", "Bereshis", "Noach", "Lech Lecha", "Vayera", "Chayei Sara", "Toldos", "Vayetzei", "Vayishlach", "Vayeshev", "Miketz", "Vayigash", "Vayechi", "Shemos", "Vaera", "Bo", "Beshalach", "Yisro", "Mishpatim", "Terumah", "Tetzaveh", "Ki Sisa", "Vayakhel", "Pekudei", "Vayikra", "Tzav", "Shmini", "Tazria", "Metzora", "Achrei Mos", "Kedoshim", "Emor", "Behar", "Bechukosai", "Bamidbar", "Nasso", "Beha'aloscha", "Sh'lach", "Korach", "Chukas", "Balak", "Pinchas", "Matos", "Masei", "Devarim", "Vaeschanan", "Eikev", "Re'eh", "Shoftim", "Ki Seitzei", "Ki Savo", "Nitzavim", "Vayeilech", "Ha'Azinu", "Vayakhel Pekudei", "Tazria Metzora", "Achrei Mos Kedoshim", "Behar Bechukosai", "Chukas Balak", "Matos Masei", "Nitzavim Vayeilech", "Shuva", "Shirah", "Shkalim", "Zachor", "Para", "Hachodesh", "HaGadol", "Chazon", " Nachamu"}
         Private hebrewDaysOfWeek As String() = {"ראשון", "שני", "שלישי", "רביעי", "חמישי", "ששי", "שבת"}
         'made first empty that will be none add Shvii Shel Pesach and more 
         Private transliteratedHolidays As String() = {"", "Erev Pesach", "Pesach", "Chol Hamoed Pesach", "Shvii Shel Pesach", "Acharon shel Pesach", "Pesach Sheni", "Erev Shavuos", "Shavuos", "Seventeenth of Tammuz", "Tishah B'Av", "Tu B'Av", "Erev Rosh Hashana", "Rosh Hashana", "Fast of Gedalyah", "Erev Yom Kippur", "Yom Kippur", "Erev Succos", "Succos", "Chol Hamoed Succos", "Hoshana Rabbah", "Shemini Atzeres", "Simchas Torah", "Erev Chanukah", "Chanukah", "Tenth of Teves", "Tu B'Shvat", "Fast of Esther", "Purim", "Shushan Purim", "Purim Katan", "Rosh Chodesh", "Yom HaShoah", "Yom Hazikaron", "Yom Ha'atzmaut", "Yom Yerushalayim"}
@@ -88,15 +84,7 @@ Namespace Zmanim.JewishCalendar
 
             Return If(index = -1, "", If(HebrewFormat, hebrewHolidays(index), transliteratedHolidays(index)))
         End Function
-        'nykedit
-        Public Overridable Function FormatParsha(ByVal dt As DateTime, ByVal inIsrael As Boolean) As String
-            Dim Parshah = jewishCalendar.GetParshah(dt, inIsrael)
-            Try
-                Return If(HebrewFormat, HebrewParshaList(Parshah), TransliteratedParshaList(Parshah))
-            Catch ex As Exception
-                Return ""
-            End Try
-        End Function
+
         Public Overridable Function FormatRoshChodesh(ByVal dt As DateTime) As String
             If Not jewishCalendar.IsRoshChodesh(dt) Then
                 Return ""
@@ -312,17 +300,6 @@ Namespace Zmanim.JewishCalendar
             Return GetNumtoHebrewLetter(number, 0, UseGershGershayim, False)
         End Function
 
-        'Nykedit new not in C# port
-        Public Overridable Function FormatSpecialParsha(ByVal dt As DateTime) As String
-            Dim SpecialParsha = jewishCalendar.getSpecialShabbos(dt.Date)
-            If SpecialParsha = JewishCalendar.Parsha.NONE Then Return ""
-            Try
-                '-1 as the is a empty string at 0
-                Return If(HebrewFormat, HebrewParshaList(SpecialParsha - 1), TransliteratedParshaList(SpecialParsha - 1))
-            Catch ex As Exception
-                Return ""
-            End Try
-        End Function
         'new func for TalUmatar
         Public Function FormatTalUmatarStarts(ByVal dt As DateTime, ByVal InIsrael As Boolean) As String
             Dim istoday = jewishCalendar.GetTalUmatarStartsToday(dt, InIsrael)
@@ -447,6 +424,301 @@ Yes:
             Return strTemp
         End Function
 
+        'Nyk new not in java
+
+        'nykedit Parsha Functions were having issues replaced completely   
+        Public Function FormatParsha(ByVal DateIn As Date, inIsrael As Boolean) As String
+            Return FormatParsha(DateIn, inIsrael, HebrewFormat)
+        End Function
+        Public Function FormatParsha(ByVal DateIn As Date, inIsrael As Boolean, ByVal HebrewNames As Boolean) As String
+            'move to sab - needed for week of R"H 
+            If DateIn.DayOfWeek <> DayOfWeek.Saturday Then DateIn = DateIn.AddDays(Add_till_sab(DateIn.DayOfWeek))
+
+            Dim jewishYear = jewishCalendar.GetYear(DateIn)
+            Dim roshHashana As DateTime = jewishCalendar.GetJewishDateTime(jewishYear, JewishCalendar.JewishMonth.TISHREI, 1)
+            Dim roshHashanaDayOfWeek As Integer = jewishCalendar.GetJewishDayOfWeek(roshHashana)
+            Dim kvia As String = jewishCalendar.GetJewishYearType(roshHashana).ToString
+            Dim IsLeapYear As Boolean = jewishCalendar.IsLeapYear(jewishYear)
+
+            Dim daysSinceRoshHashana As TimeSpan = DateIn - roshHashana
+            Dim day As Integer = roshHashanaDayOfWeek + daysSinceRoshHashana.Days
+            Dim week As Integer = Math.Ceiling(day / 7)
+            Dim array As Integer() = Nothing
+            Dim index As Integer
+
+
+            Dim Mon_short As Integer() = {51, 52, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 53, 23, 24, -1, 25, 54, 55, 30, 56, 33, 34, 35, 36, 37, 38, 39, 40, 58, 43, 44, 45, 46, 47, 48, 49, 59}
+            Dim Mon_long As Integer() = {51, 52, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 53, 23, 24, -1, 25, 54, 55, 30, 56, 33, -1, 34, 35, 36, 37, 57, 40, 58, 43, 44, 45, 46, 47, 48, 49, 59}
+
+            Dim Mon_short_leap As Integer() = {51, 52, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, -1, 28, 29, 30, 31, 32, 33, -1, 34, 35, 36, 37, 57, 40, 58, 43, 44, 45, 46, 47, 48, 49, 59}
+            Dim Mon_short_leap_Israel As Integer() = {51, 52, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, -1, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 58, 43, 44, 45, 46, 47, 48, 49, 59}
+            Dim Mon_long_leap As Integer() = {51, 52, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, -1, -1, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 58, 43, 44, 45, 46, 47, 48, 49, 50}
+            Dim Mon_long_leap_Israel As Integer() = {51, 52, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, -1, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50}
+
+            Dim Thu_normal As Integer() = {52, -1, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 53, 23, 24, -1, -1, 25, 54, 55, 30, 56, 33, 34, 35, 36, 37, 38, 39, 40, 58, 43, 44, 45, 46, 47, 48, 49, 50}
+            Dim Thu_normal_Israel As Integer() = {52, -1, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 53, 23, 24, -1, 25, 54, 55, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 58, 43, 44, 45, 46, 47, 48, 49, 50}
+            Dim Thu_long As Integer() = {52, -1, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, -1, 25, 54, 55, 30, 56, 33, 34, 35, 36, 37, 38, 39, 40, 58, 43, 44, 45, 46, 47, 48, 49, 50}
+
+            Dim Thu_short_leap As Integer() = {52, -1, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, -1, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50}
+            Dim Thu_long_leap As Integer() = {52, -1, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, -1, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 59}
+
+            Dim Sat_short As Integer() = {-1, 52, -1, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 53, 23, 24, -1, 25, 54, 55, 30, 56, 33, 34, 35, 36, 37, 38, 39, 40, 58, 43, 44, 45, 46, 47, 48, 49, 50}
+            Dim Sat_long As Integer() = {-1, 52, -1, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 53, 23, 24, -1, 25, 54, 55, 30, 56, 33, 34, 35, 36, 37, 38, 39, 40, 58, 43, 44, 45, 46, 47, 48, 49, 59}
+
+            Dim Sat_short_leap As Integer() = {-1, 52, -1, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, -1, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 58, 43, 44, 45, 46, 47, 48, 49, 59}
+            Dim Sat_long_leap As Integer() = {-1, 52, -1, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, -1, 28, 29, 30, 31, 32, 33, -1, 34, 35, 36, 37, 57, 40, 58, 43, 44, 45, 46, 47, 48, 49, 59}
+
+            Dim hebrewParshiyos As String() = {"בראשית", "נח", "לך לך", "וירא", "חיי שרה", "תולדות", "ויצא", "וישלח", "וישב", "מקץ", "ויגש", "ויחי", "שמות", "וארא", "בא", "בשלח", "יתרו", "משפטים", "תרומה", "תצוה", "כי תשא", "ויקהל", "פקודי", "ויקרא", "צו", "שמיני", "תזריע", "מצרע", "אחרי מות", "קדושים", "אמור", "בהר", "בחקתי", "במדבר", "נשא", "בהעלתך", "שלח לך", "קרח", "חוקת", "בלק", "פינחס", "מטות", "מסעי", "דברים", "ואתחנן", "עקב", "ראה", "שופטים", "כי תצא", "כי תבוא", "ניצבים", "וילך", "האזינו", "ויקהל פקודי", "תזריע מצרע", "אחרי מות קדושים", "בהר בחקתי", "חוקת בלק", "מטות מסעי", "ניצבים וילך"}
+            Dim EngParshiyos As String() = {"Bereshis", "Noach", "Lech Lecha", "Vayera", "Chayei Sara", "Toldos", "Vayetzei", "Vayishlach", "Vayeshev", "Miketz", "Vayigash", "Vayechi", "Shemos", "Vaera", "Bo", "Beshalach", "Yisro", "Mishpatim", "Terumah", "Tetzaveh", "Ki Sisa", "Vayakhel", "Pekudei", "Vayikra", "Tzav", "Shmini", "Tazria", "Metzora", "Achrei Mos", "Kedoshim", "Emor", "Behar", "Bechukosai", "Bamidbar", "Nasso", "Beha'aloscha", "Sh'lach", "Korach", "Chukas", "Balak", "Pinchas", "Matos", "Masei", "Devarim", "Vaeschanan", "Eikev", "Re'eh", "Shoftim", "Ki Seitzei", "Ki Savo", "Nitzavim", "Vayeilech", "Ha'Azinu", "Vayakhel Pekudei", "Tazria Metzora", "Achrei Mos Kedoshim", "Behar Bechukosai", "Chukas Balak", "Matos Masei", "Nitzavim Vayeilech"}
+
+            If IsLeapYear = False Then
+
+                Select Case roshHashanaDayOfWeek
+                    Case 7
+                        If kvia = "CHASERIM" Then
+                            array = Sat_short
+                        ElseIf kvia = "SHELAIMIM" Then
+                            array = Sat_long
+                        End If
+
+                    Case 2
+
+                        If kvia = "CHASERIM" Then
+                            array = Mon_short
+                        ElseIf kvia = "SHELAIMIM" Then
+                            array = If(inIsrael, Mon_short, Mon_long)
+                        End If
+
+                    Case 3
+
+                        If kvia = "KESIDRAN" Then
+                            array = If(inIsrael, Mon_short, Mon_long)
+                        End If
+
+                    Case 5
+
+                        If kvia = "KESIDRAN" Then
+                            array = If(inIsrael, Thu_normal_Israel, Thu_normal)
+                        ElseIf kvia = "SHELAIMIM" Then
+                            array = Thu_long
+                        End If
+                End Select
+
+            Else
+
+                Select Case roshHashanaDayOfWeek
+                    Case 7
+
+                        If kvia = "CHASERIM" Then
+                            array = Sat_short_leap
+                        ElseIf kvia = "SHELAIMIM" Then
+                            array = If(inIsrael, Sat_short_leap, Sat_long_leap)
+                        End If
+
+                    Case 2
+
+                        If kvia = "CHASERIM" Then
+                            array = If(inIsrael, Mon_short_leap_Israel, Mon_short_leap)
+                        ElseIf kvia = "SHELAIMIM" Then
+                            array = If(inIsrael, Mon_long_leap_Israel, Mon_long_leap)
+                        End If
+
+                    Case 3
+
+                        If kvia = "KESIDRAN" Then
+                            array = If(inIsrael, Mon_long_leap_Israel, Mon_long_leap)
+                        End If
+
+                    Case 5
+
+                        If kvia = "CHASERIM" Then
+                            array = Thu_short_leap
+                        ElseIf kvia = "SHELAIMIM" Then
+                            array = Thu_long_leap
+                        End If
+                End Select
+            End If
+
+            If array Is Nothing Then
+                Return ""
+            Else
+                index = array(week - 1)
+                If index = -1 Then
+                    Return ""
+                End If
+
+                Return If(HebrewNames, hebrewParshiyos(index), EngParshiyos(index))
+            End If
+        End Function
+        Private Function Add_till_sab(ByVal day As DayOfWeek) As Integer
+            ' monday is 1
+            If (day = DayOfWeek.Sunday) Then Return 6
+            If (day = DayOfWeek.Monday) Then Return 5
+            If (day = DayOfWeek.Tuesday) Then Return 4
+            If (day = DayOfWeek.Wednesday) Then Return 3
+            If (day = DayOfWeek.Thursday) Then Return 2
+            If (day = DayOfWeek.Friday) Then Return 1
+
+            Return 0
+        End Function
+
+        'Nykedit not in C# port rework to jave
+        Public Overridable Function FormatSpecialParsha(ByVal dt As DateTime) As String
+            Return FormatSpecialParsha(dt, HebrewFormat)
+        End Function
+        Public Overridable Function FormatSpecialParsha(ByVal dt As DateTime, ByVal HebrewNames As Boolean) As String
+
+            If dt.DayOfWeek = DayOfWeek.Saturday Then
+
+                If FormatParsha(dt, False, True) = "בשלח" Then Return If(HebrewNames, "שירה", "Shirah")
+
+                If jewishCalendar.GetJewishMonth(dt) = JewishCalendar.JewishMonth.TISHREI AndAlso jewishCalendar.GetDayOfMonth(dt) > 2 AndAlso jewishCalendar.GetDayOfMonth(dt) < 10 Then _
+                       Return If(HebrewNames, "שובה", "Shuva")
+
+
+                If jewishCalendar.GetJewishMonth(dt) = JewishCalendar.JewishMonth.SHEVAT AndAlso Not jewishCalendar.IsLeapYearFromDateTime(dt) _
+                        OrElse jewishCalendar.GetJewishMonth(dt) = JewishCalendar.JewishMonth.ADAR AndAlso jewishCalendar.IsLeapYearFromDateTime(dt) Then
+                    If jewishCalendar.GetDayOfMonth(dt) = 25 OrElse jewishCalendar.GetDayOfMonth(dt) = 27 OrElse jewishCalendar.GetDayOfMonth(dt) = 29 Then
+                        Return If(HebrewNames, "שקלים", "Shkalim")
+                    End If
+                End If
+
+                If jewishCalendar.GetJewishMonth(dt) = JewishCalendar.JewishMonth.ADAR AndAlso Not jewishCalendar.IsLeapYearFromDateTime(dt) _
+                    OrElse jewishCalendar.GetJewishMonth(dt) = JewishCalendar.JewishMonth.ADAR_II Then
+                    If jewishCalendar.GetDayOfMonth(dt) = 1 Then Return If(HebrewNames, "שקלים", "Shkalim")
+
+                    If jewishCalendar.GetDayOfMonth(dt) = 8 OrElse jewishCalendar.GetDayOfMonth(dt) = 9 _
+                            OrElse jewishCalendar.GetDayOfMonth(dt) = 11 OrElse jewishCalendar.GetDayOfMonth(dt) = 13 Then Return If(HebrewNames, "זכור", "Zachor")
+
+                    If jewishCalendar.GetDayOfMonth(dt) = 18 OrElse jewishCalendar.GetDayOfMonth(dt) = 20 _
+                            OrElse jewishCalendar.GetDayOfMonth(dt) = 22 OrElse jewishCalendar.GetDayOfMonth(dt) = 23 Then Return If(HebrewNames, "פרה", "Para")
+
+                    If jewishCalendar.GetDayOfMonth(dt) = 25 OrElse jewishCalendar.GetDayOfMonth(dt) = 27 _
+                            OrElse jewishCalendar.GetDayOfMonth(dt) = 29 Then Return If(HebrewNames, "החודש", "Hachodesh")
+                End If
+
+                If jewishCalendar.GetJewishMonth(dt) = JewishCalendar.JewishMonth.NISSAN Then
+                    If jewishCalendar.GetDayOfMonth(dt) = 1 Then Return If(HebrewNames, "החודש", "Hachodesh")
+                    'this will move it back a week when sab is ErevYomTov
+                    'If GetDayOfMonth(dt) >= 7 AndAlso GetDayOfMonth(dt) < 14 Then Return Parsha.HAGADOL
+                    If jewishCalendar.GetDayOfMonth(dt) >= 8 AndAlso jewishCalendar.GetDayOfMonth(dt) < 15 Then Return If(HebrewNames, "הגדול", "HaGadol")
+                End If
+
+                If jewishCalendar.GetJewishMonth(dt) = JewishCalendar.JewishMonth.AV Then
+                    If jewishCalendar.GetDayOfMonth(dt) >= 3 AndAlso jewishCalendar.GetDayOfMonth(dt) < 10 Then Return If(HebrewNames, "חזון", "Chazon")
+                    If jewishCalendar.GetDayOfMonth(dt) >= 10 AndAlso jewishCalendar.GetDayOfMonth(dt) < 17 Then Return If(HebrewNames, "נחמו", "Nachamu")
+                End If
+
+            End If
+            Return ""
+
+        End Function
+
+        Public Class HolidayandParsha
+            Public Property HebName As String
+            Public Property EngName As String
+            Public Property EngDate As DateTime
+            Public Sub New(ByVal HebName As String, ByVal EngName As String, ByVal EngDate As DateTime)
+                'MyBase.New
+                Me.HebName = HebName
+                Me.EngName = EngName
+                Me.EngDate = EngDate
+            End Sub
+        End Class
+        Public Function GetJewishHolidayList(ByVal Year As Integer) As List(Of HolidayandParsha)
+            Dim HolidayList As List(Of HolidayandParsha) = New List(Of HolidayandParsha)
+            Dim IsLeap = jewishCalendar.IsLeapYear(Year)
+
+            HolidayList.Add(New HolidayandParsha(hebrewHolidays(JewishCalendar.JewishHoliday.ROSH_HASHANA), transliteratedHolidays(JewishCalendar.JewishHoliday.ROSH_HASHANA), New DateTime(Year, 1, 1, jewishCalendar)))
+            HolidayList.Add(New HolidayandParsha(hebrewHolidays(JewishCalendar.JewishHoliday.FAST_OF_GEDALYAH), transliteratedHolidays(JewishCalendar.JewishHoliday.FAST_OF_GEDALYAH), New DateTime(Year, 1, 3, jewishCalendar)))
+            HolidayList.Add(New HolidayandParsha(hebrewHolidays(JewishCalendar.JewishHoliday.YOM_KIPPUR), transliteratedHolidays(JewishCalendar.JewishHoliday.YOM_KIPPUR), New DateTime(Year, 1, 10, jewishCalendar)))
+            HolidayList.Add(New HolidayandParsha(hebrewHolidays(JewishCalendar.JewishHoliday.SUCCOS), transliteratedHolidays(JewishCalendar.JewishHoliday.SUCCOS), New DateTime(Year, 1, 15, jewishCalendar)))
+            HolidayList.Add(New HolidayandParsha(hebrewHolidays(JewishCalendar.JewishHoliday.HOSHANA_RABBA), transliteratedHolidays(JewishCalendar.JewishHoliday.HOSHANA_RABBA), New DateTime(Year, 1, 21, jewishCalendar)))
+            HolidayList.Add(New HolidayandParsha(hebrewHolidays(JewishCalendar.JewishHoliday.SHEMINI_ATZERES), transliteratedHolidays(JewishCalendar.JewishHoliday.SHEMINI_ATZERES), New DateTime(Year, 1, 22, jewishCalendar)))
+            HolidayList.Add(New HolidayandParsha(hebrewHolidays(JewishCalendar.JewishHoliday.SIMCHAS_TORAH), transliteratedHolidays(JewishCalendar.JewishHoliday.SIMCHAS_TORAH), New DateTime(Year, 1, 23, jewishCalendar)))
+            HolidayList.Add(New HolidayandParsha(hebrewHolidays(JewishCalendar.JewishHoliday.CHANUKAH), transliteratedHolidays(JewishCalendar.JewishHoliday.CHANUKAH), New DateTime(Year, 3, 25, jewishCalendar)))
+            HolidayList.Add(New HolidayandParsha(hebrewHolidays(JewishCalendar.JewishHoliday.TENTH_OF_TEVES), transliteratedHolidays(JewishCalendar.JewishHoliday.TENTH_OF_TEVES), New DateTime(Year, 4, 10, jewishCalendar)))
+            HolidayList.Add(New HolidayandParsha(hebrewHolidays(JewishCalendar.JewishHoliday.TU_BESHVAT), transliteratedHolidays(JewishCalendar.JewishHoliday.TU_BESHVAT), New DateTime(Year, 5, 15, jewishCalendar)))
+            If IsLeap Then _
+                HolidayList.Add(New HolidayandParsha(hebrewHolidays(JewishCalendar.JewishHoliday.PURIM_KATAN), transliteratedHolidays(JewishCalendar.JewishHoliday.PURIM_KATAN), New DateTime(Year, 6, 14, jewishCalendar)))
+            HolidayList.Add(New HolidayandParsha(hebrewHolidays(JewishCalendar.JewishHoliday.PURIM), transliteratedHolidays(JewishCalendar.JewishHoliday.PURIM), New DateTime(Year, If(IsLeap, 7, 6), 14, jewishCalendar)))
+            HolidayList.Add(New HolidayandParsha(hebrewHolidays(JewishCalendar.JewishHoliday.PESACH), transliteratedHolidays(JewishCalendar.JewishHoliday.PURIM), New DateTime(Year, If(IsLeap, 8, 7), 15, jewishCalendar)))
+            HolidayList.Add(New HolidayandParsha(hebrewHolidays(JewishCalendar.JewishHoliday.SHVII_SHEL_PESACH), transliteratedHolidays(JewishCalendar.JewishHoliday.SHVII_SHEL_PESACH), New DateTime(Year, If(IsLeap, 8, 7), 21, jewishCalendar)))
+
+            If UseModernHolidays = True Then
+                'YOM_HASHOAH
+                HolidayList.Add(New HolidayandParsha(hebrewHolidays(JewishCalendar.JewishHoliday.YOM_HASHOAH), transliteratedHolidays(JewishCalendar.JewishHoliday.YOM_HASHOAH), New DateTime(Year, If(IsLeap, 8, 7), 27, jewishCalendar)))
+                If New DateTime(Year, If(IsLeap, 8, 7), 27, jewishCalendar).DayOfWeek = DayOfWeek.Friday Then _
+                    HolidayList(HolidayList.Count - 1).EngDate = New DateTime(Year, If(IsLeap, 8, 7), 26, jewishCalendar)
+                If New DateTime(Year, If(IsLeap, 8, 7), 27, jewishCalendar).DayOfWeek = DayOfWeek.Friday Then _
+                    HolidayList(HolidayList.Count - 1).EngDate = New DateTime(Year, If(IsLeap, 8, 7), 28, jewishCalendar)
+                'YOM_HAZIKARON - YOM_HAATZMAUT
+                Dim dt As DateTime = New DateTime(Year, If(IsLeap, 9, 8), 4, jewishCalendar)
+                If dt.DayOfWeek = DayOfWeek.Tuesday Then
+                    HolidayList.Add(New HolidayandParsha(hebrewHolidays(JewishCalendar.JewishHoliday.YOM_HAZIKARON), transliteratedHolidays(JewishCalendar.JewishHoliday.YOM_HAZIKARON), New DateTime(Year, If(IsLeap, 9, 8), 4, jewishCalendar)))
+                    HolidayList.Add(New HolidayandParsha(hebrewHolidays(JewishCalendar.JewishHoliday.YOM_HAATZMAUT), transliteratedHolidays(JewishCalendar.JewishHoliday.YOM_HAATZMAUT), New DateTime(Year, If(IsLeap, 9, 8), 5, jewishCalendar)))
+                End If
+                If dt.DayOfWeek = DayOfWeek.Sunday Then
+                    HolidayList.Add(New HolidayandParsha(hebrewHolidays(JewishCalendar.JewishHoliday.YOM_HAZIKARON), transliteratedHolidays(JewishCalendar.JewishHoliday.YOM_HAZIKARON), New DateTime(Year, If(IsLeap, 9, 8), 5, jewishCalendar)))
+                    HolidayList.Add(New HolidayandParsha(hebrewHolidays(JewishCalendar.JewishHoliday.YOM_HAATZMAUT), transliteratedHolidays(JewishCalendar.JewishHoliday.YOM_HAATZMAUT), New DateTime(Year, If(IsLeap, 9, 8), 6, jewishCalendar)))
+                End If
+                If dt.DayOfWeek = DayOfWeek.Thursday Then
+                    HolidayList.Add(New HolidayandParsha(hebrewHolidays(JewishCalendar.JewishHoliday.YOM_HAZIKARON), transliteratedHolidays(JewishCalendar.JewishHoliday.YOM_HAZIKARON), New DateTime(Year, If(IsLeap, 9, 8), 3, jewishCalendar)))
+                    HolidayList.Add(New HolidayandParsha(hebrewHolidays(JewishCalendar.JewishHoliday.YOM_HAATZMAUT), transliteratedHolidays(JewishCalendar.JewishHoliday.YOM_HAATZMAUT), New DateTime(Year, If(IsLeap, 9, 8), 4, jewishCalendar)))
+                End If
+                If dt.DayOfWeek = DayOfWeek.Friday Then
+                    HolidayList.Add(New HolidayandParsha(hebrewHolidays(JewishCalendar.JewishHoliday.YOM_HAZIKARON), transliteratedHolidays(JewishCalendar.JewishHoliday.YOM_HAZIKARON), New DateTime(Year, If(IsLeap, 9, 8), 2, jewishCalendar)))
+                    HolidayList.Add(New HolidayandParsha(hebrewHolidays(JewishCalendar.JewishHoliday.YOM_HAATZMAUT), transliteratedHolidays(JewishCalendar.JewishHoliday.YOM_HAATZMAUT), New DateTime(Year, If(IsLeap, 9, 8), 3, jewishCalendar)))
+                End If
+            End If
+
+            HolidayList.Add(New HolidayandParsha(hebrewHolidays(JewishCalendar.JewishHoliday.PESACH_SHENI), transliteratedHolidays(JewishCalendar.JewishHoliday.PESACH_SHENI), New DateTime(Year, If(IsLeap, 9, 8), 15, jewishCalendar)))
+            HolidayList.Add(New HolidayandParsha("לג בעומר", "Lag BaOmer", New DateTime(Year, If(IsLeap, 9, 8), 18, jewishCalendar)))
+
+            If UseModernHolidays = True Then
+                HolidayList.Add(New HolidayandParsha(hebrewHolidays(JewishCalendar.JewishHoliday.YOM_YERUSHALAYIM), transliteratedHolidays(JewishCalendar.JewishHoliday.YOM_YERUSHALAYIM), New DateTime(Year, If(IsLeap, 9, 8), 28, jewishCalendar)))
+            End If
+
+            HolidayList.Add(New HolidayandParsha(hebrewHolidays(JewishCalendar.JewishHoliday.SHAVUOS), transliteratedHolidays(JewishCalendar.JewishHoliday.SHAVUOS), New DateTime(Year, If(IsLeap, 10, 9), 6, jewishCalendar)))
+
+            If New DateTime(Year, If(IsLeap, 11, 10), 17, jewishCalendar).DayOfWeek <> DayOfWeek.Saturday Then
+                HolidayList.Add(New HolidayandParsha(hebrewHolidays(JewishCalendar.JewishHoliday.SEVENTEEN_OF_TAMMUZ), transliteratedHolidays(JewishCalendar.JewishHoliday.SEVENTEEN_OF_TAMMUZ), New DateTime(Year, If(IsLeap, 11, 10), 17, jewishCalendar)))
+                HolidayList.Add(New HolidayandParsha(hebrewHolidays(JewishCalendar.JewishHoliday.TISHA_BEAV), transliteratedHolidays(JewishCalendar.JewishHoliday.TISHA_BEAV), New DateTime(Year, If(IsLeap, 12, 11), 9, jewishCalendar)))
+            Else
+                HolidayList.Add(New HolidayandParsha(hebrewHolidays(JewishCalendar.JewishHoliday.SEVENTEEN_OF_TAMMUZ), transliteratedHolidays(JewishCalendar.JewishHoliday.SEVENTEEN_OF_TAMMUZ), New DateTime(Year, If(IsLeap, 11, 10), 18, jewishCalendar)))
+                HolidayList.Add(New HolidayandParsha(hebrewHolidays(JewishCalendar.JewishHoliday.TISHA_BEAV), transliteratedHolidays(JewishCalendar.JewishHoliday.TISHA_BEAV), New DateTime(Year, If(IsLeap, 12, 11), 10, jewishCalendar)))
+            End If
+            HolidayList.Add(New HolidayandParsha(hebrewHolidays(JewishCalendar.JewishHoliday.TU_BEAV), transliteratedHolidays(JewishCalendar.JewishHoliday.TU_BEAV), New DateTime(Year, If(IsLeap, 12, 11), 15, jewishCalendar)))
+            Return HolidayList
+        End Function
+        Public Function GetParshaList(ByVal Year As Integer, inIsrael As Boolean) As List(Of HolidayandParsha)
+            Dim ParshaList As List(Of HolidayandParsha) = New List(Of HolidayandParsha)
+            Dim IsLeap = jewishCalendar.IsLeapYear(Year)
+            Dim dt As DateTime = New DateTime(Year, 1, 1, jewishCalendar)
+            Dim DateEnd As DateTime = New DateTime(Year, If(IsLeap, 13, 12), 29, jewishCalendar)
+
+            'For Each Day In jewishCalendar
+            Do While (dt <= DateEnd)
+                If dt.DayOfWeek = DayOfWeek.Saturday Then
+                    Dim HebParshah = FormatParsha(dt, inIsrael, True)
+                    Dim EngParshah = FormatParsha(dt, inIsrael, False)
+                    Dim HebSpecialParshah = FormatSpecialParsha(dt, True)
+                    Dim EngSpecialParshah = FormatSpecialParsha(dt, False)
+                    If HebParshah <> "" Then
+                        If HebSpecialParshah <> "" Then
+                            ParshaList.Add(New HolidayandParsha(HebParshah & " - " & HebSpecialParshah, EngParshah & " - " & EngSpecialParshah, dt))
+                        Else
+                            ParshaList.Add(New HolidayandParsha(HebParshah, EngParshah, dt))
+                        End If
+                    End If
+                End If
+
+                dt = dt.AddDays(1)
+            Loop
+            Return ParshaList
+
+        End Function
     End Class
+
 
 End Namespace

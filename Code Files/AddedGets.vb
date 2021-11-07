@@ -128,7 +128,7 @@
 
         Dim jc As New JewishCalendar()
         Dim jewishYear = jc.GetYear(DateIn)
-        Dim roshHashana As DateTime = jc.GetJewishDateTime(jewishYear, JewishCalendar.JewishMonth.TISHREI, 1)
+        Dim roshHashana As DateTime = jc.GetJewishDateTime(jewishYear, jc.JewishMonth.TISHREI, 1)
         Dim roshHashanaDayOfWeek As Integer = jc.GetJewishDayOfWeek(roshHashana)
         Dim kvia As String = jc.GetJewishYearType(roshHashana).ToString
         Dim IsLeapYear As Boolean = jc.IsLeapYear(jewishYear)
