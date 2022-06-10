@@ -115,7 +115,11 @@ Public Class FrmExport
                 If InStr(Z.FunctionName, "ShaahZmanis") > 0 Then
                     Try
                         MyZman = #12:00:00 AM#.AddMilliseconds(CallByName(TempCZC, Z.FunctionName, CallType.Get))
-                        file.Write(Z.DisplayName & "\n" & ChrW(&H200F) & MyZman.ToString("H:mm:ss") & "\n\n") '
+                        If varSC.HebrewNamesYomTovParsha = True Then
+                            file.Write(Z.DisplayName & "\n" & ChrW(&H200F) & MyZman.ToString("H:mm:ss") & "\n\n") '
+                        Else
+                            file.Write(Z.DisplayName & "\n" & MyZman.ToString("H:mm:ss") & "\n\n") '
+                        End If
                     Catch ex As Exception
                     End Try
                 Else
@@ -126,7 +130,11 @@ Public Class FrmExport
                             Args = {Work_Date, TempLocation} ' for AddedGets
                             MyZman = CDate(CallByName(varAddedGets, Z.FunctionName, CallType.Get, Args))
                         End If
-                        file.Write(Z.DisplayName & "\n" & ChrW(&H200F) & StrConv(MyZman.ToString(timeFormat), VbStrConv.Lowercase) & "\n\n")
+                        If varSC.HebrewNamesYomTovParsha = True Then
+                            file.Write(Z.DisplayName & "\n" & ChrW(&H200F) & StrConv(MyZman.ToString(timeFormat), VbStrConv.Lowercase) & "\n\n")
+                        Else
+                            file.Write(Z.DisplayName & "\n" & StrConv(MyZman.ToString(timeFormat), VbStrConv.Lowercase) & "\n\n")
+                        End If
                     Catch ex As Exception
                     End Try
                 End If
@@ -163,7 +171,13 @@ Public Class FrmExport
 
         File = My.Computer.FileSystem.OpenTextFileWriter(FileFullPath, False, System.Text.Encoding.UTF8) 'System.Text.Encoding.UTF8
         Dim RowString As String
-        Dim HeaderString As String = "Date,תאריך,פרשה,יום טוב," & If(varSC.DisplayDafYomi = True, "דף היומי,", "")
+        Dim HeaderString As String
+        If varSC.HebrewNamesYomTovParsha = True Then
+            HeaderString = "Date,תאריך,פרשה,יום טוב," & If(varSC.DisplayDafYomi = True, "דף היומי,", "")
+        Else
+            HeaderString = "Date,Heb Date,Parsha,Yom Tov," & If(varSC.DisplayDafYomi = True, "Daf,", "")
+        End If
+
 
         For Each Z In varSC.Zmanim
             HeaderString = HeaderString & Z.DisplayName & ","
@@ -179,7 +193,7 @@ Public Class FrmExport
                 TempCZC.AstronomicalCalculator = New ZmanimCalculator()
             End If
             ResultArray = Get_HebDate(Work_Date, False, varSC.HebrewNamesYomTovParsha)
-            RowString = Work_Date.ToShortDateString & "," & ResultArray(0) & "," & "יום " & ResultArray(1) & " " & ResultArray(2) & "," & ResultArray(3) & "," & If(varSC.DisplayDafYomi = True, ResultArray(4) & ",", "")
+            RowString = Work_Date.ToShortDateString & "," & ResultArray(0) & "," & If(varSC.HebrewNamesYomTovParsha = True, "יום ", "") & ResultArray(1) & " " & ResultArray(2) & "," & ResultArray(3) & "," & If(varSC.DisplayDafYomi = True, ResultArray(4) & ",", "")
 
             For Each Z In varSC.Zmanim
                 If InStr(Z.FunctionName, "ShaahZmanis") > 0 Then

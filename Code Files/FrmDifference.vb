@@ -160,7 +160,7 @@
             End If
         Next
 
-        Debug.Print(alist.UserLocation.Count)
+        'Debug.Print(alist.UserLocation.Count)
 
         Dim counter As Integer
         Dim write As New BinaryWriter(File.Open(filename & ".DAT", FileMode.Create))
@@ -168,8 +168,8 @@
             .Write(alist.UserLocation.Count)
             For Each place As aLocation In alist.UserLocation
                 counter += 1
-                Debug.Print(counter)
-                Debug.Print(place.EngName)
+                'Debug.Print(counter)
+                'Debug.Print(place.EngName)
                 .Write(place.EngCountry)
                 .Write(place.HebCountry)
                 .Write(place.Elevation)
@@ -200,7 +200,7 @@
 
         varEngPlaceList.Save(varLocationsFile)
 
-        Debug.Print("Time elapsed: {0}", MyStopwatch.Elapsed)
+        'Debug.Print("Time elapsed: {0}", MyStopwatch.Elapsed)
     End Sub
     Private Sub Butexit_Click(sender As Object, e As EventArgs) Handles Butexit.Click
         Me.Close()

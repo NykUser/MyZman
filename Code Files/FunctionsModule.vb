@@ -601,7 +601,6 @@ Module FunctionsModule
             End If
         End If
 
-        Debug.Print(Daf)
 A:
         Return New String() {Hebdate, Hebday, Parsha, Holiday, Daf}
         '0 Hebdate
