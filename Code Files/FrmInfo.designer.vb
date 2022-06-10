@@ -52,6 +52,7 @@ Partial Class Frminfo
         Me.ToolStripDropDownButton1 = New System.Windows.Forms.ToolStripDropDownButton()
         Me.SettingsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.mHebrewMenus = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mHebrewNamesYomTovParsha = New System.Windows.Forms.ToolStripMenuItem()
         Me.mIsraeliYomTov = New System.Windows.Forms.ToolStripMenuItem()
         Me.m24HourFormatTime = New System.Windows.Forms.ToolStripMenuItem()
         Me.mShowTimesOnStatusBar = New System.Windows.Forms.ToolStripMenuItem()
@@ -78,7 +79,6 @@ Partial Class Frminfo
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
         Me.btHideLocationInfo = New System.Windows.Forms.Button()
         Me.PanelOnCbTimeZone = New System.Windows.Forms.Panel()
-        Me.rbtLocationContexOpen = New zman.WindowsFormsApplication1.RoundButton()
         Me.LabelTimeZone = New System.Windows.Forms.Label()
         Me.LabelCountry = New System.Windows.Forms.Label()
         Me.ZmanimContextMenuHelper = New System.Windows.Forms.ContextMenuStrip(Me.components)
@@ -94,7 +94,6 @@ Partial Class Frminfo
         Me.dpEngdate = New System.Windows.Forms.DateTimePicker()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.rtbParsha = New System.Windows.Forms.RichTextBox()
-        Me.rbtTodayRefresh = New zman.WindowsFormsApplication1.RoundButton()
         Me.PanelOndpEngdate = New System.Windows.Forms.Panel()
         Me.TimerTransparency = New System.Windows.Forms.Timer(Me.components)
         Me.TimerZmanimAfterChange = New System.Windows.Forms.Timer(Me.components)
@@ -104,6 +103,8 @@ Partial Class Frminfo
         Me.ZmanDisplayName = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.ZmanTime = New System.Windows.Forms.DataGridViewComboBoxColumn()
         Me.LabelDisclaimer = New System.Windows.Forms.Label()
+        Me.rbtTodayRefresh = New zman.WindowsFormsApplication1.RoundButton()
+        Me.rbtLocationContexOpen = New zman.WindowsFormsApplication1.RoundButton()
         Me.LocationContextMenu.SuspendLayout()
         Me.StatusStrip1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
@@ -311,9 +312,9 @@ Partial Class Frminfo
         '
         Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripDropDownButton1, Me.StatusLabel, Me.ToolStripProgressBar1})
         Me.StatusStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow
-        Me.StatusStrip1.Location = New System.Drawing.Point(0, 838)
+        Me.StatusStrip1.Location = New System.Drawing.Point(0, 837)
         Me.StatusStrip1.Name = "StatusStrip1"
-        Me.StatusStrip1.Size = New System.Drawing.Size(289, 21)
+        Me.StatusStrip1.Size = New System.Drawing.Size(289, 22)
         Me.StatusStrip1.TabIndex = 27
         Me.StatusStrip1.Text = "StatusStrip1"
         '
@@ -330,119 +331,126 @@ Partial Class Frminfo
         '
         'SettingsToolStripMenuItem
         '
-        Me.SettingsToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mHebrewMenus, Me.mIsraeliYomTov, Me.m24HourFormatTime, Me.mShowTimesOnStatusBar, Me.mAskWhenChanging, Me.mBackUpWhenChanging, Me.mStayOnTopToolStripMenuItem, Me.mChangeKeybordLayout, Me.mShowTooltips, Me.mDisplayDafYomi, Me.ToolStripSeparator3, Me.mResetSettings})
+        Me.SettingsToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mHebrewMenus, Me.mHebrewNamesYomTovParsha, Me.mIsraeliYomTov, Me.m24HourFormatTime, Me.mShowTimesOnStatusBar, Me.mAskWhenChanging, Me.mBackUpWhenChanging, Me.mStayOnTopToolStripMenuItem, Me.mChangeKeybordLayout, Me.mShowTooltips, Me.mDisplayDafYomi, Me.ToolStripSeparator3, Me.mResetSettings})
         Me.SettingsToolStripMenuItem.Name = "SettingsToolStripMenuItem"
-        Me.SettingsToolStripMenuItem.Size = New System.Drawing.Size(136, 22)
+        Me.SettingsToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
         Me.SettingsToolStripMenuItem.Text = "Settings"
         '
         'mHebrewMenus
         '
         Me.mHebrewMenus.CheckOnClick = True
         Me.mHebrewMenus.Name = "mHebrewMenus"
-        Me.mHebrewMenus.Size = New System.Drawing.Size(254, 22)
+        Me.mHebrewMenus.Size = New System.Drawing.Size(269, 22)
         Me.mHebrewMenus.Text = "Hebrew Menus"
+        '
+        'mHebrewNamesYomTovParsha
+        '
+        Me.mHebrewNamesYomTovParsha.CheckOnClick = True
+        Me.mHebrewNamesYomTovParsha.Name = "mHebrewNamesYomTovParsha"
+        Me.mHebrewNamesYomTovParsha.Size = New System.Drawing.Size(269, 22)
+        Me.mHebrewNamesYomTovParsha.Text = "Hebrew Names YomTov and Parsha"
         '
         'mIsraeliYomTov
         '
         Me.mIsraeliYomTov.CheckOnClick = True
         Me.mIsraeliYomTov.Name = "mIsraeliYomTov"
-        Me.mIsraeliYomTov.Size = New System.Drawing.Size(254, 22)
-        Me.mIsraeliYomTov.Text = "Eretz Yisrael Yom Tov and Parsha"
+        Me.mIsraeliYomTov.Size = New System.Drawing.Size(269, 22)
+        Me.mIsraeliYomTov.Text = "Eretz Yisrael YomTov and Parsha"
         '
         'm24HourFormatTime
         '
         Me.m24HourFormatTime.CheckOnClick = True
         Me.m24HourFormatTime.Name = "m24HourFormatTime"
-        Me.m24HourFormatTime.Size = New System.Drawing.Size(254, 22)
+        Me.m24HourFormatTime.Size = New System.Drawing.Size(269, 22)
         Me.m24HourFormatTime.Text = "24 Hour Format Time"
         '
         'mShowTimesOnStatusBar
         '
         Me.mShowTimesOnStatusBar.CheckOnClick = True
         Me.mShowTimesOnStatusBar.Name = "mShowTimesOnStatusBar"
-        Me.mShowTimesOnStatusBar.Size = New System.Drawing.Size(254, 22)
+        Me.mShowTimesOnStatusBar.Size = New System.Drawing.Size(269, 22)
         Me.mShowTimesOnStatusBar.Text = "Show Time On Status Bar"
         '
         'mAskWhenChanging
         '
         Me.mAskWhenChanging.CheckOnClick = True
         Me.mAskWhenChanging.Name = "mAskWhenChanging"
-        Me.mAskWhenChanging.Size = New System.Drawing.Size(254, 22)
+        Me.mAskWhenChanging.Size = New System.Drawing.Size(269, 22)
         Me.mAskWhenChanging.Text = "Ask on Changes"
         '
         'mBackUpWhenChanging
         '
         Me.mBackUpWhenChanging.CheckOnClick = True
         Me.mBackUpWhenChanging.Name = "mBackUpWhenChanging"
-        Me.mBackUpWhenChanging.Size = New System.Drawing.Size(254, 22)
+        Me.mBackUpWhenChanging.Size = New System.Drawing.Size(269, 22)
         Me.mBackUpWhenChanging.Text = "Back Up When Changing"
         '
         'mStayOnTopToolStripMenuItem
         '
         Me.mStayOnTopToolStripMenuItem.CheckOnClick = True
         Me.mStayOnTopToolStripMenuItem.Name = "mStayOnTopToolStripMenuItem"
-        Me.mStayOnTopToolStripMenuItem.Size = New System.Drawing.Size(254, 22)
+        Me.mStayOnTopToolStripMenuItem.Size = New System.Drawing.Size(269, 22)
         Me.mStayOnTopToolStripMenuItem.Text = "Stay On Top"
         '
         'mChangeKeybordLayout
         '
         Me.mChangeKeybordLayout.CheckOnClick = True
         Me.mChangeKeybordLayout.Name = "mChangeKeybordLayout"
-        Me.mChangeKeybordLayout.Size = New System.Drawing.Size(254, 22)
+        Me.mChangeKeybordLayout.Size = New System.Drawing.Size(269, 22)
         Me.mChangeKeybordLayout.Text = "Change Keyboard to Hebrew"
         '
         'mShowTooltips
         '
         Me.mShowTooltips.CheckOnClick = True
         Me.mShowTooltips.Name = "mShowTooltips"
-        Me.mShowTooltips.Size = New System.Drawing.Size(254, 22)
+        Me.mShowTooltips.Size = New System.Drawing.Size(269, 22)
         Me.mShowTooltips.Text = "Display Tool Tips"
         '
         'mDisplayDafYomi
         '
         Me.mDisplayDafYomi.CheckOnClick = True
         Me.mDisplayDafYomi.Name = "mDisplayDafYomi"
-        Me.mDisplayDafYomi.Size = New System.Drawing.Size(254, 22)
+        Me.mDisplayDafYomi.Size = New System.Drawing.Size(269, 22)
         Me.mDisplayDafYomi.Text = "Display Daf Yomi"
         '
         'ToolStripSeparator3
         '
         Me.ToolStripSeparator3.Name = "ToolStripSeparator3"
-        Me.ToolStripSeparator3.Size = New System.Drawing.Size(251, 6)
+        Me.ToolStripSeparator3.Size = New System.Drawing.Size(266, 6)
         '
         'mResetSettings
         '
         Me.mResetSettings.Image = Global.zman.My.Resources.Resources.refresh_2
         Me.mResetSettings.Name = "mResetSettings"
-        Me.mResetSettings.Size = New System.Drawing.Size(254, 22)
+        Me.mResetSettings.Size = New System.Drawing.Size(269, 22)
         Me.mResetSettings.Text = "Reset All Settings"
         '
         'mExport
         '
         Me.mExport.Image = Global.zman.My.Resources.Resources.export_more_icon
         Me.mExport.Name = "mExport"
-        Me.mExport.Size = New System.Drawing.Size(136, 22)
+        Me.mExport.Size = New System.Drawing.Size(180, 22)
         Me.mExport.Text = "Export"
         '
         'mOpenCompare
         '
         Me.mOpenCompare.Image = Global.zman.My.Resources.Resources.CompareFiles_16x
         Me.mOpenCompare.Name = "mOpenCompare"
-        Me.mOpenCompare.Size = New System.Drawing.Size(136, 22)
+        Me.mOpenCompare.Size = New System.Drawing.Size(180, 22)
         Me.mOpenCompare.Text = "Compare"
         '
         'mOpenSchedule
         '
         Me.mOpenSchedule.Image = Global.zman.My.Resources.Resources.BlueAlarmBell
         Me.mOpenSchedule.Name = "mOpenSchedule"
-        Me.mOpenSchedule.Size = New System.Drawing.Size(136, 22)
+        Me.mOpenSchedule.Size = New System.Drawing.Size(180, 22)
         Me.mOpenSchedule.Text = "Scheduler"
         '
         'mInfoHelp
         '
         Me.mInfoHelp.Image = Global.zman.My.Resources.Resources.Info_16x
         Me.mInfoHelp.Name = "mInfoHelp"
-        Me.mInfoHelp.Size = New System.Drawing.Size(136, 22)
+        Me.mInfoHelp.Size = New System.Drawing.Size(180, 22)
         Me.mInfoHelp.Text = "Online Info"
         '
         'StatusLabel
@@ -574,19 +582,6 @@ Partial Class Frminfo
         Me.PanelOnCbTimeZone.Name = "PanelOnCbTimeZone"
         Me.PanelOnCbTimeZone.Size = New System.Drawing.Size(183, 17)
         Me.PanelOnCbTimeZone.TabIndex = 29
-        '
-        'rbtLocationContexOpen
-        '
-        Me.rbtLocationContexOpen.Anchor = System.Windows.Forms.AnchorStyles.Top
-        Me.rbtLocationContexOpen.FlatAppearance.BorderSize = 0
-        Me.rbtLocationContexOpen.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.rbtLocationContexOpen.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
-        Me.rbtLocationContexOpen.Image = Global.zman.My.Resources.Resources.three_dots_icon_gray
-        Me.rbtLocationContexOpen.Location = New System.Drawing.Point(241, 20)
-        Me.rbtLocationContexOpen.Name = "rbtLocationContexOpen"
-        Me.rbtLocationContexOpen.Size = New System.Drawing.Size(17, 28)
-        Me.rbtLocationContexOpen.TabIndex = 8
-        Me.rbtLocationContexOpen.UseVisualStyleBackColor = True
         '
         'LabelTimeZone
         '
@@ -721,18 +716,6 @@ Partial Class Frminfo
         Me.rtbParsha.TabIndex = 11
         Me.rtbParsha.Text = ""
         '
-        'rbtTodayRefresh
-        '
-        Me.rbtTodayRefresh.FlatAppearance.BorderSize = 0
-        Me.rbtTodayRefresh.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.rbtTodayRefresh.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
-        Me.rbtTodayRefresh.Image = Global.zman.My.Resources.Resources.Undo_16x
-        Me.rbtTodayRefresh.Location = New System.Drawing.Point(239, 23)
-        Me.rbtTodayRefresh.Name = "rbtTodayRefresh"
-        Me.rbtTodayRefresh.Size = New System.Drawing.Size(26, 23)
-        Me.rbtTodayRefresh.TabIndex = 3
-        Me.rbtTodayRefresh.UseVisualStyleBackColor = True
-        '
         'PanelOndpEngdate
         '
         Me.PanelOndpEngdate.Controls.Add(Me.dpEngdate)
@@ -813,6 +796,31 @@ Partial Class Frminfo
         Me.LabelDisclaimer.TabIndex = 28
         Me.LabelDisclaimer.Text = "Don't"
         Me.LabelDisclaimer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'rbtTodayRefresh
+        '
+        Me.rbtTodayRefresh.FlatAppearance.BorderSize = 0
+        Me.rbtTodayRefresh.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.rbtTodayRefresh.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
+        Me.rbtTodayRefresh.Image = Global.zman.My.Resources.Resources.Undo_16x
+        Me.rbtTodayRefresh.Location = New System.Drawing.Point(239, 23)
+        Me.rbtTodayRefresh.Name = "rbtTodayRefresh"
+        Me.rbtTodayRefresh.Size = New System.Drawing.Size(26, 23)
+        Me.rbtTodayRefresh.TabIndex = 3
+        Me.rbtTodayRefresh.UseVisualStyleBackColor = True
+        '
+        'rbtLocationContexOpen
+        '
+        Me.rbtLocationContexOpen.Anchor = System.Windows.Forms.AnchorStyles.Top
+        Me.rbtLocationContexOpen.FlatAppearance.BorderSize = 0
+        Me.rbtLocationContexOpen.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.rbtLocationContexOpen.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(177, Byte))
+        Me.rbtLocationContexOpen.Image = Global.zman.My.Resources.Resources.three_dots_icon_gray
+        Me.rbtLocationContexOpen.Location = New System.Drawing.Point(241, 20)
+        Me.rbtLocationContexOpen.Name = "rbtLocationContexOpen"
+        Me.rbtLocationContexOpen.Size = New System.Drawing.Size(17, 28)
+        Me.rbtLocationContexOpen.TabIndex = 8
+        Me.rbtLocationContexOpen.UseVisualStyleBackColor = True
         '
         'Frminfo
         '
@@ -930,4 +938,5 @@ Partial Class Frminfo
     Friend WithEvents ZmanFuncNum As DataGridViewTextBoxColumn
     Friend WithEvents ZmanDisplayName As DataGridViewTextBoxColumn
     Friend WithEvents ZmanTime As DataGridViewComboBoxColumn
+    Friend WithEvents mHebrewNamesYomTovParsha As ToolStripMenuItem
 End Class

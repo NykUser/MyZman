@@ -90,8 +90,10 @@ Public Class FrmExport
                 file.WriteLine("BEGIN:VCALENDAR" & vbCrLf & "VERSION:1.0")
             End If
 
-            ResultArray = Get_HebDate(Work_Date)
-            HebDatetoShow = ResultArray(0) & " יום " & ResultArray(1) & " " & ResultArray(2)
+            ResultArray = Get_HebDate(Work_Date, False, varSC.HebrewNamesYomTovParsha)
+            HebDatetoShow = ResultArray(0) & " "
+            If varSC.HebrewNamesYomTovParsha = True Then HebDatetoShow &= "יום "
+            HebDatetoShow &= ResultArray(1) & " " & ResultArray(2)
             If ResultArray(3) <> " " Then HebDatetoShow = HebDatetoShow & " " & ResultArray(3)
             If ResultArray(4) IsNot Nothing And varSC.DisplayDafYomi = True Then HebDatetoShow = HebDatetoShow & " " & ResultArray(4)
             'If ResultArray(4) <> "קודם הדף" And ResultArray(4) <> "??" Then HebDatetoShow = HebDatetoShow & " " & ResultArray(4)
@@ -176,7 +178,7 @@ Public Class FrmExport
             Else
                 TempCZC.AstronomicalCalculator = New ZmanimCalculator()
             End If
-            ResultArray = Get_HebDate(Work_Date)
+            ResultArray = Get_HebDate(Work_Date, False, varSC.HebrewNamesYomTovParsha)
             RowString = Work_Date.ToShortDateString & "," & ResultArray(0) & "," & "יום " & ResultArray(1) & " " & ResultArray(2) & "," & ResultArray(3) & "," & If(varSC.DisplayDafYomi = True, ResultArray(4) & ",", "")
 
             For Each Z In varSC.Zmanim

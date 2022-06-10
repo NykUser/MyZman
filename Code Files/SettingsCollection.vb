@@ -3,6 +3,7 @@
 
     Public Property LastSelectedIndex As Integer = 0
     Public Property PlaceListInHebrew As Boolean = False
+    Public Property HebrewNamesYomTovParsha As Boolean = True
     Public Property IsraeliYomTov As Boolean = False
     Public Property DefaultType As String = "Last"
     Public Property DefaultSelectedindex As Integer = 1

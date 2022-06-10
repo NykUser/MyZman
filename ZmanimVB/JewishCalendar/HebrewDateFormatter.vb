@@ -283,7 +283,7 @@ Namespace Zmanim.JewishCalendar
             If HebrewFormat Then
                 Return daf.Masechta & " " & FormatHebrewNumber(daf.Page)
             Else
-                Return daf.MasechtaTransliterated & " " + daf.Page
+                Return daf.MasechtaTransliterated & " " & daf.Page
             End If
         End Function
 

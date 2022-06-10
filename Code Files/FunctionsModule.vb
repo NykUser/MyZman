@@ -39,9 +39,9 @@ Module FunctionsModule
         Frminfo.Opacity = varSC.TransparencyValue
         Frminfo.mPlaceListInHebrew.Checked = varSC.PlaceListInHebrew
         Frminfo.mLineBetweenZmanim.Checked = varSC.LineBetweenZmanim
+        Frminfo.mHebrewNamesYomTovParsha.Checked = varSC.HebrewNamesYomTovParsha
         Frminfo.mIsraeliYomTov.Checked = varSC.IsraeliYomTov
         Frminfo.mDisplayDafYomi.Checked = varSC.DisplayDafYomi
-
 
         Frminfo.mHebrewMenus.Checked = varSC.HebrewMenus
         'don't force Hebrew Menus if it was changed by user on last run
@@ -525,45 +525,68 @@ Module FunctionsModule
         If varFinishedLoading = False Then Exit Sub
 
         Dim ResultArray()
-        ResultArray = Get_HebDate(Frminfo.dpEngdate.Value)
+        ResultArray = Get_HebDate(Frminfo.dpEngdate.Value, True, varSC.HebrewNamesYomTovParsha)
         Dim HebDatetoShow As String
 
         Frminfo.rtbHebrewDate.Text = ResultArray(0)
         If ResultArray(3) <> Nothing Then 'the is a holiday
             If ResultArray(2) = Nothing Then 'the is No Parsha
-                ResultArray = Get_HebDate(Frminfo.dpEngdate.Value, True)
-                Frminfo.rtbParsha.Text = "יום " & ResultArray(1) & " " & ChrW(&H2022) & " " & ResultArray(3) & If(ResultArray(4) = Nothing, "", " " & ChrW(&H2022) & " " & ResultArray(4)) 'ChrW(&H2022)
+                If varSC.HebrewNamesYomTovParsha = True Then
+                    Frminfo.rtbParsha.Text = "יום " & ResultArray(1) & " " & ChrW(&H2022) & " " & ResultArray(3) & If(ResultArray(4) = Nothing, "", " " & ChrW(&H2022) & " " & ResultArray(4)) 'ChrW(&H2022)
+                Else
+                    Frminfo.rtbParsha.Text = ResultArray(3) & If(ResultArray(4) = Nothing, "", " " & ChrW(&H2022) & " " & ResultArray(4)) 'ChrW(&H2022)
+                End If
             Else
-                Debug.Print(ResultArray(3) & "=")
-                Frminfo.rtbParsha.Text = ResultArray(1) & If(ResultArray(2) <> "", " " & ResultArray(2), "") & " " & ChrW(&H2022) & " " & ResultArray(3) & If(ResultArray(4) = Nothing, "", " " & ChrW(&H2022) & " " & ResultArray(4))
+                If varSC.HebrewNamesYomTovParsha = True Then
+                    ResultArray = Get_HebDate(Frminfo.dpEngdate.Value, False, varSC.HebrewNamesYomTovParsha)
+                    Frminfo.rtbParsha.Text = ResultArray(1) & If(ResultArray(2) <> "", " " & ResultArray(2), "") & " " & ChrW(&H2022) & " " & ResultArray(3) & If(ResultArray(4) = Nothing, "", " " & ChrW(&H2022) & " " & ResultArray(4))
+                End If
+                Frminfo.rtbParsha.Text = If(ResultArray(2) <> "", ResultArray(2) & " " & ChrW(&H2022) & " ", "") & ResultArray(3) & If(ResultArray(4) = Nothing, "", " " & ChrW(&H2022) & " " & ResultArray(4))
             End If
         Else 'no holiday
-            ResultArray = Get_HebDate(Frminfo.dpEngdate.Value, True)
-            Frminfo.rtbParsha.Text = "יום " & ResultArray(1) & If(ResultArray(2) <> "", " " & If(ResultArray(4) = Nothing, "פרשת ", "") & ResultArray(2), "") & If(ResultArray(4) = Nothing, "", " " & ChrW(&H2022) & " " & ResultArray(4))
+            If varSC.HebrewNamesYomTovParsha = True Then
+                Frminfo.rtbParsha.Text = "יום " & ResultArray(1) & If(ResultArray(2) <> "", " " & If(ResultArray(4) = Nothing, "פרשת ", "") & ResultArray(2), "") & If(ResultArray(4) = Nothing, "", " " & ChrW(&H2022) & " " & ResultArray(4))
+            Else
+                'Frminfo.rtbParsha.Text = ResultArray(1) & If(ResultArray(2) <> "", " " & If(ResultArray(4) = Nothing, "Parshas ", "") & ResultArray(2), "") & If(ResultArray(4) = Nothing, "", " " & ChrW(&H2022) & " " & ResultArray(4))
+                Frminfo.rtbParsha.Text = If(ResultArray(2) <> "", " " & If(ResultArray(4) = Nothing, "Parshas ", "") & ResultArray(2), "") & If(ResultArray(4) = Nothing, "", " " & ChrW(&H2022) & " " & ResultArray(4))
+            End If
         End If
         RichTextBoxAlignment()
     End Sub
     Sub RichTextBoxAlignment()
+        If varSC.HebrewNamesYomTovParsha = True Then
+            Frminfo.rtbParsha.RightToLeft = RightToLeft.Yes
+            Frminfo.rtbHebrewDate.RightToLeft = RightToLeft.Yes
+        Else
+            Frminfo.rtbParsha.RightToLeft = RightToLeft.No
+            Frminfo.rtbHebrewDate.RightToLeft = RightToLeft.No
+        End If
         Frminfo.rtbParsha.SelectAll()
         Frminfo.rtbParsha.SelectionAlignment = HorizontalAlignment.Center
         Frminfo.rtbHebrewDate.SelectAll()
         Frminfo.rtbHebrewDate.SelectionAlignment = HorizontalAlignment.Center
     End Sub
-    Public Function Get_HebDate(DateIn As Date, Optional LongHebDayFormat As Boolean = False) As String()
+    Public Function Get_HebDate(DateIn As Date, Optional LongHebDayFormat As Boolean = False, Optional HebrewFormat As Boolean = True) As String()
         Dim Hebdate, Holiday, Hebday, Parsha, Daf As String
         Dim HDF As New HebrewDateFormatter()
         Dim YC As New YomiCalculator()
-        HDF.HebrewFormat = True
+        HDF.HebrewFormat = HebrewFormat '= True
         HDF.LongWeekFormat = LongHebDayFormat
         varHculture.DateTimeFormat.Calendar = varHC
 
-        Hebdate = DateIn.ToString("dd MMM yyy", varHculture)
+        If HebrewFormat = True Then
+            Hebdate = DateIn.ToString("dd MMM yyy", varHculture)
+        Else
+            Hebdate = HDF.Format(DateIn)
+        End If
+
+
         Holiday = HDF.FormatYomTov(DateIn, False) & If(HDF.FormatOmer(DateIn) = Nothing, "", " " & HDF.FormatOmer(DateIn))
         If varSC.IsraeliYomTov = True Then Holiday = HDF.FormatYomTov(DateIn, True) & If(HDF.FormatOmer(DateIn) = Nothing, "", " " & HDF.FormatOmer(DateIn))
         Hebday = HDF.FormatDayOfWeek(DateIn)
 
         Try
-            Parsha = varAddedGets.ZmanGetParsha(DateIn, varSC.IsraeliYomTov)
+            Parsha = varAddedGets.ZmanGetParsha(DateIn, varSC.IsraeliYomTov, HebrewFormat)
         Catch
         End Try
 
@@ -577,6 +600,8 @@ Module FunctionsModule
                 End Try
             End If
         End If
+
+        Debug.Print(Daf)
 A:
         Return New String() {Hebdate, Hebday, Parsha, Holiday, Daf}
         '0 Hebdate
@@ -1337,6 +1362,45 @@ A:
     '=======================================================================
     'Not in use - saved
     '=======================================================================
+    ''' <summary>
+    ''' will fill Ellipsis beween 2 strings, crops string 1 if needed
+    ''' </summary>
+    ''' <param name="TextIn1"></param>
+    ''' <param name="TextIn2"></param>
+    ''' <param name="FontIn"></param>
+    ''' <param name="SizeInPixels"></param>
+    ''' <returns></returns>
+    Public Function PadEllipsisToMidString(TextIn1 As String, TextIn2 As String, FontIn As System.Drawing.Font, SizeInPixels As Single) As String
+        Dim PaddedText As String
+        Dim graphics = (New System.Windows.Forms.Label()).CreateGraphics()
+
+        'Dim CurrentSize As Double = graphics.MeasureString(TextIn1 & " ... " & TextIn2, FontIn).Width
+        Dim CurrentSize As Single = TextRenderer.MeasureText(TextIn1 & "..." & TextIn2, FontIn).Width
+
+        'pad if to small
+        If CurrentSize < SizeInPixels Then
+            PaddedText = TextIn1 & "..."
+            For i = 0 To SizeInPixels * 2
+                PaddedText += "."
+                'CurrentSize = graphics.MeasureString(PaddedText & " " + TextIn2, FontIn).Width
+                CurrentSize = TextRenderer.MeasureText(PaddedText + TextIn2, FontIn).Width
+                If CurrentSize >= SizeInPixels Then
+                    PaddedText += ChrW(8197) + TextIn2
+                    Exit For
+                End If
+            Next
+        Else 'trim if to big
+            For Each c As Char In TextIn1
+                PaddedText += c
+                CurrentSize = TextRenderer.MeasureText(PaddedText & " ... " & TextIn2, FontIn).Width
+                If CurrentSize >= SizeInPixels Then
+                    PaddedText += " ... " + TextIn2
+                    Exit For
+                End If
+            Next
+        End If
+        Return PaddedText
+    End Function
     Public Function Load_Zmanim_Func()
         'old used to get a list of all zmnaim Function's from DLL
         Dim varZmanimFunc As New List(Of String)

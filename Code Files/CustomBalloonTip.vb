@@ -12,7 +12,6 @@ Public Class CustomBalloonTip
     Private timer As New System.Timers.Timer()
     Private semaphore As New System.Threading.SemaphoreSlim(1)
     Private hWnd As IntPtr
-
     Public Sub New(text As String, control As Control, xPosition As Double, yPosition As Double)
         Show("", text, control, xPosition, yPosition)
     End Sub
@@ -105,10 +104,13 @@ Public Class CustomBalloonTip
         'AddHandler DirectCast(control.TopLevelControl, Form).Deactivate, AddressOf control_Event
 
         'my change
-        AddHandler control.MouseMove, AddressOf control_Event
-        AddHandler control.TextChanged, AddressOf control_Event
-        Dim comboBox1 As ComboBox = CType(control, ComboBox)
-        AddHandler comboBox1.DropDownClosed, AddressOf control_Event
+        If control.GetType.BaseType.Name = "ComboBox" OrElse control.GetType.Name = "ComboBox" Then
+            AddHandler control.MouseMove, AddressOf control_Event
+            AddHandler control.TextChanged, AddressOf control_Event
+            Dim comboBox1 As ComboBox = CType(control, ComboBox)
+            AddHandler comboBox1.DropDownClosed, AddressOf control_Event
+        End If
+
 
         timer.AutoReset = False
         RemoveHandler timer.Elapsed, AddressOf timer_Elapsed

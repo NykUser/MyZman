@@ -401,6 +401,10 @@ Public Class Frminfo
         varSC.Clock24Hour = m24HourFormatTime.Checked
         change_zman()
     End Sub
+    Private Sub mHebrewNamesYomTovParsha_Click(sender As Object, e As EventArgs) Handles mHebrewNamesYomTovParsha.Click
+        varSC.HebrewNamesYomTovParsha = mHebrewNamesYomTovParsha.Checked
+        change_hebdate()
+    End Sub
     Private Sub mIsraeliYomTov_Click(sender As Object, e As EventArgs) Handles mIsraeliYomTov.Click
         varSC.IsraeliYomTov = mIsraeliYomTov.Checked
         change_hebdate()
@@ -1361,6 +1365,12 @@ Public Class Frminfo
 
         Return Result
     End Function
+
+    Private Sub ToolStripDropDownButton1_Click(sender As Object, e As EventArgs) Handles ToolStripDropDownButton1.Click
+
+    End Sub
+
+
 End Class
 
 

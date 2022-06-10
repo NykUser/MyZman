@@ -122,7 +122,7 @@
             Return Nothing
         End Try
     End Function
-    Public Function ZmanGetParsha(ByVal DateIn As Date, inIsrael As Boolean, Optional EngNames As Boolean = False) As String
+    Public Function ZmanGetParsha(ByVal DateIn As Date, inIsrael As Boolean, Optional HebNames As Boolean = True) As String
         'move to sab - needed for week of R"H 
         If DateIn.DayOfWeek <> DayOfWeek.Saturday Then DateIn = DateIn.AddDays(Add_till_sab(DateIn.DayOfWeek))
 
@@ -162,7 +162,8 @@
         Dim Sat_long_leap As Integer() = {-1, 52, -1, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, -1, 28, 29, 30, 31, 32, 33, -1, 34, 35, 36, 37, 57, 40, 58, 43, 44, 45, 46, 47, 48, 49, 59}
 
         Dim hebrewParshiyos As String() = {"בראשית", "נח", "לך לך", "וירא", "חיי שרה", "תולדות", "ויצא", "וישלח", "וישב", "מקץ", "ויגש", "ויחי", "שמות", "וארא", "בא", "בשלח", "יתרו", "משפטים", "תרומה", "תצוה", "כי תשא", "ויקהל", "פקודי", "ויקרא", "צו", "שמיני", "תזריע", "מצרע", "אחרי מות", "קדושים", "אמור", "בהר", "בחקתי", "במדבר", "נשא", "בהעלתך", "שלח לך", "קרח", "חוקת", "בלק", "פינחס", "מטות", "מסעי", "דברים", "ואתחנן", "עקב", "ראה", "שופטים", "כי תצא", "כי תבוא", "ניצבים", "וילך", "האזינו", "ויקהל פקודי", "תזריע מצרע", "אחרי מות קדושים", "בהר בחקתי", "חוקת בלק", "מטות מסעי", "ניצבים וילך"}
-        Dim EngParshiyos As String() = {"BERESHIS", "NOACH", "LECH LECHA", "VAYERA", "CHAYEI SARA", "TOLDOS", "VAYETZEI", "VAYISHLACH", "VAYESHEV", "MIKETZ", "VAYIGASH", "VAYECHI", "SHEMOS", "VAERA", "BO", "BESHALACH", "YISRO", "MISHPATIM", "TERUMAH", "TETZAVEH", "KI SISA", "VAYAKHEL", "PEKUDEI", "VAYIKRA", "TZAV", "SHMINI", "TAZRIA", "METZORA", "ACHREI MOS", "KEDOSHIM", "EMOR", "BEHAR", "BECHUKOSAI", "BAMIDBAR", "NASSO", "BEHAALOSCHA", "SHLACH", "KORACH", "CHUKAS", "BALAK", "PINCHAS", "MATOS", "MASEI", "DEVARIM", "VAESCHANAN", "EIKEV", "REEH", "SHOFTIM", "KI SEITZEI", "KI SAVO", "NITZAVIM", "VAYEILECH", "HAAZINU", "VAYAKHEL PEKUDEI", "TAZRIA METZORA", "ACHREI MOS KEDOSHIM", "BEHAR BECHUKOSAI", "CHUKAS BALAK", "NITZAVIM VAYEILECH", "MATOS MASEI"}
+        Dim EngParshiyos As String() = {"Bereshis", "Noach", "Lech Lecha", "Vayera", "Chayei Sara", "Toldos", "Vayetzei", "Vayishlach", "Vayeshev", "Miketz", "Vayigash", "Vayechi", "Shemos", "Vaera", "Bo", "Beshalach", "Yisro", "Mishpatim", "Terumah", "Tetzaveh", "Ki Sisa", "Vayakhel", "Pekudei", "Vayikra", "Tzav", "Shmini", "Tazria", "Metzora", "Achrei Mos", "Kedoshim", "Emor", "Behar", "Bechukosai", "Bamidbar", "Nasso", "Beha'aloscha", "Sh'lach", "Korach", "Chukas", "Balak", "Pinchas", "Matos", "Masei", "Devarim", "Vaeschanan", "Eikev", "Re'eh", "Shoftim", "Ki Seitzei", "Ki Savo", "Nitzavim", "Vayeilech", "Ha'Azinu", "Vayakhel Pekudei", "Tazria Metzora", "Achrei Mos Kedoshim", "Behar Bechukosai", "Chukas Balak", "Matos Masei", "Nitzavim Vayeilech"}
+        'Dim EngParshiyos As String() = {"BERESHIS", "NOACH", "LECH LECHA", "VAYERA", "CHAYEI SARA", "TOLDOS", "VAYETZEI", "VAYISHLACH", "VAYESHEV", "MIKETZ", "VAYIGASH", "VAYECHI", "SHEMOS", "VAERA", "BO", "BESHALACH", "YISRO", "MISHPATIM", "TERUMAH", "TETZAVEH", "KI SISA", "VAYAKHEL", "PEKUDEI", "VAYIKRA", "TZAV", "SHMINI", "TAZRIA", "METZORA", "ACHREI MOS", "KEDOSHIM", "EMOR", "BEHAR", "BECHUKOSAI", "BAMIDBAR", "NASSO", "BEHAALOSCHA", "SHLACH", "KORACH", "CHUKAS", "BALAK", "PINCHAS", "MATOS", "MASEI", "DEVARIM", "VAESCHANAN", "EIKEV", "REEH", "SHOFTIM", "KI SEITZEI", "KI SAVO", "NITZAVIM", "VAYEILECH", "HAAZINU", "VAYAKHEL PEKUDEI", "TAZRIA METZORA", "ACHREI MOS KEDOSHIM", "BEHAR BECHUKOSAI", "CHUKAS BALAK", "NITZAVIM VAYEILECH", "MATOS MASEI"}
 
         If IsLeapYear = False Then
 
@@ -240,10 +241,10 @@
                 Return ""
             End If
 
-            If EngNames = True Then
-                Return EngParshiyos(index)
-            Else
+            If HebNames = True Then
                 Return hebrewParshiyos(index)
+            Else
+                Return EngParshiyos(index)
             End If
         End If
     End Function
