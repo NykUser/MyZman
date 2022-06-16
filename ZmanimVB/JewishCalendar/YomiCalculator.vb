@@ -36,6 +36,7 @@ Namespace Zmanim.JewishCalendar
         Private Shared shekalimChangeDate As Date = New DateTime(1975, 6, 24)
         Private Shared shekalimJulianChangeDay As Integer = GetJulianDay(shekalimChangeDate)
 
+
         ''' <summary>
         ''' Returns the <ahref="http://en.wikipedia.org/wiki/Daf_yomi">Daf Yomi</a> <ahref="http://en.wikipedia.org/wiki/Talmud">Bavli</a> <seealsocref="Daf"/> for a given date. The first Daf Yomi cycle
         ''' started on Rosh Hashana 5684 (September 11, 1923) and calculations prior to this date will result in an
@@ -64,20 +65,30 @@ Namespace Zmanim.JewishCalendar
             Dim dafYomi As Daf = Nothing
             Dim julianDay = GetJulianDay([date])
             Dim cycleNo = 0
-            Dim dafNo = 0
+            Dim dafNo As Integer = 0
 
             If [date] < dafYomiStartDate Then
                 ' TODO: should we return a null or throw an IllegalArgumentException?
                 Throw New ArgumentException([date] & " is prior to organized Daf Yomi Bavli cycles that started on " & dafYomiStartDate)
             End If
 
+            'Changed in Vb to use DateDiff and not JulianDay as it was off, probably issue with time in GetJulianDay
+            Dim DaysFromDafYomiStart As Long = DateDiff(DateInterval.Day, dafYomiStartDate, [date])
+            Dim DaysFromShekalimChange As Long = DateDiff(DateInterval.Day, shekalimChangeDate, [date])
+
             If [date].Equals(shekalimChangeDate) OrElse [date] > shekalimChangeDate Then
-                cycleNo = 8 + (julianDay - shekalimJulianChangeDay) / 2711
-                dafNo = (julianDay - shekalimJulianChangeDay) Mod 2711
+                'cycleNo = 8 + ((julianDay - shekalimJulianChangeDay) / 2711)
+                cycleNo = 8 + (DaysFromShekalimChange / 2711)
+                'dafNo = ((julianDay - shekalimJulianChangeDay) Mod 2711)
+                dafNo = DaysFromShekalimChange Mod 2711
             Else
-                cycleNo = 1 + (julianDay - dafYomiJulianStartDay) / 2702
-                dafNo = (julianDay - dafYomiJulianStartDay) Mod 2702
+                'cycleNo = 1 + ((julianDay - dafYomiJulianStartDay) / 2702)
+                cycleNo = 1 + (DaysFromDafYomiStart / 2702)
+                'dafNo = ((julianDay - dafYomiJulianStartDay) Mod 2702)
+                dafNo = DaysFromDafYomiStart Mod 2702
             End If
+
+            'Debug.Print(dafNo)
 
             Dim total = 0
             Dim masechta = -1
@@ -89,8 +100,8 @@ Namespace Zmanim.JewishCalendar
             Else
                 blattPerMasechta(4) = 22 ' correct any change that may have been changed from a prior calculation
             End If
-            ' Finally find the daf. 
-            For j = 0 To blattPerMasechta.Length - 1
+
+            For j As Integer = 0 To blattPerMasechta.Length - 1
                 masechta += 1
                 total = total + blattPerMasechta(j) - 1
 
@@ -110,6 +121,11 @@ Namespace Zmanim.JewishCalendar
                     Exit For
                 End If
             Next
+
+
+            'Debug.Print(masechta)
+            'Debug.Print(blatt)
+
 
             Return dafYomi
         End Function
@@ -138,7 +154,9 @@ Namespace Zmanim.JewishCalendar
 
             Dim a As Integer = year / 100
             Dim b As Integer = 2 - a + a / 4
-            Return Math.Floor(365.25 * (year + 4716)) + Math.Floor(30.6001 * (month + 1)) + day + b - 1524.5
+            Return CInt((Math.Floor(365.25 * (year + 4716)) + Math.Floor(30.6001 * (month + 1)) + day + b - 1524.5))
+
+            'Return Math.Floor(365.25 * (year + 4716)) + Math.Floor(30.6001 * (month + 1)) + day + b - 1524.5
         End Function
     End Class
 End Namespace

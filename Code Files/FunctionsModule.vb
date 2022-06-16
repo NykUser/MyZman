@@ -590,16 +590,19 @@ Module FunctionsModule
         Catch
         End Try
 
-        'only send back daf if not closed by user, is after 1923 and was able to get - else will be Nothing
+        'daf
         If varSC.DisplayDafYomi = True Then
             If DateIn > #9/11/1923# Then
                 Try
+                    'Dim calendar As Date = New DateTime(DateIn.Year, DateIn.Month, DateIn.Day)                                                      )
+
                     'used to have a isue with some days, looks fine with newer YomiCalculator.cs
-                    Daf = HDF.FormatDafYomiBavli(YomiCalculator.GetDafYomiBavli(DateIn))
+                    Daf = HDF.FormatDafYomiBavli(YomiCalculator.GetDafYomiBavli(New DateTime(DateIn.Year, DateIn.Month, DateIn.Day)))
                 Catch
                 End Try
             End If
         End If
+        Debug.Print(Daf)
 
 A:
         Return New String() {Hebdate, Hebday, Parsha, Holiday, Daf}
