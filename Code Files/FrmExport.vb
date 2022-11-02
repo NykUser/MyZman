@@ -11,6 +11,7 @@ Public Class FrmExport
             Label3.Text = "תאריך התחלה"
             Label1.RightToLeft = 1
             Label2.RightToLeft = 1
+            Label3.RightToLeft = 1
             btCSV.Text = "לאקסל"
             btVCS.Text = "VCS"
             Try
