@@ -8,6 +8,7 @@ Public Class FrmExport
             Me.Text = "ייצוא"
             Label1.Text = "ימים לייצוא"
             Label2.Text = "ימים לכל קובץ (vcs)"
+            Label3.Text = "תאריך התחלה"
             Label1.RightToLeft = 1
             Label2.RightToLeft = 1
             btCSV.Text = "לאקסל"
@@ -15,6 +16,7 @@ Public Class FrmExport
             Try
                 Label1.Font = MemoryFonts.GetFont(1, 8.75, FontStyle.Regular)
                 Label2.Font = MemoryFonts.GetFont(1, 8.75, FontStyle.Regular)
+                Label3.Font = MemoryFonts.GetFont(1, 8.75, FontStyle.Regular)
                 btCSV.Font = MemoryFonts.GetFont(1, 8.75, FontStyle.Regular)
                 btVCS.Font = MemoryFonts.GetFont(1, 8.75, FontStyle.Regular)
             Catch ex As Exception
@@ -22,18 +24,32 @@ Public Class FrmExport
         Else
             Label1.Text = "Days To Export"
             Label2.Text = "Days Per File (vcs)"
+            Label3.Text = "Start Date"
             Label1.RightToLeft = 0
             Label2.RightToLeft = 0
+            Label3.RightToLeft = 0
             btCSV.Text = "To Excel"
             btVCS.Text = "To VCS"
             Try
                 Label1.Font = MemoryFonts.GetFont(1, 7.75, FontStyle.Regular)
                 Label2.Font = MemoryFonts.GetFont(1, 7.75, FontStyle.Regular)
+                Label3.Font = MemoryFonts.GetFont(1, 7.75, FontStyle.Regular)
                 btCSV.Font = MemoryFonts.GetFont(1, 7.75, FontStyle.Regular)
                 btVCS.Font = MemoryFonts.GetFont(1, 7.75, FontStyle.Regular)
             Catch ex As Exception
             End Try
         End If
+
+        'Date picker set to CurrentCulture
+        Dim CultureDateFL = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern(0)
+        dpEngdate.CustomFormat = If(CultureDateFL = "M", "MM / dd / yyyy", "dd / MM / yyyy")
+        If CultureInfo.CurrentCulture.Calendar.GetType.Name = "HebrewCalendar" Then
+            dpEngdate.RightToLeft = 1
+            dpEngdate.RightToLeftLayout = 1
+            dpEngdate.CustomFormat = "yyyy    MMM  dd    " 'dddd
+        End If
+        dpEngdate.Value = Frminfo.dpEngdate.Value
+
 
         tbDays.Text = 365
         tbPer.Text = 365
@@ -63,7 +79,7 @@ Public Class FrmExport
         Dim timeFormat As String = "h:mm:ss" ' no am pm RTL
         If varSC.Clock24Hour = True Then timeFormat = "H:mm:ss"
         Dim MyZman As Date
-        Dim Work_Date As Date = Frminfo.dpEngdate.Value
+        Dim Work_Date As Date = dpEngdate.Value 'Frminfo.dpEngdate.Value
         Dim NumDays As Integer = tbDays.Text
         Dim DaysPerFile As Integer = tbPer.Text
         Dim DayCount As Integer
@@ -161,7 +177,7 @@ Public Class FrmExport
         Dim timeFormat As String = "h:mm:ss tt"
         If varSC.Clock24Hour = True Then timeFormat = "H:mm:ss"
         Dim MyZman As Date
-        Dim Work_Date As Date = Frminfo.dpEngdate.Value
+        Dim Work_Date As Date = dpEngdate.Value 'Frminfo.dpEngdate.Value
         Dim NumDays As Integer = tbDays.Text
         Dim ResultArray
         Dim i As Integer = 0

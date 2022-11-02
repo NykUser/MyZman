@@ -30,11 +30,13 @@ Partial Class FrmExport
         Me.btCancel = New System.Windows.Forms.Button()
         Me.btCSV = New System.Windows.Forms.Button()
         Me.btVCS = New System.Windows.Forms.Button()
+        Me.dpEngdate = New System.Windows.Forms.DateTimePicker()
+        Me.Label3 = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
         'Label1
         '
-        Me.Label1.Location = New System.Drawing.Point(15, 11)
+        Me.Label1.Location = New System.Drawing.Point(15, 51)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(113, 13)
         Me.Label1.TabIndex = 0
@@ -42,21 +44,21 @@ Partial Class FrmExport
         '
         'tbDays
         '
-        Me.tbDays.Location = New System.Drawing.Point(18, 27)
+        Me.tbDays.Location = New System.Drawing.Point(18, 67)
         Me.tbDays.Name = "tbDays"
         Me.tbDays.Size = New System.Drawing.Size(110, 20)
         Me.tbDays.TabIndex = 1
         '
         'tbPer
         '
-        Me.tbPer.Location = New System.Drawing.Point(18, 71)
+        Me.tbPer.Location = New System.Drawing.Point(18, 111)
         Me.tbPer.Name = "tbPer"
         Me.tbPer.Size = New System.Drawing.Size(110, 20)
         Me.tbPer.TabIndex = 3
         '
         'Label2
         '
-        Me.Label2.Location = New System.Drawing.Point(15, 55)
+        Me.Label2.Location = New System.Drawing.Point(15, 95)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(113, 13)
         Me.Label2.TabIndex = 2
@@ -65,7 +67,7 @@ Partial Class FrmExport
         'btCancel
         '
         Me.btCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.btCancel.Location = New System.Drawing.Point(148, 11)
+        Me.btCancel.Location = New System.Drawing.Point(151, 26)
         Me.btCancel.Name = "btCancel"
         Me.btCancel.Size = New System.Drawing.Size(75, 23)
         Me.btCancel.TabIndex = 4
@@ -76,7 +78,7 @@ Partial Class FrmExport
         '
         Me.btCSV.Image = Global.zman.My.Resources.Resources.excel
         Me.btCSV.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btCSV.Location = New System.Drawing.Point(148, 40)
+        Me.btCSV.Location = New System.Drawing.Point(151, 64)
         Me.btCSV.Name = "btCSV"
         Me.btCSV.Size = New System.Drawing.Size(75, 23)
         Me.btCSV.TabIndex = 5
@@ -88,7 +90,7 @@ Partial Class FrmExport
         '
         Me.btVCS.Image = Global.zman.My.Resources.Resources.Calendar_16x
         Me.btVCS.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btVCS.Location = New System.Drawing.Point(148, 69)
+        Me.btVCS.Location = New System.Drawing.Point(151, 108)
         Me.btVCS.Name = "btVCS"
         Me.btVCS.Size = New System.Drawing.Size(75, 23)
         Me.btVCS.TabIndex = 6
@@ -96,13 +98,38 @@ Partial Class FrmExport
         Me.btVCS.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.btVCS.UseVisualStyleBackColor = True
         '
+        'dpEngdate
+        '
+        Me.dpEngdate.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.dpEngdate.CalendarFont = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.dpEngdate.CustomFormat = "MM / dd / yyyy"
+        Me.dpEngdate.DropDownAlign = System.Windows.Forms.LeftRightAlignment.Right
+        Me.dpEngdate.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.dpEngdate.Format = System.Windows.Forms.DateTimePickerFormat.Custom
+        Me.dpEngdate.Location = New System.Drawing.Point(18, 26)
+        Me.dpEngdate.MaxDate = New Date(2239, 9, 29, 0, 0, 0, 0)
+        Me.dpEngdate.Name = "dpEngdate"
+        Me.dpEngdate.RightToLeft = System.Windows.Forms.RightToLeft.No
+        Me.dpEngdate.Size = New System.Drawing.Size(110, 20)
+        Me.dpEngdate.TabIndex = 7
+        '
+        'Label3
+        '
+        Me.Label3.Location = New System.Drawing.Point(15, 10)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(113, 13)
+        Me.Label3.TabIndex = 8
+        Me.Label3.Text = "Start Date"
+        '
         'FrmExport
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.AliceBlue
         Me.CancelButton = Me.btCancel
-        Me.ClientSize = New System.Drawing.Size(238, 104)
+        Me.ClientSize = New System.Drawing.Size(238, 143)
+        Me.Controls.Add(Me.Label3)
+        Me.Controls.Add(Me.dpEngdate)
         Me.Controls.Add(Me.btVCS)
         Me.Controls.Add(Me.btCSV)
         Me.Controls.Add(Me.btCancel)
@@ -128,4 +155,6 @@ Partial Class FrmExport
     Friend WithEvents btCancel As Button
     Friend WithEvents btCSV As Button
     Friend WithEvents btVCS As Button
+    Friend WithEvents dpEngdate As DateTimePicker
+    Friend WithEvents Label3 As Label
 End Class

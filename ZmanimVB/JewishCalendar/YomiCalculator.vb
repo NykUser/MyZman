@@ -32,9 +32,9 @@ Namespace Zmanim.JewishCalendar
     ''' </summary>
     Public Class YomiCalculator
         Private Shared dafYomiStartDate As Date = New DateTime(1923, 9, 11)
-        Private Shared dafYomiJulianStartDay As Integer = GetJulianDay(dafYomiStartDate)
+        'Private Shared dafYomiJulianStartDay As Integer = GetJulianDay(dafYomiStartDate)
         Private Shared shekalimChangeDate As Date = New DateTime(1975, 6, 24)
-        Private Shared shekalimJulianChangeDay As Integer = GetJulianDay(shekalimChangeDate)
+        'Private Shared shekalimJulianChangeDay As Integer = GetJulianDay(shekalimChangeDate)
 
 
         ''' <summary>
@@ -121,11 +121,6 @@ Namespace Zmanim.JewishCalendar
                     Exit For
                 End If
             Next
-
-
-            'Debug.Print(masechta)
-            'Debug.Print(blatt)
-
 
             Return dafYomi
         End Function
