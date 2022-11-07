@@ -72,8 +72,7 @@ Due to atmospheric conditions (pressure, humidity and other conditions), calcula
 
 
 # Notable points about the Programs Code
-* The NET port is part of the solution, as an C# project called Zmanim, it compiles itself into a Dll into MyZman\Resources\.
-* The VB zman project compiles the DLL into itself, all that is needed to run the propgrem is a stand alone exe & an xml file with locations info.
+* All that is needed to run the propgrem is a stand alone exe & an xml file with locations info.
 * Project uses Embedded fonts "ArialUnicodeCompact" & "VarelaRound-Regular", ArialUnicodeCompact is Arial Unicode MS with only English & Hebrew characters.
 * Message Boxes are centered to mouse position with Centered_MessageBox class
 * Round Buttons are used for some of the controls
